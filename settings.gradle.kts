@@ -25,4 +25,6 @@ dependencyResolutionManagement {
 rootProject.name = "Daftari Qarzho"
 include(":app")
 include(":core:designsystem")
+include(":core:common")
+include(":core:database")
  

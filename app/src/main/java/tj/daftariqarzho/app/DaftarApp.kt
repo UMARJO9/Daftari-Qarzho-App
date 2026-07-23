@@ -4,6 +4,7 @@ import android.app.Application
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
+import tj.daftariqarzho.app.core.database.di.databaseModule
 
 /**
  * Application-класс приложения DaftarQarz.
@@ -17,7 +18,7 @@ class DaftarApp : Application() {
         startKoin {
             androidLogger()
             androidContext(this@DaftarApp)
-            modules(emptyList())
+            modules(databaseModule)
         }
     }
 }
