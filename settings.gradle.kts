@@ -24,4 +24,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "Daftari Qarzho"
 include(":app")
+include(":core:designsystem")
  
