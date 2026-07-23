@@ -6,12 +6,6 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import tj.daftariqarzho.app.core.database.di.databaseModule
 
-/**
- * Application-класс приложения DaftarQarz.
- *
- * Инициализирует Koin как контейнер зависимостей. Модули отдельных фич
- * подключаются в [startKoin] по мере их реализации.
- */
 class DaftarApp : Application() {
     override fun onCreate() {
         super.onCreate()

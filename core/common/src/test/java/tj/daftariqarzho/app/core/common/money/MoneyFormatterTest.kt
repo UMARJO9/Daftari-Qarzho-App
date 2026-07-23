@@ -3,7 +3,6 @@ package tj.daftariqarzho.app.core.common.money
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-/** Тесты форматирования денежных сумм в дирамах. */
 class MoneyFormatterTest {
 
     @Test

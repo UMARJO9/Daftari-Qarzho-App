@@ -6,7 +6,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.time.ZoneId
 
-/** Тесты работы с датами: форматирование, просрочка, группировка по дням. */
 class DateFormatterTest {
 
     private val utc = ZoneId.of("UTC")

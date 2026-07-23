@@ -5,10 +5,6 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import tj.daftariqarzho.app.core.database.AppDatabase
 
-/**
- * Koin-модуль слоя базы данных: предоставляет [AppDatabase] и DAO как
- * синглтоны. Подключается в `startKoin` приложения.
- */
 val databaseModule = module {
     single {
         Room.databaseBuilder(
