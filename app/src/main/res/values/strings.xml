@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Daftari Qarzho</string>
+    <string name="tab_debtors">Мизоҷон</string>
+    <string name="tab_transactions">Амалиёт</string>
+    <string name="tab_reports">Ҳисобот</string>
+    <string name="tab_settings">Танзимот</string>
 </resources>

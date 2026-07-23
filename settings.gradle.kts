@@ -27,4 +27,8 @@ include(":app")
 include(":core:designsystem")
 include(":core:common")
 include(":core:database")
+include(":feature:debtors")
+include(":feature:transactions")
+include(":feature:reports")
+include(":feature:settings")
  

@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Daftari Qarzho</string>
+    <string name="tab_debtors">Клиенты</string>
+    <string name="tab_transactions">Операции</string>
+    <string name="tab_reports">Отчёты</string>
+    <string name="tab_settings">Настройки</string>
+</resources>
