@@ -1,4 +1,4 @@
-package tj.daftariqarzho.app.ui.theme
+package tj.daftariqarzho.app.core.designsystem.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.runtime.Immutable
@@ -8,7 +8,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import tj.daftariqarzho.app.R
+import tj.daftariqarzho.app.core.designsystem.R
 
 val InterFontFamily = FontFamily(
     Font(R.font.inter_regular, FontWeight.Normal),
@@ -16,7 +16,7 @@ val InterFontFamily = FontFamily(
     Font(R.font.inter_semibold, FontWeight.SemiBold),
 )
 
-val Typography = Typography(
+val DaftarTypography = Typography(
     displayMedium = TextStyle(
         fontFamily = InterFontFamily,
         fontWeight = FontWeight.SemiBold,
@@ -63,10 +63,6 @@ val Typography = Typography(
     ),
 )
 
-private val TabularNumbers = TextStyle(
-    fontFeatureSettings = "tnum",
-)
-
 @Immutable
 data class MoneyTypography(
     val large: TextStyle,
@@ -74,7 +70,11 @@ data class MoneyTypography(
     val small: TextStyle,
 )
 
-val MoneyTypographyDefaults = MoneyTypography(
+private val TabularNumbers = TextStyle(
+    fontFeatureSettings = "tnum",
+)
+
+val DefaultMoneyTypography = MoneyTypography(
     large = TabularNumbers.copy(
         fontFamily = InterFontFamily,
         fontWeight = FontWeight.SemiBold,
@@ -95,4 +95,4 @@ val MoneyTypographyDefaults = MoneyTypography(
     ),
 )
 
-val LocalMoneyTypography = staticCompositionLocalOf { MoneyTypographyDefaults }
+val LocalMoneyTypography = staticCompositionLocalOf { DefaultMoneyTypography }

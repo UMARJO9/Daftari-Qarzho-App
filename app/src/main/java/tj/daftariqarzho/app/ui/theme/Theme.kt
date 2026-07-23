@@ -88,7 +88,10 @@ fun DaftariQarzhoTheme(
         )
     }
 
-    CompositionLocalProvider(LocalDebtColors provides debtColors) {
+    CompositionLocalProvider(
+        LocalDebtColors provides debtColors,
+        LocalMoneyTypography provides MoneyTypographyDefaults,
+    ) {
         MaterialTheme(
             colorScheme = colorScheme,
             typography = Typography,
@@ -112,4 +115,9 @@ object DaftariQarzho {
         @Composable
         @ReadOnlyComposable
         get() = MaterialTheme.typography
+
+    val moneyTypography: MoneyTypography
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalMoneyTypography.current
 }
