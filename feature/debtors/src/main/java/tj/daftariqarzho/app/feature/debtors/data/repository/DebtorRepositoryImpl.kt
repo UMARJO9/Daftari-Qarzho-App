@@ -1,0 +1,25 @@
+package tj.daftariqarzho.app.feature.debtors.data.repository
+
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import tj.daftariqarzho.app.core.database.dao.DebtorDao
+import tj.daftariqarzho.app.core.database.dao.TransactionDao
+import tj.daftariqarzho.app.feature.debtors.data.mapper.toSummary
+import tj.daftariqarzho.app.feature.debtors.domain.model.DebtorSummary
+import tj.daftariqarzho.app.feature.debtors.domain.repository.DebtorRepository
+
+class DebtorRepositoryImpl(
+    private val debtorDao: DebtorDao,
+    private val transactionDao: TransactionDao,
+    private val now: () -> Long = System::currentTimeMillis,
+) : DebtorRepository {
+
+    override fun observeDebtorSummaries(): Flow<List<DebtorSummary>> =
+        debtorDao.observeDebtorsWithBalance().map { list ->
+            val nowMillis = now()
+            list.map { it.toSummary(nowMillis) }
+        }
+
+    override fun observeTotalBalance(): Flow<Long> =
+        transactionDao.observeTotalBalance()
+}

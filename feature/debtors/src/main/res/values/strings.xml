@@ -1,3 +1,10 @@
 <resources>
     <string name="debtors_title">Мизоҷон</string>
+    <string name="debtors_search_hint">Ҷустуҷӯ</string>
+    <string name="debtors_total_balance">Ҳисоби умумӣ</string>
+    <string name="debtors_empty">Ҳанӯз мизоҷон нест</string>
+    <string name="debtors_empty_search">Ҳеҷ чиз ёфт нашуд</string>
+    <string name="debtors_no_operations">Амалиёт нест</string>
+    <string name="debtors_overdue_days">Гузашт %1$d рӯз</string>
+    <string name="debtors_add">Илова кардани мизоҷ</string>
 </resources>

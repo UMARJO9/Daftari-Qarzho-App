@@ -6,4 +6,5 @@ data class DebtorWithBalance(
     @Embedded val debtor: DebtorEntity,
     val balance: Long,
     val nearestDueDate: Long?,
+    val lastTransactionAt: Long?,
 )

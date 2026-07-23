@@ -5,6 +5,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import tj.daftariqarzho.app.core.database.di.databaseModule
+import tj.daftariqarzho.app.feature.debtors.di.debtorsModule
 
 class DaftarApp : Application() {
     override fun onCreate() {
@@ -12,7 +13,7 @@ class DaftarApp : Application() {
         startKoin {
             androidLogger()
             androidContext(this@DaftarApp)
-            modules(databaseModule)
+            modules(databaseModule, debtorsModule)
         }
     }
 }

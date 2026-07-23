@@ -1,3 +1,10 @@
 <resources>
     <string name="debtors_title">Клиенты</string>
+    <string name="debtors_search_hint">Поиск</string>
+    <string name="debtors_total_balance">Общий баланс</string>
+    <string name="debtors_empty">Пока нет клиентов</string>
+    <string name="debtors_empty_search">Ничего не найдено</string>
+    <string name="debtors_no_operations">Нет операций</string>
+    <string name="debtors_overdue_days">Просрочено %1$d дн.</string>
+    <string name="debtors_add">Добавить клиента</string>
 </resources>
