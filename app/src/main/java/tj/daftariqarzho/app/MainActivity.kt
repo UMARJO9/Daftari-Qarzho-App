@@ -80,8 +80,6 @@ private fun AppRoot() {
             )
             debtorDetailScreen(
                 onBack = { navController.popBackStack() },
-                onGiveDebt = {},
-                onReceivePayment = {},
             )
             transactionsScreen()
             reportsScreen()

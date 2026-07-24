@@ -29,4 +29,15 @@
     <string name="debtor_detail_delete_confirm_text">Ҳамаи амалиёти ин мизоҷ низ нест мешавад. Ин амал бебозгашт аст.</string>
     <string name="debtor_detail_delete_confirm_ok">Нест кардан</string>
     <string name="debtor_detail_delete_confirm_cancel">Бекор кардан</string>
+    <string name="transaction_editor_title_debt">Қарз додам</string>
+    <string name="transaction_editor_title_payment">Пул гирифтам</string>
+    <string name="transaction_editor_amount">Маблағ (сом)</string>
+    <string name="transaction_editor_amount_error">Маблағи дурустро нависед</string>
+    <string name="transaction_editor_comment">Эзоҳ</string>
+    <string name="transaction_editor_due_date">Мӯҳлати бозгашт</string>
+    <string name="transaction_editor_due_date_pick">Интихоби сана</string>
+    <string name="transaction_editor_due_date_clear">Тоза кардан</string>
+    <string name="transaction_editor_save">Нигоҳ доштан</string>
+    <string name="transaction_editor_dialog_ok">Хуб</string>
+    <string name="transaction_editor_dialog_cancel">Бекор кардан</string>
 </resources>

@@ -29,4 +29,15 @@
     <string name="debtor_detail_delete_confirm_text">Все операции этого клиента тоже будут удалены. Действие необратимо.</string>
     <string name="debtor_detail_delete_confirm_ok">Удалить</string>
     <string name="debtor_detail_delete_confirm_cancel">Отмена</string>
+    <string name="transaction_editor_title_debt">Дал в долг</string>
+    <string name="transaction_editor_title_payment">Получил оплату</string>
+    <string name="transaction_editor_amount">Сумма (сом.)</string>
+    <string name="transaction_editor_amount_error">Введите корректную сумму</string>
+    <string name="transaction_editor_comment">Комментарий</string>
+    <string name="transaction_editor_due_date">Срок возврата</string>
+    <string name="transaction_editor_due_date_pick">Выбрать дату</string>
+    <string name="transaction_editor_due_date_clear">Очистить</string>
+    <string name="transaction_editor_save">Сохранить</string>
+    <string name="transaction_editor_dialog_ok">ОК</string>
+    <string name="transaction_editor_dialog_cancel">Отмена</string>
 </resources>

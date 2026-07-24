@@ -39,4 +39,59 @@ class MoneyFormatterTest {
     fun `типографский минус у отрицательной суммы`() {
         assertEquals("−875,00", MoneyFormatter.formatSigned(-87500))
     }
+
+    @Test
+    fun `парсинг целого числа сомони`() {
+        assertEquals(12500L, MoneyFormatter.parseSomoniToDirams("125"))
+    }
+
+    @Test
+    fun `парсинг с точкой и двумя знаками`() {
+        assertEquals(12550L, MoneyFormatter.parseSomoniToDirams("125.50"))
+    }
+
+    @Test
+    fun `парсинг с запятой и одним знаком`() {
+        assertEquals(12505L, MoneyFormatter.parseSomoniToDirams("125,05"))
+    }
+
+    @Test
+    fun `парсинг одного знака после разделителя дополняется нулём`() {
+        assertEquals(12550L, MoneyFormatter.parseSomoniToDirams("125.5"))
+    }
+
+    @Test
+    fun `парсинг игнорирует пробелы`() {
+        assertEquals(100000L, MoneyFormatter.parseSomoniToDirams(" 1 000 "))
+    }
+
+    @Test
+    fun `парсинг пустой строки возвращает null`() {
+        assertEquals(null, MoneyFormatter.parseSomoniToDirams(""))
+    }
+
+    @Test
+    fun `парсинг нечисловой строки возвращает null`() {
+        assertEquals(null, MoneyFormatter.parseSomoniToDirams("abc"))
+    }
+
+    @Test
+    fun `парсинг трёх знаков после разделителя возвращает null`() {
+        assertEquals(null, MoneyFormatter.parseSomoniToDirams("125.555"))
+    }
+
+    @Test
+    fun `фильтр оставляет только цифры и один разделитель`() {
+        assertEquals("12.50", MoneyFormatter.sanitizeAmountInput("1a2.5b0.9"))
+    }
+
+    @Test
+    fun `фильтр отбрасывает ведущий разделитель`() {
+        assertEquals("50", MoneyFormatter.sanitizeAmountInput(".50"))
+    }
+
+    @Test
+    fun `фильтр ограничивает двумя знаками после разделителя`() {
+        assertEquals("12.34", MoneyFormatter.sanitizeAmountInput("12.3456"))
+    }
 }

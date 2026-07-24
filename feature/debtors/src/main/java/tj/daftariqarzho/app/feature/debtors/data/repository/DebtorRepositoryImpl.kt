@@ -8,6 +8,7 @@ import tj.daftariqarzho.app.core.database.dao.TransactionDao
 import tj.daftariqarzho.app.feature.debtors.data.mapper.toDomain
 import tj.daftariqarzho.app.feature.debtors.data.mapper.toEntity
 import tj.daftariqarzho.app.feature.debtors.data.mapper.toSummary
+import tj.daftariqarzho.app.feature.debtors.domain.model.DebtTransaction
 import tj.daftariqarzho.app.feature.debtors.domain.model.Debtor
 import tj.daftariqarzho.app.feature.debtors.domain.model.DebtorDetail
 import tj.daftariqarzho.app.feature.debtors.domain.model.DebtorSummary
@@ -56,4 +57,7 @@ class DebtorRepositoryImpl(
     override suspend fun deleteDebtor(id: Long) {
         debtorDao.deleteById(id)
     }
+
+    override suspend fun addTransaction(transaction: DebtTransaction): Long =
+        transactionDao.insert(transaction.toEntity())
 }
