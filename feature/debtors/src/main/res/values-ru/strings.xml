@@ -15,4 +15,18 @@
     <string name="debtor_editor_save">Сохранить</string>
     <string name="debtor_editor_error_name_empty">Введите имя</string>
     <string name="debtor_editor_error_name_too_long">Слишком длинное имя (до %1$d символов)</string>
+    <string name="debtor_detail_balance">Баланс</string>
+    <string name="debtor_detail_give_debt">Дал в долг</string>
+    <string name="debtor_detail_receive_payment">Получил оплату</string>
+    <string name="debtor_detail_history">История операций</string>
+    <string name="debtor_detail_empty">Пока нет операций</string>
+    <string name="debtor_detail_back">Назад</string>
+    <string name="debtor_detail_edit">Изменить</string>
+    <string name="debtor_detail_delete">Удалить</string>
+    <string name="debtor_detail_no_comment">Без комментария</string>
+    <string name="debtor_detail_due">Срок: %1$s</string>
+    <string name="debtor_detail_delete_confirm_title">Удалить клиента?</string>
+    <string name="debtor_detail_delete_confirm_text">Все операции этого клиента тоже будут удалены. Действие необратимо.</string>
+    <string name="debtor_detail_delete_confirm_ok">Удалить</string>
+    <string name="debtor_detail_delete_confirm_cancel">Отмена</string>
 </resources>

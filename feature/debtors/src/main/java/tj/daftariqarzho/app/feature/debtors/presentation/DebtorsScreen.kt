@@ -37,28 +37,22 @@ import tj.daftariqarzho.app.feature.debtors.domain.model.DebtorSummary
 
 @Composable
 fun DebtorsScreen(
+    onDebtorClick: (Long) -> Unit,
     viewModel: DebtorsViewModel = koinViewModel(),
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     var editorVisible by rememberSaveable { mutableStateOf(false) }
-    var editorDebtorId by rememberSaveable { mutableStateOf<Long?>(null) }
 
     DebtorsContent(
         state = state,
         onEvent = viewModel::onEvent,
-        onDebtorClick = { id ->
-            editorDebtorId = id
-            editorVisible = true
-        },
-        onAddClick = {
-            editorDebtorId = null
-            editorVisible = true
-        },
+        onDebtorClick = onDebtorClick,
+        onAddClick = { editorVisible = true },
     )
 
     if (editorVisible) {
         DebtorEditorSheet(
-            debtorId = editorDebtorId,
+            debtorId = null,
             onDismiss = { editorVisible = false },
         )
     }
