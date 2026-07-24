@@ -7,4 +7,12 @@
     <string name="debtors_no_operations">Нет операций</string>
     <string name="debtors_overdue_days">Просрочено %1$d дн.</string>
     <string name="debtors_add">Добавить клиента</string>
+    <string name="debtor_editor_title_add">Новый клиент</string>
+    <string name="debtor_editor_title_edit">Изменить клиента</string>
+    <string name="debtor_editor_name">Имя</string>
+    <string name="debtor_editor_phone">Телефон</string>
+    <string name="debtor_editor_note">Заметка</string>
+    <string name="debtor_editor_save">Сохранить</string>
+    <string name="debtor_editor_error_name_empty">Введите имя</string>
+    <string name="debtor_editor_error_name_too_long">Слишком длинное имя (до %1$d символов)</string>
 </resources>

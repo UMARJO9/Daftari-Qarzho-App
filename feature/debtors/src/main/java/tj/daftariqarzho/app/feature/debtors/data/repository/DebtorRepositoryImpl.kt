@@ -4,7 +4,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import tj.daftariqarzho.app.core.database.dao.DebtorDao
 import tj.daftariqarzho.app.core.database.dao.TransactionDao
+import tj.daftariqarzho.app.feature.debtors.data.mapper.toDomain
+import tj.daftariqarzho.app.feature.debtors.data.mapper.toEntity
 import tj.daftariqarzho.app.feature.debtors.data.mapper.toSummary
+import tj.daftariqarzho.app.feature.debtors.domain.model.Debtor
 import tj.daftariqarzho.app.feature.debtors.domain.model.DebtorSummary
 import tj.daftariqarzho.app.feature.debtors.domain.repository.DebtorRepository
 
@@ -22,4 +25,14 @@ class DebtorRepositoryImpl(
 
     override fun observeTotalBalance(): Flow<Long> =
         transactionDao.observeTotalBalance()
+
+    override suspend fun getDebtor(id: Long): Debtor? =
+        debtorDao.getById(id)?.toDomain()
+
+    override suspend fun addDebtor(debtor: Debtor): Long =
+        debtorDao.insert(debtor.toEntity())
+
+    override suspend fun updateDebtor(debtor: Debtor) {
+        debtorDao.update(debtor.toEntity())
+    }
 }

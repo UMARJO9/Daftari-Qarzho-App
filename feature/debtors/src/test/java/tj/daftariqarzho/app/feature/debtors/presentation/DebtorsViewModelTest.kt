@@ -1,8 +1,6 @@
 package tj.daftariqarzho.app.feature.debtors.presentation
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
@@ -10,12 +8,11 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Rule
 import org.junit.Test
+import tj.daftariqarzho.app.feature.debtors.FakeDebtorRepository
 import tj.daftariqarzho.app.feature.debtors.MainDispatcherRule
-import tj.daftariqarzho.app.feature.debtors.domain.model.Debtor
-import tj.daftariqarzho.app.feature.debtors.domain.model.DebtorSummary
-import tj.daftariqarzho.app.feature.debtors.domain.repository.DebtorRepository
 import tj.daftariqarzho.app.feature.debtors.domain.usecase.ObserveDebtorSummariesUseCase
 import tj.daftariqarzho.app.feature.debtors.domain.usecase.ObserveTotalBalanceUseCase
+import tj.daftariqarzho.app.feature.debtors.summary
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class DebtorsViewModelTest {
@@ -23,19 +20,9 @@ class DebtorsViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private fun summary(name: String, id: Long) = DebtorSummary(
-        debtor = Debtor(id = id, name = name, phone = null, note = null, createdAt = 0),
-        balanceInDirams = -1000,
-        isOverdue = false,
-        overdueDays = 0,
-        lastTransactionAt = null,
-    )
-
-    private val repository = object : DebtorRepository {
-        override fun observeDebtorSummaries(): Flow<List<DebtorSummary>> =
-            flowOf(listOf(summary("Ali", 1), summary("Umed", 2)))
-
-        override fun observeTotalBalance(): Flow<Long> = flowOf(-3000)
+    private val repository = FakeDebtorRepository().apply {
+        summaries.value = listOf(summary(1, "Ali"), summary(2, "Umed"))
+        totalBalance.value = -3000
     }
 
     private fun viewModel() = DebtorsViewModel(

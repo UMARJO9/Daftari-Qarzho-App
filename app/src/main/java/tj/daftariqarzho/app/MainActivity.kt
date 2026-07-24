@@ -71,7 +71,7 @@ private fun AppRoot() {
             startDestination = DebtorsRoute,
             modifier = Modifier.padding(innerPadding),
         ) {
-            debtorsScreen(onDebtorClick = {}, onAddClick = {})
+            debtorsScreen()
             transactionsScreen()
             reportsScreen()
             settingsScreen()

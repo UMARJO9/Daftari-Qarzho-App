@@ -7,4 +7,12 @@
     <string name="debtors_no_operations">Амалиёт нест</string>
     <string name="debtors_overdue_days">Гузашт %1$d рӯз</string>
     <string name="debtors_add">Илова кардани мизоҷ</string>
+    <string name="debtor_editor_title_add">Мизоҷи нав</string>
+    <string name="debtor_editor_title_edit">Тағйир додани мизоҷ</string>
+    <string name="debtor_editor_name">Ном</string>
+    <string name="debtor_editor_phone">Телефон</string>
+    <string name="debtor_editor_note">Эзоҳ</string>
+    <string name="debtor_editor_save">Нигоҳ доштан</string>
+    <string name="debtor_editor_error_name_empty">Номро нависед</string>
+    <string name="debtor_editor_error_name_too_long">Ном хеле дароз аст (то %1$d ҳарф)</string>
 </resources>
