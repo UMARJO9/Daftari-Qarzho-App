@@ -13,6 +13,7 @@ object DateFormatter {
 
     private val shortDate = DateTimeFormatter.ofPattern("dd.MM.yyyy")
     private val dayMonth = DateTimeFormatter.ofPattern("d MMMM")
+    private val monthYear = DateTimeFormatter.ofPattern("LLLL yyyy")
 
     fun formatDate(epochMillis: Long, zone: ZoneId = ZoneId.systemDefault()): String =
         Instant.ofEpochMilli(epochMillis).atZone(zone).format(shortDate)
@@ -23,6 +24,14 @@ object DateFormatter {
         zone: ZoneId = ZoneId.systemDefault(),
     ): String =
         Instant.ofEpochMilli(epochMillis).atZone(zone).format(dayMonth.withLocale(locale))
+
+    fun formatMonthYear(
+        epochMillis: Long,
+        locale: Locale = Locale.getDefault(),
+        zone: ZoneId = ZoneId.systemDefault(),
+    ): String =
+        Instant.ofEpochMilli(epochMillis).atZone(zone).format(monthYear.withLocale(locale))
+            .replaceFirstChar { if (it.isLowerCase()) it.titlecase(locale) else it.toString() }
 
     fun daysOverdue(
         dueDateMillis: Long,

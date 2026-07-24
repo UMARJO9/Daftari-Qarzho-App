@@ -46,4 +46,20 @@ interface TransactionDao {
         """,
     )
     fun observeWithDebtorFrom(from: Long): Flow<List<TransactionWithDebtor>>
+
+    @Query(
+        """
+        SELECT COALESCE(SUM(CASE WHEN amountInDirams < 0 THEN -amountInDirams ELSE 0 END), 0)
+        FROM transactions WHERE createdAt >= :from
+        """,
+    )
+    fun observeGivenSince(from: Long): Flow<Long>
+
+    @Query(
+        """
+        SELECT COALESCE(SUM(CASE WHEN amountInDirams > 0 THEN amountInDirams ELSE 0 END), 0)
+        FROM transactions WHERE createdAt >= :from
+        """,
+    )
+    fun observeReceivedSince(from: Long): Flow<Long>
 }

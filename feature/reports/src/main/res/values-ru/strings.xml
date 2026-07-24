@@ -1,3 +1,8 @@
 <resources>
     <string name="reports_title">Отчёты</string>
+    <string name="reports_given">Выдано в долг</string>
+    <string name="reports_received">Получено оплат</string>
+    <string name="reports_top_debtors">Топ-5 должников</string>
+    <string name="reports_no_debtors">Нет должников</string>
+    <string name="reports_currency_suffix">сом.</string>
 </resources>
