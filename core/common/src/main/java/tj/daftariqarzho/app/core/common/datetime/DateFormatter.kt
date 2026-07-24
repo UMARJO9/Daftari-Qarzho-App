@@ -1,10 +1,12 @@
 package tj.daftariqarzho.app.core.common.datetime
 
+import java.time.DayOfWeek
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
+import java.time.temporal.TemporalAdjusters
 import java.util.Locale
 
 object DateFormatter {
@@ -35,6 +37,16 @@ object DateFormatter {
 
     fun startOfDayMillis(epochMillis: Long, zone: ZoneId = ZoneId.systemDefault()): Long =
         Instant.ofEpochMilli(epochMillis).atZone(zone).toLocalDate()
+            .atStartOfDay(zone).toInstant().toEpochMilli()
+
+    fun startOfWeekMillis(epochMillis: Long, zone: ZoneId = ZoneId.systemDefault()): Long =
+        Instant.ofEpochMilli(epochMillis).atZone(zone).toLocalDate()
+            .with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY))
+            .atStartOfDay(zone).toInstant().toEpochMilli()
+
+    fun startOfMonthMillis(epochMillis: Long, zone: ZoneId = ZoneId.systemDefault()): Long =
+        Instant.ofEpochMilli(epochMillis).atZone(zone).toLocalDate()
+            .withDayOfMonth(1)
             .atStartOfDay(zone).toInstant().toEpochMilli()
 
     fun isOverdue(dueDateMillis: Long, nowMillis: Long, zone: ZoneId = ZoneId.systemDefault()): Boolean {

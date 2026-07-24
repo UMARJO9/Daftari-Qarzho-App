@@ -1,3 +1,9 @@
 <resources>
     <string name="transactions_title">Амалиёт</string>
+    <string name="transactions_period_all">Ҳама</string>
+    <string name="transactions_period_today">Имрӯз</string>
+    <string name="transactions_period_week">Ҳафта</string>
+    <string name="transactions_period_month">Моҳ</string>
+    <string name="transactions_empty">Амалиёт нест</string>
+    <string name="transactions_no_comment">Бе эзоҳ</string>
 </resources>
