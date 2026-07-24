@@ -1,3 +1,13 @@
 <resources>
     <string name="settings_title">Танзимот</string>
+    <string name="settings_language">Забон</string>
+    <string name="settings_language_tajik">Тоҷикӣ</string>
+    <string name="settings_language_russian">Русӣ</string>
+    <string name="settings_theme">Мавзӯъ</string>
+    <string name="settings_theme_system">Мисли система</string>
+    <string name="settings_theme_light">Равшан</string>
+    <string name="settings_theme_dark">Торик</string>
+    <string name="settings_about">Дар бораи барнома</string>
+    <string name="settings_about_description">Дафтари қарзҳо — ҳисоби қарзҳо барои мағозаҳои хурд.</string>
+    <string name="settings_about_version">Версия %1$s</string>
 </resources>
