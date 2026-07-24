@@ -21,6 +21,9 @@ interface DebtorDao {
     @Delete
     suspend fun delete(debtor: DebtorEntity)
 
+    @Query("DELETE FROM debtors WHERE id = :id")
+    suspend fun deleteById(id: Long)
+
     @Query("SELECT * FROM debtors WHERE id = :id")
     suspend fun getById(id: Long): DebtorEntity?
 

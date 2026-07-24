@@ -28,7 +28,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import tj.daftariqarzho.app.core.designsystem.theme.DaftarTheme
+import tj.daftariqarzho.app.feature.debtors.DebtorDetailRoute
 import tj.daftariqarzho.app.feature.debtors.DebtorsRoute
+import tj.daftariqarzho.app.feature.debtors.debtorDetailScreen
 import tj.daftariqarzho.app.feature.debtors.debtorsScreen
 import tj.daftariqarzho.app.feature.reports.ReportsRoute
 import tj.daftariqarzho.app.feature.reports.reportsScreen
@@ -71,7 +73,16 @@ private fun AppRoot() {
             startDestination = DebtorsRoute,
             modifier = Modifier.padding(innerPadding),
         ) {
-            debtorsScreen()
+            debtorsScreen(
+                onDebtorClick = { debtorId ->
+                    navController.navigate(DebtorDetailRoute(debtorId))
+                },
+            )
+            debtorDetailScreen(
+                onBack = { navController.popBackStack() },
+                onGiveDebt = {},
+                onReceivePayment = {},
+            )
             transactionsScreen()
             reportsScreen()
             settingsScreen()

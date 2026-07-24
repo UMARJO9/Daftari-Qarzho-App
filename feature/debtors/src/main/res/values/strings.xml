@@ -15,4 +15,18 @@
     <string name="debtor_editor_save">Нигоҳ доштан</string>
     <string name="debtor_editor_error_name_empty">Номро нависед</string>
     <string name="debtor_editor_error_name_too_long">Ном хеле дароз аст (то %1$d ҳарф)</string>
+    <string name="debtor_detail_balance">Ҳисоб</string>
+    <string name="debtor_detail_give_debt">Қарз додам</string>
+    <string name="debtor_detail_receive_payment">Пул гирифтам</string>
+    <string name="debtor_detail_history">Таърихи амалиёт</string>
+    <string name="debtor_detail_empty">Ҳанӯз амалиёт нест</string>
+    <string name="debtor_detail_back">Бозгашт</string>
+    <string name="debtor_detail_edit">Тағйир додан</string>
+    <string name="debtor_detail_delete">Нест кардан</string>
+    <string name="debtor_detail_no_comment">Бе эзоҳ</string>
+    <string name="debtor_detail_due">Мӯҳлат: %1$s</string>
+    <string name="debtor_detail_delete_confirm_title">Мизоҷро нест кардан?</string>
+    <string name="debtor_detail_delete_confirm_text">Ҳамаи амалиёти ин мизоҷ низ нест мешавад. Ин амал бебозгашт аст.</string>
+    <string name="debtor_detail_delete_confirm_ok">Нест кардан</string>
+    <string name="debtor_detail_delete_confirm_cancel">Бекор кардан</string>
 </resources>

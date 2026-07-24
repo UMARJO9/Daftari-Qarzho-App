@@ -3,7 +3,9 @@ package tj.daftariqarzho.app.feature.debtors.data.mapper
 import tj.daftariqarzho.app.core.common.datetime.DateFormatter
 import tj.daftariqarzho.app.core.database.entity.DebtorEntity
 import tj.daftariqarzho.app.core.database.entity.DebtorWithBalance
+import tj.daftariqarzho.app.core.database.entity.TransactionEntity
 import tj.daftariqarzho.app.feature.debtors.domain.model.Debtor
+import tj.daftariqarzho.app.feature.debtors.domain.model.DebtTransaction
 import tj.daftariqarzho.app.feature.debtors.domain.model.DebtorSummary
 
 fun DebtorEntity.toDomain(): Debtor =
@@ -27,7 +29,7 @@ fun Debtor.toEntity(): DebtorEntity =
 fun DebtorWithBalance.toSummary(nowMillis: Long): DebtorSummary {
     val due = nearestDueDate
     val overdue = balance < 0 && due != null && due < nowMillis
-    val overdueDays = if (overdue && due != null) DateFormatter.daysOverdue(due, nowMillis) else 0L
+    val overdueDays = due?.takeIf { overdue }?.let { DateFormatter.daysOverdue(it, nowMillis) } ?: 0L
     return DebtorSummary(
         debtor = debtor.toDomain(),
         balanceInDirams = balance,
@@ -36,3 +38,14 @@ fun DebtorWithBalance.toSummary(nowMillis: Long): DebtorSummary {
         lastTransactionAt = lastTransactionAt,
     )
 }
+
+fun TransactionEntity.toDomain(): DebtTransaction =
+    DebtTransaction(
+        id = id,
+        debtorId = debtorId,
+        amountInDirams = amountInDirams,
+        comment = comment,
+        dueDate = dueDate,
+        photoUri = photoUri,
+        createdAt = createdAt,
+    )

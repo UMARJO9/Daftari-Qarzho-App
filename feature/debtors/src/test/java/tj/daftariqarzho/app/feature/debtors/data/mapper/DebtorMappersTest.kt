@@ -6,6 +6,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import tj.daftariqarzho.app.core.database.entity.DebtorEntity
 import tj.daftariqarzho.app.core.database.entity.DebtorWithBalance
+import tj.daftariqarzho.app.core.database.entity.TransactionEntity
 import tj.daftariqarzho.app.feature.debtors.domain.model.Debtor
 
 class DebtorMappersTest {
@@ -57,5 +58,34 @@ class DebtorMappersTest {
         val summary = row.toSummary(nowMillis = 105 * day)
         assertFalse(summary.isOverdue)
         assertEquals(0L, summary.overdueDays)
+    }
+
+    @Test
+    fun `toSummary без просрочки если срок не задан`() {
+        val row = DebtorWithBalance(entity, balance = -5000, nearestDueDate = null, lastTransactionAt = 100 * day)
+        val summary = row.toSummary(nowMillis = 105 * day)
+        assertFalse(summary.isOverdue)
+        assertEquals(0L, summary.overdueDays)
+    }
+
+    @Test
+    fun `transaction toDomain переносит все поля`() {
+        val transaction = TransactionEntity(
+            id = 7,
+            debtorId = 1,
+            amountInDirams = -12500,
+            comment = "нон",
+            dueDate = 200 * day,
+            photoUri = "content://photo",
+            createdAt = 100 * day,
+        )
+        val domain = transaction.toDomain()
+        assertEquals(7L, domain.id)
+        assertEquals(1L, domain.debtorId)
+        assertEquals(-12500L, domain.amountInDirams)
+        assertEquals("нон", domain.comment)
+        assertEquals(200 * day, domain.dueDate)
+        assertEquals("content://photo", domain.photoUri)
+        assertEquals(100 * day, domain.createdAt)
     }
 }
