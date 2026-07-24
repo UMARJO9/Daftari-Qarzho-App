@@ -44,14 +44,13 @@ import tj.daftariqarzho.app.core.designsystem.components.PaymentReceivedButton
 import tj.daftariqarzho.app.core.designsystem.theme.DaftarTheme
 import tj.daftariqarzho.app.feature.debtors.R
 import tj.daftariqarzho.app.feature.debtors.domain.model.DebtTransaction
+import tj.daftariqarzho.app.feature.debtors.domain.model.TransactionType
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DebtorDetailScreen(
     debtorId: Long,
     onBack: () -> Unit,
-    onGiveDebt: (Long) -> Unit,
-    onReceivePayment: (Long) -> Unit,
     viewModel: DebtorDetailViewModel = koinViewModel(
         key = "debtor_detail_$debtorId",
         parameters = { parametersOf(debtorId) },
@@ -62,6 +61,7 @@ fun DebtorDetailScreen(
 
     var editorVisible by remember { mutableStateOf(false) }
     var deleteDialogVisible by remember { mutableStateOf(false) }
+    var operationType by remember { mutableStateOf<TransactionType?>(null) }
 
     LaunchedEffect(isDeleted, state.notFound) {
         if (isDeleted || state.notFound) {
@@ -119,8 +119,8 @@ fun DebtorDetailScreen(
 
                 state.debtor != null -> DebtorDetailContent(
                     state = state,
-                    onGiveDebt = { onGiveDebt(debtorId) },
-                    onReceivePayment = { onReceivePayment(debtorId) },
+                    onGiveDebt = { operationType = TransactionType.DEBT },
+                    onReceivePayment = { operationType = TransactionType.PAYMENT },
                 )
             }
         }
@@ -140,6 +140,14 @@ fun DebtorDetailScreen(
                 viewModel.onEvent(DebtorDetailEvent.Delete)
             },
             onDismiss = { deleteDialogVisible = false },
+        )
+    }
+
+    operationType?.let { type ->
+        TransactionEditorSheet(
+            debtorId = debtorId,
+            type = type,
+            onDismiss = { operationType = null },
         )
     }
 }

@@ -49,3 +49,14 @@ fun TransactionEntity.toDomain(): DebtTransaction =
         photoUri = photoUri,
         createdAt = createdAt,
     )
+
+fun DebtTransaction.toEntity(): TransactionEntity =
+    TransactionEntity(
+        id = id,
+        debtorId = debtorId,
+        amountInDirams = amountInDirams,
+        comment = comment,
+        dueDate = dueDate,
+        photoUri = photoUri,
+        createdAt = createdAt,
+    )

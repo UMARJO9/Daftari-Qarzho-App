@@ -23,16 +23,12 @@ fun NavGraphBuilder.debtorsScreen(
 
 fun NavGraphBuilder.debtorDetailScreen(
     onBack: () -> Unit,
-    onGiveDebt: (Long) -> Unit,
-    onReceivePayment: (Long) -> Unit,
 ) {
     composable<DebtorDetailRoute> { entry ->
         val route = entry.toRoute<DebtorDetailRoute>()
         DebtorDetailScreen(
             debtorId = route.debtorId,
             onBack = onBack,
-            onGiveDebt = onGiveDebt,
-            onReceivePayment = onReceivePayment,
         )
     }
 }
