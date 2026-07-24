@@ -47,21 +47,18 @@ class DateFormatterTest {
 
     @Test
     fun `startOfWeekMillis возвращает понедельник недели`() {
-        // 1970-01-08 — четверг; понедельник этой недели — 1970-01-05 = 4 дня
         val thursday = 7L * day
         assertEquals(4L * day, DateFormatter.startOfWeekMillis(thursday, utc))
     }
 
     @Test
     fun `startOfWeekMillis в понедельник возвращает тот же день`() {
-        // 1970-01-05 — понедельник
         val monday = 4L * day
         assertEquals(monday, DateFormatter.startOfWeekMillis(monday + 3_600_000L, utc))
     }
 
     @Test
     fun `startOfMonthMillis возвращает первое число месяца`() {
-        // 1970-01-20 → 1970-01-01 = 0
         assertEquals(0L, DateFormatter.startOfMonthMillis(19L * day, utc))
     }
 }

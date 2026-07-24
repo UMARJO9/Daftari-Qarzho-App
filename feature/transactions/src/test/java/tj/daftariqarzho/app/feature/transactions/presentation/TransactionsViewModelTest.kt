@@ -44,11 +44,9 @@ class TransactionsViewModelTest {
         val state = vm.uiState.value
         assertFalse(state.isLoading)
         assertEquals(2, state.groups.size)
-        // более свежий день (105) идёт первым
         assertTrue(state.groups[0].dayMillis > state.groups[1].dayMillis)
         assertEquals(1, state.groups[0].items.size)
         assertEquals(2, state.groups[1].items.size)
-        // суточный итог: 500 + (-300) = 200
         assertEquals(200L, state.groups[1].netInDirams)
     }
 

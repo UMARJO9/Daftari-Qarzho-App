@@ -45,7 +45,6 @@ class ReportMappersTest {
         val result = rows.toTopDebtors(limit = 5)
 
         assertEquals(5, result.size)
-        // самый большой долг -1000 (D10) первым
         assertEquals("D10", result.first().name)
         assertTrue(result.all { it.balanceInDirams < 0 })
     }
