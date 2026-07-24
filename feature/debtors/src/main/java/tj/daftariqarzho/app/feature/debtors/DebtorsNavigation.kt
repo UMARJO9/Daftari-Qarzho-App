@@ -8,14 +8,8 @@ import tj.daftariqarzho.app.feature.debtors.presentation.DebtorsScreen
 @Serializable
 data object DebtorsRoute
 
-fun NavGraphBuilder.debtorsScreen(
-    onDebtorClick: (Long) -> Unit,
-    onAddClick: () -> Unit,
-) {
+fun NavGraphBuilder.debtorsScreen() {
     composable<DebtorsRoute> {
-        DebtorsScreen(
-            onDebtorClick = onDebtorClick,
-            onAddClick = onAddClick,
-        )
+        DebtorsScreen()
     }
 }
