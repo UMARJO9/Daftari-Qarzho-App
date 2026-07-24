@@ -1,3 +1,9 @@
 <resources>
     <string name="transactions_title">Операции</string>
+    <string name="transactions_period_all">Все</string>
+    <string name="transactions_period_today">Сегодня</string>
+    <string name="transactions_period_week">Неделя</string>
+    <string name="transactions_period_month">Месяц</string>
+    <string name="transactions_empty">Нет операций</string>
+    <string name="transactions_no_comment">Без комментария</string>
 </resources>

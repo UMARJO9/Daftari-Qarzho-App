@@ -7,6 +7,7 @@ import androidx.room.Query
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 import tj.daftariqarzho.app.core.database.entity.TransactionEntity
+import tj.daftariqarzho.app.core.database.entity.TransactionWithDebtor
 
 @Dao
 interface TransactionDao {
@@ -34,4 +35,15 @@ interface TransactionDao {
 
     @Query("SELECT COALESCE(SUM(amountInDirams), 0) FROM transactions")
     fun observeTotalBalance(): Flow<Long>
+
+    @Query(
+        """
+        SELECT t.*, d.name AS debtorName
+        FROM transactions t
+        INNER JOIN debtors d ON d.id = t.debtorId
+        WHERE t.createdAt >= :from
+        ORDER BY t.createdAt DESC
+        """,
+    )
+    fun observeWithDebtorFrom(from: Long): Flow<List<TransactionWithDebtor>>
 }
