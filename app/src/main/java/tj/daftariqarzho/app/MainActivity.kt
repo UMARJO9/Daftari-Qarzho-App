@@ -7,6 +7,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
@@ -81,6 +84,7 @@ private enum class TopLevelDestination(
     SETTINGS(SettingsRoute, R.string.tab_settings, Icons.Filled.Settings),
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun AppRoot() {
     val navController = rememberNavController()
@@ -89,10 +93,11 @@ private fun AppRoot() {
     val isTopLevel = currentDestination == null || currentDestination.hierarchy.any { destination ->
         TopLevelDestination.entries.any { destination.hasRoute(it.route::class) }
     }
+    val showBottomBar = isTopLevel && !WindowInsets.isImeVisible
 
     Scaffold(
         bottomBar = {
-            if (isTopLevel) {
+            if (showBottomBar) {
                 DaftarBottomBar(
                     navController = navController,
                     currentDestination = currentDestination,
