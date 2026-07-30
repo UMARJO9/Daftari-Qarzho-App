@@ -28,6 +28,7 @@ class DebtorDetailViewModelTest {
             debtorId = debtorId,
             observeDebtorDetail = ObserveDebtorDetailUseCase(repository),
             deleteDebtor = DeleteDebtorUseCase(repository),
+            defaultDispatcher = mainDispatcherRule.testDispatcher,
         )
 
     private fun transaction(id: Long, amount: Long) = DebtTransaction(

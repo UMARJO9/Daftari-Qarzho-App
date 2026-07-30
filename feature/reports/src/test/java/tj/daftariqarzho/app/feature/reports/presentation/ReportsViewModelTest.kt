@@ -43,7 +43,10 @@ class ReportsViewModelTest {
                 topDebtors = listOf(ReportDebtor(1, "Ali", -5000)),
             ),
         )
-        val vm = ReportsViewModel(ObserveMonthlyReportUseCase(repository)) { now }
+        val vm = ReportsViewModel(
+            ObserveMonthlyReportUseCase(repository),
+            mainDispatcherRule.testDispatcher,
+        ) { now }
         backgroundScope.launch { vm.uiState.collect {} }
         advanceUntilIdle()
 
@@ -57,7 +60,10 @@ class ReportsViewModelTest {
     @Test
     fun `отчёт запрашивается с начала текущего месяца`() = runTest(mainDispatcherRule.testDispatcher) {
         val repository = FakeReportsRepository(MonthlyReport(0, 0, emptyList()))
-        val vm = ReportsViewModel(ObserveMonthlyReportUseCase(repository)) { now }
+        val vm = ReportsViewModel(
+            ObserveMonthlyReportUseCase(repository),
+            mainDispatcherRule.testDispatcher,
+        ) { now }
         backgroundScope.launch { vm.uiState.collect {} }
         advanceUntilIdle()
 

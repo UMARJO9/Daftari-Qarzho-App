@@ -1,20 +1,35 @@
 package tj.daftariqarzho.app.core.common.money
 
-import java.text.DecimalFormat
-import java.text.DecimalFormatSymbols
-import java.util.Locale
 import kotlin.math.abs
 
 object MoneyFormatter {
 
     private const val DIRAMS_IN_SOMONI = 100
+    private const val GROUP_SIZE = 3
+    private const val GROUP_SEPARATOR = ' '
 
     fun formatAmount(amountInDirams: Long): String {
         val value = abs(amountInDirams)
-        val symbols = DecimalFormatSymbols(Locale.US).apply { groupingSeparator = ' ' }
-        val whole = DecimalFormat("#,##0", symbols).format(value / DIRAMS_IN_SOMONI)
+        val whole = groupDigits(value / DIRAMS_IN_SOMONI)
         val fraction = (value % DIRAMS_IN_SOMONI).toInt().toString().padStart(2, '0')
         return "$whole,$fraction"
+    }
+
+    private fun groupDigits(value: Long): String {
+        val digits = value.toString()
+        if (digits.length <= GROUP_SIZE) return digits
+
+        val builder = StringBuilder(digits.length + digits.length / GROUP_SIZE)
+        val head = digits.length % GROUP_SIZE
+        if (head > 0) builder.append(digits, 0, head)
+
+        var index = head
+        while (index < digits.length) {
+            if (builder.isNotEmpty()) builder.append(GROUP_SEPARATOR)
+            builder.append(digits, index, index + GROUP_SIZE)
+            index += GROUP_SIZE
+        }
+        return builder.toString()
     }
 
     fun formatSigned(amountInDirams: Long): String {

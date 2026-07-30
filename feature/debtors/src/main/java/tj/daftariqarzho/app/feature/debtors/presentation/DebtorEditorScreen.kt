@@ -3,19 +3,26 @@ package tj.daftariqarzho.app.feature.debtors.presentation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -28,7 +35,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -36,38 +42,66 @@ import tj.daftariqarzho.app.core.designsystem.theme.DaftarTheme
 import tj.daftariqarzho.app.feature.debtors.R
 import tj.daftariqarzho.app.feature.debtors.domain.usecase.SaveDebtorUseCase
 
-private val LoadingBoxHeight = 160.dp
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DebtorEditorSheet(
+fun DebtorEditorScreen(
     debtorId: Long?,
-    onDismiss: () -> Unit,
+    onBack: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: DebtorEditorViewModel = koinViewModel(
-        key = "debtor_editor_${debtorId ?: "new"}",
         parameters = { if (debtorId == null) parametersOf() else parametersOf(debtorId) },
     ),
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
-    val sheetState = rememberModalBottomSheetState()
 
     LaunchedEffect(state.isSaved) {
         if (state.isSaved) {
-            onDismiss()
+            onBack()
         }
     }
 
-    ModalBottomSheet(
-        onDismissRequest = onDismiss,
+    Scaffold(
         modifier = modifier,
-        sheetState = sheetState,
-        containerColor = DaftarTheme.colors.surface,
-    ) {
-        DebtorEditorContent(
-            state = state,
-            onEvent = viewModel::onEvent,
-        )
+        contentWindowInsets = WindowInsets(0, 0, 0, 0),
+        topBar = {
+            TopAppBar(
+                windowInsets = WindowInsets(0, 0, 0, 0),
+                title = {
+                    Text(
+                        stringResource(
+                            if (state.isEditMode) {
+                                R.string.debtor_editor_title_edit
+                            } else {
+                                R.string.debtor_editor_title_add
+                            },
+                        ),
+                    )
+                },
+                navigationIcon = {
+                    IconButton(onClick = onBack) {
+                        Icon(
+                            Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(R.string.debtor_detail_back),
+                        )
+                    }
+                },
+            )
+        },
+    ) { innerPadding ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
+        ) {
+            if (state.isLoading) {
+                CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.Center),
+                    color = DaftarTheme.colors.primary,
+                )
+            } else {
+                DebtorEditorContent(state = state, onEvent = viewModel::onEvent)
+            }
+        }
     }
 }
 
@@ -78,48 +112,25 @@ private fun DebtorEditorContent(
 ) {
     val nameFocusRequester = remember { FocusRequester() }
 
-    LaunchedEffect(state.isLoading) {
-        if (!state.isLoading && !state.isEditMode) {
+    LaunchedEffect(state.isEditMode) {
+        if (!state.isEditMode) {
             nameFocusRequester.requestFocus()
         }
     }
 
     Column(
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
             .imePadding()
-            .navigationBarsPadding()
             .padding(
                 start = DaftarTheme.spacing.screenPadding,
                 end = DaftarTheme.spacing.screenPadding,
+                top = DaftarTheme.spacing.md,
                 bottom = DaftarTheme.spacing.xl,
             ),
         verticalArrangement = Arrangement.spacedBy(DaftarTheme.spacing.md),
     ) {
-        Text(
-            text = stringResource(
-                if (state.isEditMode) {
-                    R.string.debtor_editor_title_edit
-                } else {
-                    R.string.debtor_editor_title_add
-                },
-            ),
-            style = DaftarTheme.typography.headlineSmall,
-            color = DaftarTheme.colors.onSurface,
-        )
-
-        if (state.isLoading) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(LoadingBoxHeight),
-                contentAlignment = Alignment.Center,
-            ) {
-                CircularProgressIndicator(color = DaftarTheme.colors.primary)
-            }
-            return@Column
-        }
-
         OutlinedTextField(
             value = state.name,
             onValueChange = { onEvent(DebtorEditorEvent.NameChanged(it)) },

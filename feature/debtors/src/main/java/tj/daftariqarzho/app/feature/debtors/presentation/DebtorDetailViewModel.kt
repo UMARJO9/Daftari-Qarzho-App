@@ -2,10 +2,13 @@ package tj.daftariqarzho.app.feature.debtors.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -16,6 +19,7 @@ class DebtorDetailViewModel(
     private val debtorId: Long,
     observeDebtorDetail: ObserveDebtorDetailUseCase,
     private val deleteDebtor: DeleteDebtorUseCase,
+    defaultDispatcher: CoroutineDispatcher = Dispatchers.Default,
 ) : ViewModel() {
 
     private val _isDeleted = MutableStateFlow(false)
@@ -34,6 +38,7 @@ class DebtorDetailViewModel(
                 )
             }
         }
+        .flowOn(defaultDispatcher)
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),

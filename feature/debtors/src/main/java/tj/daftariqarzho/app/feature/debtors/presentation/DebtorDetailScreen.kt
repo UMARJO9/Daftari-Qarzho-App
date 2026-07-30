@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -51,6 +52,7 @@ import tj.daftariqarzho.app.feature.debtors.domain.model.TransactionType
 fun DebtorDetailScreen(
     debtorId: Long,
     onBack: () -> Unit,
+    onEditClick: () -> Unit,
     viewModel: DebtorDetailViewModel = koinViewModel(
         key = "debtor_detail_$debtorId",
         parameters = { parametersOf(debtorId) },
@@ -59,7 +61,6 @@ fun DebtorDetailScreen(
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val isDeleted by viewModel.isDeleted.collectAsStateWithLifecycle()
 
-    var editorVisible by remember { mutableStateOf(false) }
     var deleteDialogVisible by remember { mutableStateOf(false) }
     var operationType by remember { mutableStateOf<TransactionType?>(null) }
 
@@ -70,8 +71,10 @@ fun DebtorDetailScreen(
     }
 
     Scaffold(
+        contentWindowInsets = WindowInsets(0, 0, 0, 0),
         topBar = {
             TopAppBar(
+                windowInsets = WindowInsets(0, 0, 0, 0),
                 title = {
                     Text(
                         text = state.debtor?.name.orEmpty(),
@@ -89,7 +92,7 @@ fun DebtorDetailScreen(
                 },
                 actions = {
                     if (state.debtor != null) {
-                        IconButton(onClick = { editorVisible = true }) {
+                        IconButton(onClick = onEditClick) {
                             Icon(
                                 Icons.Filled.Edit,
                                 contentDescription = stringResource(R.string.debtor_detail_edit),
@@ -124,13 +127,6 @@ fun DebtorDetailScreen(
                 )
             }
         }
-    }
-
-    if (editorVisible) {
-        DebtorEditorSheet(
-            debtorId = debtorId,
-            onDismiss = { editorVisible = false },
-        )
     }
 
     if (deleteDialogVisible) {
