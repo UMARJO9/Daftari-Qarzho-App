@@ -28,6 +28,7 @@ class DebtorsViewModelTest {
     private fun viewModel() = DebtorsViewModel(
         observeDebtorSummaries = ObserveDebtorSummariesUseCase(repository),
         observeTotalBalance = ObserveTotalBalanceUseCase(repository),
+        defaultDispatcher = mainDispatcherRule.testDispatcher,
     )
 
     @Test

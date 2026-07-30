@@ -26,7 +26,10 @@ class TransactionsViewModelTest {
     private val now = 200 * day + noon
 
     private fun viewModel(repository: FakeTransactionsRepository) =
-        TransactionsViewModel(ObserveTransactionsUseCase(repository)) { now }
+        TransactionsViewModel(
+            ObserveTransactionsUseCase(repository),
+            mainDispatcherRule.testDispatcher,
+        ) { now }
 
     @Test
     fun `операции группируются по дням в порядке убывания`() = runTest(mainDispatcherRule.testDispatcher) {
