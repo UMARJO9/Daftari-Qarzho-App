@@ -8,9 +8,10 @@ import tj.daftariqarzho.app.feature.settings.domain.model.AppLanguage
 class LocaleManagerImpl : LocaleManager {
 
     override fun currentLanguage(): AppLanguage {
-        val locales = AppCompatDelegate.getApplicationLocales()
-        val tag = if (locales.isEmpty) null else locales[0]?.language
-        return AppLanguage.fromTag(tag)
+        val appLocales = AppCompatDelegate.getApplicationLocales()
+        val locales = if (appLocales.isEmpty) LocaleListCompat.getAdjustedDefault() else appLocales
+        val languages = (0 until locales.size()).mapNotNull { locales[it]?.language }
+        return AppLanguage.firstSupported(languages)
     }
 
     override fun setLanguage(language: AppLanguage) {

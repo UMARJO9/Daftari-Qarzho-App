@@ -29,4 +29,16 @@ class AppLanguageTest {
     fun `неизвестный тег возвращает таджикский по умолчанию`() {
         assertEquals(AppLanguage.TAJIK, AppLanguage.fromTag("en"))
     }
+
+    @Test
+    fun `первый поддерживаемый язык системы определяет язык интерфейса`() {
+        assertEquals(AppLanguage.RUSSIAN, AppLanguage.firstSupported(listOf("en", "ru", "tg")))
+        assertEquals(AppLanguage.TAJIK, AppLanguage.firstSupported(listOf("tg", "ru")))
+    }
+
+    @Test
+    fun `без поддерживаемых языков выбирается таджикский`() {
+        assertEquals(AppLanguage.TAJIK, AppLanguage.firstSupported(listOf("en", "uz")))
+        assertEquals(AppLanguage.TAJIK, AppLanguage.firstSupported(emptyList()))
+    }
 }

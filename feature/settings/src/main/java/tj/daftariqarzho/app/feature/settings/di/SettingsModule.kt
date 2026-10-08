@@ -8,9 +8,12 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 import tj.daftariqarzho.app.feature.settings.data.LocaleManagerImpl
+import tj.daftariqarzho.app.feature.settings.data.NightModeControllerImpl
 import tj.daftariqarzho.app.feature.settings.data.ThemeRepositoryImpl
 import tj.daftariqarzho.app.feature.settings.domain.LocaleManager
+import tj.daftariqarzho.app.feature.settings.domain.NightModeController
 import tj.daftariqarzho.app.feature.settings.domain.repository.ThemeRepository
+import tj.daftariqarzho.app.feature.settings.domain.usecase.ApplySavedThemeModeUseCase
 import tj.daftariqarzho.app.feature.settings.domain.usecase.ObserveThemeModeUseCase
 import tj.daftariqarzho.app.feature.settings.domain.usecase.SetThemeModeUseCase
 import tj.daftariqarzho.app.feature.settings.presentation.SettingsViewModel
@@ -25,7 +28,9 @@ val settingsModule = module {
     }
     single<ThemeRepository> { ThemeRepositoryImpl(get()) }
     single<LocaleManager> { LocaleManagerImpl() }
+    single<NightModeController> { NightModeControllerImpl() }
     factory { ObserveThemeModeUseCase(get()) }
-    factory { SetThemeModeUseCase(get()) }
+    factory { SetThemeModeUseCase(get(), get()) }
+    factory { ApplySavedThemeModeUseCase(get(), get()) }
     viewModel { SettingsViewModel(get(), get(), get()) }
 }

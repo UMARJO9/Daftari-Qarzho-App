@@ -8,6 +8,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import tj.daftariqarzho.app.feature.settings.FakeLocaleManager
+import tj.daftariqarzho.app.feature.settings.FakeNightModeController
 import tj.daftariqarzho.app.feature.settings.FakeThemeRepository
 import tj.daftariqarzho.app.feature.settings.MainDispatcherRule
 import tj.daftariqarzho.app.feature.settings.domain.model.AppLanguage
@@ -21,12 +22,14 @@ class SettingsViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
+    private val nightModeController = FakeNightModeController()
+
     private fun viewModel(
         themeRepository: FakeThemeRepository,
         localeManager: FakeLocaleManager,
     ) = SettingsViewModel(
         observeThemeMode = ObserveThemeModeUseCase(themeRepository),
-        setThemeMode = SetThemeModeUseCase(themeRepository),
+        setThemeMode = SetThemeModeUseCase(themeRepository, nightModeController),
         localeManager = localeManager,
     )
 
@@ -48,6 +51,7 @@ class SettingsViewModelTest {
             advanceUntilIdle()
 
             assertEquals(ThemeMode.DARK, themeRepository.mode.value)
+            assertEquals(listOf(ThemeMode.DARK), nightModeController.applied)
             assertEquals(ThemeMode.DARK, vm.uiState.value.themeMode)
         }
 

@@ -3,6 +3,7 @@ package tj.daftariqarzho.app.feature.settings
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import tj.daftariqarzho.app.feature.settings.domain.LocaleManager
+import tj.daftariqarzho.app.feature.settings.domain.NightModeController
 import tj.daftariqarzho.app.feature.settings.domain.model.AppLanguage
 import tj.daftariqarzho.app.feature.settings.domain.model.ThemeMode
 import tj.daftariqarzho.app.feature.settings.domain.repository.ThemeRepository
@@ -20,5 +21,12 @@ class FakeLocaleManager(initial: AppLanguage = AppLanguage.TAJIK) : LocaleManage
     override fun currentLanguage(): AppLanguage = current
     override fun setLanguage(language: AppLanguage) {
         current = language
+    }
+}
+
+class FakeNightModeController : NightModeController {
+    val applied = mutableListOf<ThemeMode>()
+    override fun apply(mode: ThemeMode) {
+        applied += mode
     }
 }
