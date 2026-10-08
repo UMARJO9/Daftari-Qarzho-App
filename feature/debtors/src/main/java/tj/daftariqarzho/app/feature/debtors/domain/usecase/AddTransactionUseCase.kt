@@ -1,5 +1,6 @@
 package tj.daftariqarzho.app.feature.debtors.domain.usecase
 
+import tj.daftariqarzho.app.core.common.money.MoneyFormatter
 import tj.daftariqarzho.app.feature.debtors.domain.model.DebtTransaction
 import tj.daftariqarzho.app.feature.debtors.domain.model.TransactionType
 import tj.daftariqarzho.app.feature.debtors.domain.repository.DebtorRepository
@@ -23,7 +24,7 @@ class AddTransactionUseCase(
         comment: String?,
         dueDate: Long?,
     ): AddTransactionResult {
-        if (amountInDirams <= 0) return AddTransactionResult.InvalidAmount
+        if (amountInDirams <= 0 || amountInDirams > MoneyFormatter.MAX_AMOUNT_IN_DIRAMS) return AddTransactionResult.InvalidAmount
 
         val signedAmount = when (type) {
             TransactionType.DEBT -> -amountInDirams

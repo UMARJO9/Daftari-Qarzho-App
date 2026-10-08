@@ -86,8 +86,25 @@ class MoneyFormatterTest {
     }
 
     @Test
-    fun `фильтр отбрасывает ведущий разделитель`() {
-        assertEquals("50", MoneyFormatter.sanitizeAmountInput(".50"))
+    fun `ведущий разделитель дополняется нулём`() {
+        assertEquals("0.50", MoneyFormatter.sanitizeAmountInput(".50"))
+        assertEquals("0.5", MoneyFormatter.sanitizeAmountInput(",5"))
+    }
+
+    @Test
+    fun `фильтр ограничивает целую часть девятью цифрами`() {
+        assertEquals("123456789.12", MoneyFormatter.sanitizeAmountInput("1234567890.12"))
+    }
+
+    @Test
+    fun `парсинг суммы выше лимита возвращает null`() {
+        assertEquals(MoneyFormatter.MAX_AMOUNT_IN_DIRAMS, MoneyFormatter.parseSomoniToDirams("999999999.99"))
+        assertEquals(null, MoneyFormatter.parseSomoniToDirams("1000000000"))
+    }
+
+    @Test
+    fun `форматирование минимального Long не ломается`() {
+        assertEquals("92 233 720 368 547 758,08", MoneyFormatter.formatAmount(Long.MIN_VALUE))
     }
 
     @Test

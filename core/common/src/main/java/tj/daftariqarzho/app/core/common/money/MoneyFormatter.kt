@@ -7,11 +7,13 @@ object MoneyFormatter {
     private const val DIRAMS_IN_SOMONI = 100
     private const val GROUP_SIZE = 3
     private const val GROUP_SEPARATOR = ' '
+    private const val MAX_WHOLE_DIGITS = 9
+
+    const val MAX_AMOUNT_IN_DIRAMS = 99_999_999_999L
 
     fun formatAmount(amountInDirams: Long): String {
-        val value = abs(amountInDirams)
-        val whole = groupDigits(value / DIRAMS_IN_SOMONI)
-        val fraction = (value % DIRAMS_IN_SOMONI).toInt().toString().padStart(2, '0')
+        val whole = groupDigits(abs(amountInDirams / DIRAMS_IN_SOMONI))
+        val fraction = abs(amountInDirams % DIRAMS_IN_SOMONI).toInt().toString().padStart(2, '0')
         return "$whole,$fraction"
     }
 
@@ -46,17 +48,19 @@ object MoneyFormatter {
         val parts = normalized.split('.')
         val whole = parts[0].toLongOrNull() ?: return null
         val fraction = parts.getOrNull(1)?.padEnd(2, '0')?.toLong() ?: 0L
-        return try {
+        val amount = try {
             Math.addExact(Math.multiplyExact(whole, DIRAMS_IN_SOMONI.toLong()), fraction)
         } catch (_: ArithmeticException) {
-            null
+            return null
         }
+        return amount.takeIf { it <= MAX_AMOUNT_IN_DIRAMS }
     }
 
     fun sanitizeAmountInput(input: String): String {
         val filtered = buildString {
             var separatorUsed = false
             var decimals = 0
+            var wholeDigits = 0
             for (ch in input) {
                 when {
                     ch.isDigit() -> {
@@ -65,12 +69,14 @@ object MoneyFormatter {
                                 append(ch)
                                 decimals++
                             }
-                        } else {
+                        } else if (wholeDigits < MAX_WHOLE_DIGITS) {
                             append(ch)
+                            wholeDigits++
                         }
                     }
 
-                    (ch == '.' || ch == ',') && !separatorUsed && isNotEmpty() -> {
+                    (ch == '.' || ch == ',') && !separatorUsed -> {
+                        if (isEmpty()) append('0')
                         append('.')
                         separatorUsed = true
                     }

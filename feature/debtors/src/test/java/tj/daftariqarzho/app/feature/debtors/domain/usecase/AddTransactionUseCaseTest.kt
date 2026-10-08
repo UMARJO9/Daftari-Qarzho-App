@@ -5,6 +5,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import tj.daftariqarzho.app.core.common.money.MoneyFormatter
 import tj.daftariqarzho.app.feature.debtors.FakeDebtorRepository
 import tj.daftariqarzho.app.feature.debtors.domain.model.TransactionType
 
@@ -88,6 +89,21 @@ class AddTransactionUseCaseTest {
             debtorId = 1,
             type = TransactionType.PAYMENT,
             amountInDirams = -100,
+            comment = null,
+            dueDate = null,
+        )
+
+        assertEquals(AddTransactionResult.InvalidAmount, result)
+        assertTrue(repository.addedTransactions.isEmpty())
+    }
+
+    @Test
+    fun `сумма выше лимита отклоняется`() = runTest {
+        val repository = FakeDebtorRepository()
+        val result = useCase(repository)(
+            debtorId = 1,
+            type = TransactionType.DEBT,
+            amountInDirams = MoneyFormatter.MAX_AMOUNT_IN_DIRAMS + 1,
             comment = null,
             dueDate = null,
         )
