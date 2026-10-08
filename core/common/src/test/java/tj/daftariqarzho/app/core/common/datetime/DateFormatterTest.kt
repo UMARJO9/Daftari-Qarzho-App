@@ -4,6 +4,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import java.time.LocalDate
 import java.time.ZoneId
 
 class DateFormatterTest {
@@ -60,5 +61,22 @@ class DateFormatterTest {
     @Test
     fun `startOfMonthMillis возвращает первое число месяца`() {
         assertEquals(0L, DateFormatter.startOfMonthMillis(19L * day, utc))
+    }
+
+    @Test
+    fun `дата из DatePicker в UTC переводится в начало локального дня`() {
+        val dushanbe = ZoneId.of("Asia/Dushanbe")
+        val date = LocalDate.of(2026, 3, 10)
+        val pickerMillis = date.atStartOfDay(utc).toInstant().toEpochMilli()
+        val local = DateFormatter.utcDateToLocalStartOfDay(pickerMillis, dushanbe)
+        assertEquals(date.atStartOfDay(dushanbe).toInstant().toEpochMilli(), local)
+        assertEquals(pickerMillis, DateFormatter.localDateToUtcStartOfDay(local, dushanbe))
+    }
+
+    @Test
+    fun `при отрицательном смещении зоны дата не съезжает на день назад`() {
+        val newYork = ZoneId.of("America/New_York")
+        val local = DateFormatter.utcDateToLocalStartOfDay(10L * day, newYork)
+        assertEquals(DateFormatter.formatDate(10L * day, utc), DateFormatter.formatDate(local, newYork))
     }
 }

@@ -4,6 +4,8 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import java.time.LocalDate
+import java.time.ZoneId
 import tj.daftariqarzho.app.core.database.entity.DebtorEntity
 import tj.daftariqarzho.app.core.database.entity.DebtorWithBalance
 import tj.daftariqarzho.app.core.database.entity.TransactionEntity
@@ -37,16 +39,16 @@ class DebtorMappersTest {
 
     @Test
     fun `toSummary не помечает просрочку при неотрицательном балансе`() {
-        val row = DebtorWithBalance(entity, balance = 5000, nearestDueDate = 100 * day, lastTransactionAt = 100 * day)
-        val summary = row.toSummary(nowMillis = 105 * day)
+        val row = DebtorWithBalance(entity, balance = 5000, lastTransactionAt = 100 * day)
+        val summary = row.toSummary(nowMillis = 105 * day, nearestUnpaidDueDate = 100 * day)
         assertFalse(summary.isOverdue)
         assertEquals(0L, summary.overdueDays)
     }
 
     @Test
     fun `toSummary помечает просрочку и считает дни при отрицательном балансе`() {
-        val row = DebtorWithBalance(entity, balance = -5000, nearestDueDate = 100 * day, lastTransactionAt = 100 * day)
-        val summary = row.toSummary(nowMillis = 105 * day)
+        val row = DebtorWithBalance(entity, balance = -5000, lastTransactionAt = 100 * day)
+        val summary = row.toSummary(nowMillis = 105 * day, nearestUnpaidDueDate = 100 * day)
         assertTrue(summary.isOverdue)
         assertEquals(5L, summary.overdueDays)
         assertEquals(-5000L, summary.balanceInDirams)
@@ -54,16 +56,28 @@ class DebtorMappersTest {
 
     @Test
     fun `toSummary без просрочки если срок в будущем`() {
-        val row = DebtorWithBalance(entity, balance = -5000, nearestDueDate = 110 * day, lastTransactionAt = 100 * day)
-        val summary = row.toSummary(nowMillis = 105 * day)
+        val row = DebtorWithBalance(entity, balance = -5000, lastTransactionAt = 100 * day)
+        val summary = row.toSummary(nowMillis = 105 * day, nearestUnpaidDueDate = 110 * day)
         assertFalse(summary.isOverdue)
         assertEquals(0L, summary.overdueDays)
     }
 
     @Test
     fun `toSummary без просрочки если срок не задан`() {
-        val row = DebtorWithBalance(entity, balance = -5000, nearestDueDate = null, lastTransactionAt = 100 * day)
-        val summary = row.toSummary(nowMillis = 105 * day)
+        val row = DebtorWithBalance(entity, balance = -5000, lastTransactionAt = 100 * day)
+        val summary = row.toSummary(nowMillis = 105 * day, nearestUnpaidDueDate = null)
+        assertFalse(summary.isOverdue)
+        assertEquals(0L, summary.overdueDays)
+    }
+
+    @Test
+    fun `toSummary без просрочки в сам день срока`() {
+        val zone = ZoneId.systemDefault()
+        val dueDay = LocalDate.of(2026, 3, 10)
+        val due = dueDay.atStartOfDay(zone).toInstant().toEpochMilli()
+        val now = dueDay.atTime(18, 0).atZone(zone).toInstant().toEpochMilli()
+        val row = DebtorWithBalance(entity, balance = -5000, lastTransactionAt = due)
+        val summary = row.toSummary(nowMillis = now, nearestUnpaidDueDate = due)
         assertFalse(summary.isOverdue)
         assertEquals(0L, summary.overdueDays)
     }

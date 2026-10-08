@@ -11,7 +11,6 @@ class ReportMappersTest {
     private fun row(id: Long, name: String, balance: Long) = DebtorWithBalance(
         debtor = DebtorEntity(id = id, name = name, phone = null, note = null, createdAt = 0),
         balance = balance,
-        nearestDueDate = null,
         lastTransactionAt = null,
     )
 

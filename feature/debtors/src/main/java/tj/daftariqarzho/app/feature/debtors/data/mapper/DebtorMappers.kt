@@ -26,9 +26,9 @@ fun Debtor.toEntity(): DebtorEntity =
         createdAt = createdAt,
     )
 
-fun DebtorWithBalance.toSummary(nowMillis: Long): DebtorSummary {
-    val due = nearestDueDate
-    val overdue = balance < 0 && due != null && due < nowMillis
+fun DebtorWithBalance.toSummary(nowMillis: Long, nearestUnpaidDueDate: Long?): DebtorSummary {
+    val due = nearestUnpaidDueDate
+    val overdue = balance < 0 && due != null && DateFormatter.isOverdue(due, nowMillis)
     val overdueDays = due?.takeIf { overdue }?.let { DateFormatter.daysOverdue(it, nowMillis) } ?: 0L
     return DebtorSummary(
         debtor = debtor.toDomain(),

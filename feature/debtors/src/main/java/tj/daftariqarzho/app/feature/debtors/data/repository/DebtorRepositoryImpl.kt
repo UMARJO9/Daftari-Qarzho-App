@@ -2,7 +2,6 @@ package tj.daftariqarzho.app.feature.debtors.data.repository
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.map
 import tj.daftariqarzho.app.core.database.dao.DebtorDao
 import tj.daftariqarzho.app.core.database.dao.TransactionDao
 import tj.daftariqarzho.app.feature.debtors.data.mapper.toDomain
@@ -12,6 +11,7 @@ import tj.daftariqarzho.app.feature.debtors.domain.model.DebtTransaction
 import tj.daftariqarzho.app.feature.debtors.domain.model.Debtor
 import tj.daftariqarzho.app.feature.debtors.domain.model.DebtorDetail
 import tj.daftariqarzho.app.feature.debtors.domain.model.DebtorSummary
+import tj.daftariqarzho.app.feature.debtors.domain.model.nearestUnpaidDueDate
 import tj.daftariqarzho.app.feature.debtors.domain.repository.DebtorRepository
 
 class DebtorRepositoryImpl(
@@ -21,9 +21,18 @@ class DebtorRepositoryImpl(
 ) : DebtorRepository {
 
     override fun observeDebtorSummaries(): Flow<List<DebtorSummary>> =
-        debtorDao.observeDebtorsWithBalance().map { list ->
+        combine(
+            debtorDao.observeDebtorsWithBalance(),
+            transactionDao.observeAll(),
+        ) { rows, transactions ->
             val nowMillis = now()
-            list.map { it.toSummary(nowMillis) }
+            val transactionsByDebtor = transactions.groupBy { it.debtorId }
+            rows.map { row ->
+                val dueDate = transactionsByDebtor[row.debtor.id].orEmpty()
+                    .map { it.toDomain() }
+                    .nearestUnpaidDueDate()
+                row.toSummary(nowMillis, dueDate)
+            }
         }
 
     override fun observeTotalBalance(): Flow<Long> =

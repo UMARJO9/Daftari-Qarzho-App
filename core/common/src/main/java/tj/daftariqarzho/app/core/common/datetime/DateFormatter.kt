@@ -4,6 +4,7 @@ import java.time.DayOfWeek
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.time.temporal.TemporalAdjusters
@@ -63,4 +64,12 @@ object DateFormatter {
         val now: LocalDate = Instant.ofEpochMilli(nowMillis).atZone(zone).toLocalDate()
         return due.isBefore(now)
     }
+
+    fun utcDateToLocalStartOfDay(utcMillis: Long, zone: ZoneId = ZoneId.systemDefault()): Long =
+        Instant.ofEpochMilli(utcMillis).atZone(ZoneOffset.UTC).toLocalDate()
+            .atStartOfDay(zone).toInstant().toEpochMilli()
+
+    fun localDateToUtcStartOfDay(epochMillis: Long, zone: ZoneId = ZoneId.systemDefault()): Long =
+        Instant.ofEpochMilli(epochMillis).atZone(zone).toLocalDate()
+            .atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()
 }

@@ -37,7 +37,6 @@ interface DebtorDao {
         """
         SELECT d.*,
                COALESCE(SUM(t.amountInDirams), 0) AS balance,
-               MIN(CASE WHEN t.amountInDirams < 0 AND t.dueDate IS NOT NULL THEN t.dueDate END) AS nearestDueDate,
                MAX(t.createdAt) AS lastTransactionAt
         FROM debtors d
         LEFT JOIN transactions t ON t.debtorId = d.id

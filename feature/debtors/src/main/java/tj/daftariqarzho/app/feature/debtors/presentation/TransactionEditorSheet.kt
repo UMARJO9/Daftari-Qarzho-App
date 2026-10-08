@@ -22,6 +22,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
@@ -246,11 +247,23 @@ private fun DueDatePickerDialog(
     onConfirm: (Long?) -> Unit,
     onDismiss: () -> Unit,
 ) {
-    val datePickerState = rememberDatePickerState(initialSelectedDateMillis = initialDate)
+    val todayUtc = remember { DateFormatter.localDateToUtcStartOfDay(System.currentTimeMillis()) }
+    val datePickerState = rememberDatePickerState(
+        initialSelectedDateMillis = initialDate?.let { DateFormatter.localDateToUtcStartOfDay(it) },
+        selectableDates = remember(todayUtc) {
+            object : SelectableDates {
+                override fun isSelectableDate(utcTimeMillis: Long): Boolean = utcTimeMillis >= todayUtc
+            }
+        },
+    )
     DatePickerDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
-            TextButton(onClick = { onConfirm(datePickerState.selectedDateMillis) }) {
+            TextButton(
+                onClick = {
+                    onConfirm(datePickerState.selectedDateMillis?.let { DateFormatter.utcDateToLocalStartOfDay(it) })
+                },
+            ) {
                 Text(stringResource(R.string.transaction_editor_dialog_ok))
             }
         },
