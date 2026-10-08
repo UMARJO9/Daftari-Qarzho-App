@@ -1,20 +1,7 @@
 package tj.daftariqarzho.app.feature.transactions.presentation
 
-import tj.daftariqarzho.app.feature.transactions.domain.model.TransactionItem
-
-enum class TransactionPeriod {
-    ALL,
-    TODAY,
-    WEEK,
-    MONTH,
-}
-
-data class DayGroup(
-    val dayMillis: Long,
-    val items: List<TransactionItem>,
-) {
-    val netInDirams: Long get() = items.sumOf { it.amountInDirams }
-}
+import tj.daftariqarzho.app.feature.transactions.domain.model.DayGroup
+import tj.daftariqarzho.app.feature.transactions.domain.model.TransactionPeriod
 
 data class TransactionsUiState(
     val isLoading: Boolean = true,

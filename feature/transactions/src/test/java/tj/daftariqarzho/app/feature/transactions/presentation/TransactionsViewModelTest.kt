@@ -1,6 +1,9 @@
 package tj.daftariqarzho.app.feature.transactions.presentation
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
@@ -12,6 +15,9 @@ import org.junit.Test
 import tj.daftariqarzho.app.core.common.datetime.DateFormatter
 import tj.daftariqarzho.app.feature.transactions.FakeTransactionsRepository
 import tj.daftariqarzho.app.feature.transactions.MainDispatcherRule
+import tj.daftariqarzho.app.feature.transactions.domain.model.TransactionItem
+import tj.daftariqarzho.app.feature.transactions.domain.model.TransactionPeriod
+import tj.daftariqarzho.app.feature.transactions.domain.repository.TransactionsRepository
 import tj.daftariqarzho.app.feature.transactions.domain.usecase.ObserveTransactionsUseCase
 import tj.daftariqarzho.app.feature.transactions.transactionItem
 
@@ -23,13 +29,14 @@ class TransactionsViewModelTest {
 
     private val day = 86_400_000L
     private val noon = 12 * 3_600_000L
-    private val now = 200 * day + noon
+    private val today = DateFormatter.startOfDayMillis(200 * day + noon)
+    private val dayStarts = MutableStateFlow(today)
 
-    private fun viewModel(repository: FakeTransactionsRepository) =
+    private fun viewModel(repository: TransactionsRepository) =
         TransactionsViewModel(
-            ObserveTransactionsUseCase(repository),
+            ObserveTransactionsUseCase(repository, dayStarts),
             mainDispatcherRule.testDispatcher,
-        ) { now }
+        )
 
     @Test
     fun `операции группируются по дням в порядке убывания`() = runTest(mainDispatcherRule.testDispatcher) {
@@ -74,7 +81,7 @@ class TransactionsViewModelTest {
         advanceUntilIdle()
 
         assertEquals(TransactionPeriod.MONTH, vm.uiState.value.period)
-        assertEquals(DateFormatter.startOfMonthMillis(now), repository.lastRequestedFrom)
+        assertEquals(DateFormatter.startOfMonthMillis(today), repository.lastRequestedFrom)
     }
 
     @Test
@@ -87,7 +94,39 @@ class TransactionsViewModelTest {
         vm.onEvent(TransactionsEvent.PeriodSelected(TransactionPeriod.WEEK))
         advanceUntilIdle()
 
-        assertEquals(DateFormatter.startOfWeekMillis(now), repository.lastRequestedFrom)
+        assertEquals(DateFormatter.startOfWeekMillis(today), repository.lastRequestedFrom)
+    }
+
+    @Test
+    fun `после полуночи период СЕГОДНЯ переключается на новый день`() = runTest(mainDispatcherRule.testDispatcher) {
+        val repository = FakeTransactionsRepository()
+        val vm = viewModel(repository)
+        backgroundScope.launch { vm.uiState.collect {} }
+        vm.onEvent(TransactionsEvent.PeriodSelected(TransactionPeriod.TODAY))
+        advanceUntilIdle()
+        assertEquals(today, repository.lastRequestedFrom)
+
+        val tomorrow = DateFormatter.startOfNextDayMillis(today)
+        dayStarts.value = tomorrow
+        advanceUntilIdle()
+
+        assertEquals(tomorrow, repository.lastRequestedFrom)
+    }
+
+    @Test
+    fun `выбранный период отображается сразу, до ответа базы`() = runTest(mainDispatcherRule.testDispatcher) {
+        val repository = object : TransactionsRepository {
+            override fun observeTransactions(fromMillis: Long): Flow<List<TransactionItem>> = emptyFlow()
+        }
+        val vm = viewModel(repository)
+        backgroundScope.launch { vm.uiState.collect {} }
+        advanceUntilIdle()
+
+        vm.onEvent(TransactionsEvent.PeriodSelected(TransactionPeriod.WEEK))
+        advanceUntilIdle()
+
+        assertEquals(TransactionPeriod.WEEK, vm.uiState.value.period)
+        assertTrue(vm.uiState.value.isLoading)
     }
 
     @Test

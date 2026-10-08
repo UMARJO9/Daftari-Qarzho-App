@@ -25,9 +25,9 @@ import org.koin.androidx.compose.koinViewModel
 import tj.daftariqarzho.app.core.common.datetime.DateFormatter
 import tj.daftariqarzho.app.core.designsystem.components.MoneyText
 import tj.daftariqarzho.app.core.designsystem.theme.DaftarTheme
+import tj.daftariqarzho.app.feature.transactions.domain.model.DayGroup
 import tj.daftariqarzho.app.feature.transactions.domain.model.TransactionItem
-import tj.daftariqarzho.app.feature.transactions.presentation.DayGroup
-import tj.daftariqarzho.app.feature.transactions.presentation.TransactionPeriod
+import tj.daftariqarzho.app.feature.transactions.domain.model.TransactionPeriod
 import tj.daftariqarzho.app.feature.transactions.presentation.TransactionsEvent
 import tj.daftariqarzho.app.feature.transactions.presentation.TransactionsUiState
 import tj.daftariqarzho.app.feature.transactions.presentation.TransactionsViewModel
