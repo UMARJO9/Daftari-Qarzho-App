@@ -1,5 +1,10 @@
 package tj.daftariqarzho.app.feature.debtors
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.dropUnlessResumed
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
@@ -26,8 +31,8 @@ fun NavGraphBuilder.debtorsScreen(
 ) {
     composable<DebtorsRoute> {
         DebtorsScreen(
-            onDebtorClick = onDebtorClick,
-            onAddClick = onAddDebtorClick,
+            onDebtorClick = dropUnlessResumedWithArgument(onDebtorClick),
+            onAddClick = dropUnlessResumed(block = onAddDebtorClick),
         )
     }
 }
@@ -40,8 +45,8 @@ fun NavGraphBuilder.debtorDetailScreen(
         val route = entry.toRoute<DebtorDetailRoute>()
         DebtorDetailScreen(
             debtorId = route.debtorId,
-            onBack = onBack,
-            onEditClick = { onEditClick(route.debtorId) },
+            onBack = dropUnlessResumed(block = onBack),
+            onEditClick = dropUnlessResumed { onEditClick(route.debtorId) },
         )
     }
 }
@@ -50,12 +55,24 @@ fun NavGraphBuilder.debtorEditorScreen(
     onBack: () -> Unit,
 ) {
     composable<DebtorCreateRoute> {
-        DebtorEditorScreen(debtorId = null, onBack = onBack)
+        DebtorEditorScreen(debtorId = null, onBack = dropUnlessResumed(block = onBack))
     }
     composable<DebtorEditRoute> { entry ->
         DebtorEditorScreen(
             debtorId = entry.toRoute<DebtorEditRoute>().debtorId,
-            onBack = onBack,
+            onBack = dropUnlessResumed(block = onBack),
         )
+    }
+}
+
+@Composable
+private fun <T> dropUnlessResumedWithArgument(action: (T) -> Unit): (T) -> Unit {
+    val lifecycle = LocalLifecycleOwner.current.lifecycle
+    return remember(lifecycle, action) {
+        { value ->
+            if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
+                action(value)
+            }
+        }
     }
 }
