@@ -7,6 +7,7 @@ data class ReportDebtor(
 )
 
 data class MonthlyReport(
+    val monthStartMillis: Long,
     val givenInDirams: Long,
     val receivedInDirams: Long,
     val topDebtors: List<ReportDebtor>,

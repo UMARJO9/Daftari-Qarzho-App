@@ -53,11 +53,13 @@ private fun ReportsContent(state: ReportsUiState) {
                 style = DaftarTheme.typography.headlineSmall,
                 color = DaftarTheme.colors.onBackground,
             )
-            Text(
-                text = DateFormatter.formatMonthYear(state.monthStartMillis),
-                style = DaftarTheme.typography.bodyMedium,
-                color = DaftarTheme.colors.onSurfaceVariant,
-            )
+            state.monthStartMillis?.let { monthStart ->
+                Text(
+                    text = DateFormatter.formatMonthYear(monthStart),
+                    style = DaftarTheme.typography.bodyMedium,
+                    color = DaftarTheme.colors.onSurfaceVariant,
+                )
+            }
         }
 
         Row(horizontalArrangement = Arrangement.spacedBy(DaftarTheme.spacing.md)) {

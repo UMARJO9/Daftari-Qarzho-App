@@ -64,6 +64,15 @@ class DateFormatterTest {
     }
 
     @Test
+    fun `startOfNextMonthMillis возвращает первое число следующего месяца`() {
+        val december = LocalDate.of(2026, 12, 15).atTime(10, 0).atZone(utc).toInstant().toEpochMilli()
+        assertEquals(
+            LocalDate.of(2027, 1, 1).atStartOfDay(utc).toInstant().toEpochMilli(),
+            DateFormatter.startOfNextMonthMillis(december, utc),
+        )
+    }
+
+    @Test
     fun `дата из DatePicker в UTC переводится в начало локального дня`() {
         val dushanbe = ZoneId.of("Asia/Dushanbe")
         val date = LocalDate.of(2026, 3, 10)

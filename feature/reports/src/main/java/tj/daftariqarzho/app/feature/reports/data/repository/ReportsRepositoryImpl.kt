@@ -13,15 +13,15 @@ class ReportsRepositoryImpl(
     private val debtorDao: DebtorDao,
 ) : ReportsRepository {
 
-    override fun observeMonthlyReport(fromMillis: Long): Flow<MonthlyReport> =
+    override fun observeMonthlyReport(monthStartMillis: Long, nextMonthStartMillis: Long): Flow<MonthlyReport> =
         combine(
-            transactionDao.observeGivenSince(fromMillis),
-            transactionDao.observeReceivedSince(fromMillis),
+            transactionDao.observeTotalsBetween(monthStartMillis, nextMonthStartMillis),
             debtorDao.observeDebtorsWithBalance(),
-        ) { given, received, debtors ->
+        ) { totals, debtors ->
             MonthlyReport(
-                givenInDirams = given,
-                receivedInDirams = received,
+                monthStartMillis = monthStartMillis,
+                givenInDirams = totals.givenInDirams,
+                receivedInDirams = totals.receivedInDirams,
                 topDebtors = debtors.toTopDebtors(),
             )
         }

@@ -59,6 +59,16 @@ object DateFormatter {
             .withDayOfMonth(1)
             .atStartOfDay(zone).toInstant().toEpochMilli()
 
+    fun startOfNextMonthMillis(epochMillis: Long, zone: ZoneId = ZoneId.systemDefault()): Long =
+        Instant.ofEpochMilli(epochMillis).atZone(zone).toLocalDate()
+            .withDayOfMonth(1).plusMonths(1)
+            .atStartOfDay(zone).toInstant().toEpochMilli()
+
+    fun startOfNextDayMillis(epochMillis: Long, zone: ZoneId = ZoneId.systemDefault()): Long =
+        Instant.ofEpochMilli(epochMillis).atZone(zone).toLocalDate()
+            .plusDays(1)
+            .atStartOfDay(zone).toInstant().toEpochMilli()
+
     fun isOverdue(dueDateMillis: Long, nowMillis: Long, zone: ZoneId = ZoneId.systemDefault()): Boolean {
         val due = Instant.ofEpochMilli(dueDateMillis).atZone(zone).toLocalDate()
         val now: LocalDate = Instant.ofEpochMilli(nowMillis).atZone(zone).toLocalDate()

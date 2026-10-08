@@ -9,22 +9,18 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import tj.daftariqarzho.app.core.common.datetime.DateFormatter
 import tj.daftariqarzho.app.feature.reports.domain.usecase.ObserveMonthlyReportUseCase
 
 class ReportsViewModel(
     observeMonthlyReport: ObserveMonthlyReportUseCase,
     defaultDispatcher: CoroutineDispatcher = Dispatchers.Default,
-    now: () -> Long = System::currentTimeMillis,
 ) : ViewModel() {
 
-    private val monthStart = DateFormatter.startOfMonthMillis(now())
-
-    val uiState: StateFlow<ReportsUiState> = observeMonthlyReport(monthStart)
+    val uiState: StateFlow<ReportsUiState> = observeMonthlyReport()
         .map { report ->
             ReportsUiState(
                 isLoading = false,
-                monthStartMillis = monthStart,
+                monthStartMillis = report.monthStartMillis,
                 givenInDirams = report.givenInDirams,
                 receivedInDirams = report.receivedInDirams,
                 topDebtors = report.topDebtors,
@@ -34,6 +30,6 @@ class ReportsViewModel(
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = ReportsUiState(monthStartMillis = monthStart),
+            initialValue = ReportsUiState(),
         )
 }
