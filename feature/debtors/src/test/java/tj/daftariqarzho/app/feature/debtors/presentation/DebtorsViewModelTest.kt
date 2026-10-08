@@ -56,4 +56,13 @@ class DebtorsViewModelTest {
         assertEquals(1, state.debtors.size)
         assertEquals("Ali", state.debtors.first().debtor.name)
     }
+
+    @Test
+    fun `введённый текст поиска виден сразу, до загрузки списка`() = runTest(mainDispatcherRule.testDispatcher) {
+        val vm = viewModel()
+
+        vm.onEvent(DebtorsEvent.QueryChanged("Абд"))
+
+        assertEquals("Абд", vm.searchQuery)
+    }
 }

@@ -43,6 +43,7 @@ fun DebtorsScreen(
 
     DebtorsContent(
         state = state,
+        query = viewModel.searchQuery,
         onEvent = viewModel::onEvent,
         onDebtorClick = onDebtorClick,
         onAddClick = onAddClick,
@@ -52,6 +53,7 @@ fun DebtorsScreen(
 @Composable
 private fun DebtorsContent(
     state: DebtorsUiState,
+    query: String,
     onEvent: (DebtorsEvent) -> Unit,
     onDebtorClick: (Long) -> Unit,
     onAddClick: () -> Unit,
@@ -75,7 +77,7 @@ private fun DebtorsContent(
         ) {
             TotalBalanceHeader(totalInDirams = state.totalBalanceInDirams)
             SearchField(
-                query = state.query,
+                query = query,
                 onQueryChange = { onEvent(DebtorsEvent.QueryChanged(it)) },
             )
             when {

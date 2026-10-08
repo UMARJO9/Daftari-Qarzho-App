@@ -1,5 +1,8 @@
 package tj.daftariqarzho.app.feature.debtors.presentation
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineDispatcher
@@ -20,6 +23,9 @@ class DebtorsViewModel(
 ) : ViewModel() {
 
     private val query = MutableStateFlow("")
+
+    var searchQuery by mutableStateOf("")
+        private set
 
     val uiState: StateFlow<DebtorsUiState> = combine(
         query,
@@ -45,7 +51,10 @@ class DebtorsViewModel(
 
     fun onEvent(event: DebtorsEvent) {
         when (event) {
-            is DebtorsEvent.QueryChanged -> query.value = event.query
+            is DebtorsEvent.QueryChanged -> {
+                searchQuery = event.query
+                query.value = event.query
+            }
         }
     }
 }
