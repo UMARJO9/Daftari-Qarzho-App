@@ -41,6 +41,11 @@ class MoneyFormatterTest {
     }
 
     @Test
+    fun `ноль форматируется без знака`() {
+        assertEquals("0,00", MoneyFormatter.formatSigned(0))
+    }
+
+    @Test
     fun `парсинг целого числа сомони`() {
         assertEquals(12500L, MoneyFormatter.parseSomoniToDirams("125"))
     }

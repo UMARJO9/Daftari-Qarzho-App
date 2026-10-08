@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
 import tj.daftariqarzho.app.core.common.datetime.DateFormatter
-import tj.daftariqarzho.app.core.common.money.MoneyFormatter
+import tj.daftariqarzho.app.core.designsystem.components.MoneyText
 import tj.daftariqarzho.app.core.designsystem.theme.DaftarTheme
 import tj.daftariqarzho.app.feature.reports.domain.model.ReportDebtor
 import tj.daftariqarzho.app.feature.reports.presentation.ReportsUiState
@@ -120,10 +120,9 @@ private fun StatCard(
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
             )
-            Text(
-                text = "${MoneyFormatter.formatAmount(amountInDirams)} " +
-                    stringResource(R.string.reports_currency_suffix),
-                style = DaftarTheme.moneyTypography.medium,
+            MoneyText(
+                amountInDirams = amountInDirams,
+                signed = false,
                 color = accent,
             )
         }
@@ -144,10 +143,10 @@ private fun TopDebtorRow(debtor: ReportDebtor) {
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
         )
-        Text(
-            text = "${MoneyFormatter.formatAmount(debtor.balanceInDirams)} " +
-                stringResource(R.string.reports_currency_suffix),
+        MoneyText(
+            amountInDirams = debtor.balanceInDirams,
             style = DaftarTheme.moneyTypography.small,
+            signed = false,
             color = DaftarTheme.debtColors.given,
         )
     }

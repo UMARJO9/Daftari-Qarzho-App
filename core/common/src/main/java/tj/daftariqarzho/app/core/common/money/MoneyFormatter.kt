@@ -35,7 +35,11 @@ object MoneyFormatter {
     }
 
     fun formatSigned(amountInDirams: Long): String {
-        val prefix = if (amountInDirams < 0) "−" else "+"
+        val prefix = when {
+            amountInDirams < 0 -> "−"
+            amountInDirams > 0 -> "+"
+            else -> ""
+        }
         return prefix + formatAmount(amountInDirams)
     }
 

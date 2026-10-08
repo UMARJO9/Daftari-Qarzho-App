@@ -7,9 +7,12 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import tj.daftariqarzho.app.core.common.money.MoneyFormatter
+import tj.daftariqarzho.app.core.designsystem.R
 import tj.daftariqarzho.app.core.designsystem.theme.DaftarTheme
 
 @Composable
@@ -17,19 +20,28 @@ fun MoneyText(
     amountInDirams: Long,
     modifier: Modifier = Modifier,
     style: TextStyle = DaftarTheme.moneyTypography.medium,
+    signed: Boolean = true,
+    color: Color = moneyColor(amountInDirams),
 ) {
-    val color = if (amountInDirams >= 0) {
-        DaftarTheme.debtColors.received
+    val amount = if (signed) {
+        MoneyFormatter.formatSigned(amountInDirams)
     } else {
-        DaftarTheme.debtColors.given
+        MoneyFormatter.formatAmount(amountInDirams)
     }
 
     Text(
-        text = "${MoneyFormatter.formatSigned(amountInDirams)} сом",
+        text = "$amount ${stringResource(R.string.currency_somoni)}",
         modifier = modifier,
         color = color,
         style = style,
     )
+}
+
+@Composable
+private fun moneyColor(amountInDirams: Long): Color = when {
+    amountInDirams > 0 -> DaftarTheme.debtColors.received
+    amountInDirams < 0 -> DaftarTheme.debtColors.given
+    else -> DaftarTheme.colors.onSurfaceVariant
 }
 
 @PreviewLightDark
@@ -43,6 +55,7 @@ private fun MoneyTextPreview() {
             ) {
                 MoneyText(amountInDirams = 125050)
                 MoneyText(amountInDirams = -87500)
+                MoneyText(amountInDirams = 0)
                 MoneyText(amountInDirams = 1234567, style = DaftarTheme.moneyTypography.large)
             }
         }
