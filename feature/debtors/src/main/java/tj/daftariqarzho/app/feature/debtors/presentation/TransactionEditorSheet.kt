@@ -63,15 +63,19 @@ fun TransactionEditorSheet(
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val sheetState = rememberModalBottomSheetState()
+    val dismiss = {
+        viewModel.onEvent(TransactionEditorEvent.Reset)
+        onDismiss()
+    }
 
     LaunchedEffect(state.isSaved) {
         if (state.isSaved) {
-            onDismiss()
+            dismiss()
         }
     }
 
     ModalBottomSheet(
-        onDismissRequest = onDismiss,
+        onDismissRequest = dismiss,
         modifier = modifier,
         sheetState = sheetState,
         containerColor = DaftarTheme.colors.surface,

@@ -39,6 +39,10 @@ class TransactionEditorViewModel(
             }
 
             TransactionEditorEvent.Save -> save()
+
+            TransactionEditorEvent.Reset -> _uiState.update {
+                TransactionEditorUiState(type = it.type)
+            }
         }
     }
 
@@ -62,12 +66,10 @@ class TransactionEditorViewModel(
                 dueDate = state.dueDate,
             )
             _uiState.update {
-                when (result) {
-                    is AddTransactionResult.Success -> it.copy(isSaving = false, isSaved = true)
-                    AddTransactionResult.InvalidAmount -> it.copy(
-                        isSaving = false,
-                        showAmountError = true,
-                    )
+                when {
+                    !it.isSaving -> it
+                    result is AddTransactionResult.Success -> it.copy(isSaving = false, isSaved = true)
+                    else -> it.copy(isSaving = false, showAmountError = true)
                 }
             }
         }

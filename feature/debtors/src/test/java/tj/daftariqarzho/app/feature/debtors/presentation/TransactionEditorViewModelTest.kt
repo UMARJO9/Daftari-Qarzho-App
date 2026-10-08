@@ -93,4 +93,34 @@ class TransactionEditorViewModelTest {
         vm.onEvent(TransactionEditorEvent.AmountChanged("10"))
         assertFalse(vm.uiState.value.showAmountError)
     }
+
+    @Test
+    fun `сброс после сохранения позволяет открыть форму заново`() =
+        runTest(mainDispatcherRule.testDispatcher) {
+            val vm = viewModel(FakeDebtorRepository(), TransactionType.DEBT)
+
+            vm.onEvent(TransactionEditorEvent.AmountChanged("10"))
+            vm.onEvent(TransactionEditorEvent.Save)
+            advanceUntilIdle()
+            assertTrue(vm.uiState.value.isSaved)
+
+            vm.onEvent(TransactionEditorEvent.Reset)
+
+            assertEquals(TransactionEditorUiState(type = TransactionType.DEBT), vm.uiState.value)
+        }
+
+    @Test
+    fun `сохранение, завершившееся после сброса, не закрывает следующую форму`() =
+        runTest(mainDispatcherRule.testDispatcher) {
+            val repository = FakeDebtorRepository()
+            val vm = viewModel(repository)
+
+            vm.onEvent(TransactionEditorEvent.AmountChanged("10"))
+            vm.onEvent(TransactionEditorEvent.Save)
+            vm.onEvent(TransactionEditorEvent.Reset)
+            advanceUntilIdle()
+
+            assertFalse(vm.uiState.value.isSaved)
+            assertEquals(1, repository.addedTransactions.size)
+        }
 }

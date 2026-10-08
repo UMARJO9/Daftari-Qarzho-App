@@ -9,4 +9,6 @@ sealed interface TransactionEditorEvent {
     data class DueDateChanged(val value: Long?) : TransactionEditorEvent
 
     data object Save : TransactionEditorEvent
+
+    data object Reset : TransactionEditorEvent
 }
