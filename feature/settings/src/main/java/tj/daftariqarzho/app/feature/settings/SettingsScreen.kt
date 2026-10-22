@@ -20,6 +20,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
+import tj.daftariqarzho.app.core.designsystem.components.LocalGlassBarInset
 import tj.daftariqarzho.app.core.designsystem.theme.DaftarTheme
 import tj.daftariqarzho.app.feature.settings.domain.model.AppLanguage
 import tj.daftariqarzho.app.feature.settings.domain.model.ThemeMode
@@ -44,7 +45,8 @@ private fun SettingsContent(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(DaftarTheme.spacing.screenPadding),
+            .padding(DaftarTheme.spacing.screenPadding)
+            .padding(bottom = LocalGlassBarInset.current),
         verticalArrangement = Arrangement.spacedBy(DaftarTheme.spacing.xl),
     ) {
         Text(

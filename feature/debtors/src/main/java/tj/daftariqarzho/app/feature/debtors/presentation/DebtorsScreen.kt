@@ -25,6 +25,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
 import tj.daftariqarzho.app.core.common.datetime.DateFormatter
 import tj.daftariqarzho.app.core.designsystem.components.DebtorCard
+import tj.daftariqarzho.app.core.designsystem.components.LocalGlassBarInset
 import tj.daftariqarzho.app.core.designsystem.components.MoneyText
 import tj.daftariqarzho.app.core.designsystem.icons.DaftarIcons
 import tj.daftariqarzho.app.core.designsystem.theme.DaftarTheme
@@ -61,6 +62,7 @@ private fun DebtorsContent(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = onAddClick,
+                modifier = Modifier.padding(bottom = LocalGlassBarInset.current),
                 containerColor = DaftarTheme.colors.primary,
                 contentColor = DaftarTheme.colors.onPrimary,
             ) {
@@ -153,7 +155,12 @@ private fun EmptyBox(hasQuery: Boolean) {
 private fun DebtorsList(debtors: List<DebtorSummary>, onDebtorClick: (Long) -> Unit) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(DaftarTheme.spacing.screenPadding),
+        contentPadding = PaddingValues(
+            start = DaftarTheme.spacing.screenPadding,
+            top = DaftarTheme.spacing.screenPadding,
+            end = DaftarTheme.spacing.screenPadding,
+            bottom = DaftarTheme.spacing.screenPadding + LocalGlassBarInset.current,
+        ),
         verticalArrangement = Arrangement.spacedBy(DaftarTheme.spacing.listItemGap),
     ) {
         items(debtors, key = { it.debtor.id }) { summary ->

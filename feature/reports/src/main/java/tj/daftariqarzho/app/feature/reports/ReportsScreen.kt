@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
 import tj.daftariqarzho.app.core.common.datetime.DateFormatter
+import tj.daftariqarzho.app.core.designsystem.components.LocalGlassBarInset
 import tj.daftariqarzho.app.core.designsystem.components.MoneyText
 import tj.daftariqarzho.app.core.designsystem.theme.DaftarTheme
 import tj.daftariqarzho.app.feature.reports.domain.model.ReportDebtor
@@ -44,7 +45,8 @@ private fun ReportsContent(state: ReportsUiState) {
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(DaftarTheme.spacing.screenPadding),
+            .padding(DaftarTheme.spacing.screenPadding)
+            .padding(bottom = LocalGlassBarInset.current),
         verticalArrangement = Arrangement.spacedBy(DaftarTheme.spacing.lg),
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(DaftarTheme.spacing.xs)) {

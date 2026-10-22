@@ -7,20 +7,21 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Icon
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -29,6 +30,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import dev.chrisbanes.haze.HazeState
+import dev.chrisbanes.haze.hazeSource
+import dev.chrisbanes.haze.rememberHazeState
+import tj.daftariqarzho.app.core.designsystem.components.GlassNavigationBar
+import tj.daftariqarzho.app.core.designsystem.components.GlassNavigationItem
+import tj.daftariqarzho.app.core.designsystem.components.LocalGlassBarInset
+import tj.daftariqarzho.app.core.designsystem.components.glassNavigationBarInset
 import tj.daftariqarzho.app.core.designsystem.icons.DaftarIcons
 import tj.daftariqarzho.app.core.designsystem.theme.DaftarTheme
 import tj.daftariqarzho.app.feature.debtors.DebtorCreateRoute
@@ -78,45 +86,67 @@ private fun AppRoot() {
         TopLevelDestination.entries.any { destination.hasRoute(it.route::class) }
     }
     val showBottomBar = isTopLevel && !WindowInsets.isImeVisible
+    val hazeState = rememberHazeState()
+    val glassBarInset = if (showBottomBar) glassNavigationBarInset() else 0.dp
 
-    Scaffold(
-        bottomBar = {
+    Scaffold { innerPadding ->
+        Box(modifier = Modifier.fillMaxSize()) {
+            CompositionLocalProvider(LocalGlassBarInset provides glassBarInset) {
+                DaftarNavHost(
+                    navController = navController,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .hazeSource(hazeState)
+                        .padding(
+                            top = innerPadding.calculateTopPadding(),
+                            bottom = if (showBottomBar) 0.dp else innerPadding.calculateBottomPadding(),
+                        ),
+                )
+            }
             if (showBottomBar) {
                 DaftarBottomBar(
                     navController = navController,
                     currentDestination = currentDestination,
+                    hazeState = hazeState,
+                    modifier = Modifier.align(Alignment.BottomCenter),
                 )
             }
-        },
-    ) { innerPadding ->
-        NavHost(
-            navController = navController,
-            startDestination = DebtorsRoute,
-            modifier = Modifier.padding(innerPadding),
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None },
-            popEnterTransition = { EnterTransition.None },
-            popExitTransition = { ExitTransition.None },
-        ) {
-            debtorsScreen(
-                onDebtorClick = { debtorId ->
-                    navController.navigate(DebtorDetailRoute(debtorId))
-                },
-                onAddDebtorClick = { navController.navigate(DebtorCreateRoute) },
-            )
-            debtorDetailScreen(
-                onBack = { navController.popBackStack() },
-                onEditClick = { debtorId ->
-                    navController.navigate(DebtorEditRoute(debtorId))
-                },
-            )
-            debtorEditorScreen(
-                onBack = { navController.popBackStack() },
-            )
-            transactionsScreen()
-            reportsScreen()
-            settingsScreen()
         }
+    }
+}
+
+@Composable
+private fun DaftarNavHost(
+    navController: NavHostController,
+    modifier: Modifier = Modifier,
+) {
+    NavHost(
+        navController = navController,
+        startDestination = DebtorsRoute,
+        modifier = modifier,
+        enterTransition = { EnterTransition.None },
+        exitTransition = { ExitTransition.None },
+        popEnterTransition = { EnterTransition.None },
+        popExitTransition = { ExitTransition.None },
+    ) {
+        debtorsScreen(
+            onDebtorClick = { debtorId ->
+                navController.navigate(DebtorDetailRoute(debtorId))
+            },
+            onAddDebtorClick = { navController.navigate(DebtorCreateRoute) },
+        )
+        debtorDetailScreen(
+            onBack = { navController.popBackStack() },
+            onEditClick = { debtorId ->
+                navController.navigate(DebtorEditRoute(debtorId))
+            },
+        )
+        debtorEditorScreen(
+            onBack = { navController.popBackStack() },
+        )
+        transactionsScreen()
+        reportsScreen()
+        settingsScreen()
     }
 }
 
@@ -124,24 +154,29 @@ private fun AppRoot() {
 private fun DaftarBottomBar(
     navController: NavHostController,
     currentDestination: NavDestination?,
+    hazeState: HazeState,
+    modifier: Modifier = Modifier,
 ) {
-    NavigationBar {
-        TopLevelDestination.entries.forEach { destination ->
-            val selected = currentDestination?.hierarchy?.any {
-                it.hasRoute(destination.route::class)
-            } == true
-            NavigationBarItem(
-                selected = selected,
-                onClick = {
-                    navController.navigate(destination.route) {
-                        popUpTo(navController.graph.findStartDestination().id) { saveState = true }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                },
-                icon = { Icon(destination.icon, contentDescription = null) },
-                label = { Text(stringResource(destination.labelRes)) },
-            )
-        }
+    val destinations = TopLevelDestination.entries
+    val selectedIndex = destinations.indexOfFirst { destination ->
+        currentDestination?.hierarchy?.any { it.hasRoute(destination.route::class) } == true
     }
+    GlassNavigationBar(
+        items = destinations.map { destination ->
+            GlassNavigationItem(
+                icon = destination.icon,
+                label = stringResource(destination.labelRes),
+            )
+        },
+        selectedIndex = selectedIndex,
+        onItemClick = { index ->
+            navController.navigate(destinations[index].route) {
+                popUpTo(navController.graph.findStartDestination().id) { saveState = true }
+                launchSingleTop = true
+                restoreState = true
+            }
+        },
+        hazeState = hazeState,
+        modifier = modifier,
+    )
 }

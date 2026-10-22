@@ -23,6 +23,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
 import tj.daftariqarzho.app.core.common.datetime.DateFormatter
+import tj.daftariqarzho.app.core.designsystem.components.LocalGlassBarInset
 import tj.daftariqarzho.app.core.designsystem.components.MoneyText
 import tj.daftariqarzho.app.core.designsystem.theme.DaftarTheme
 import tj.daftariqarzho.app.feature.transactions.domain.model.DayGroup
@@ -113,7 +114,7 @@ private fun EmptyState() {
 private fun TransactionsList(groups: List<DayGroup>) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(bottom = DaftarTheme.spacing.screenPadding),
+        contentPadding = PaddingValues(bottom = DaftarTheme.spacing.screenPadding + LocalGlassBarInset.current),
     ) {
         groups.forEach { group ->
             stickyHeader(key = "header_${group.dayMillis}") {
