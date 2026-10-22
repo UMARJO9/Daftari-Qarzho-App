@@ -4,24 +4,17 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -34,7 +27,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -43,6 +35,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tj.daftariqarzho.app.core.common.datetime.DateFormatter
+import tj.daftariqarzho.app.core.designsystem.components.DaftarButton
+import tj.daftariqarzho.app.core.designsystem.components.DaftarButtonDefaults
+import tj.daftariqarzho.app.core.designsystem.components.DaftarIconButton
 import tj.daftariqarzho.app.core.designsystem.icons.DaftarIcons
 import tj.daftariqarzho.app.core.designsystem.theme.DaftarTheme
 import tj.daftariqarzho.app.feature.debtors.R
@@ -168,23 +163,13 @@ private fun TransactionEditorContent(
             )
         }
 
-        Button(
+        DaftarButton(
+            text = stringResource(R.string.transaction_editor_save),
             onClick = { onEvent(TransactionEditorEvent.Save) },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(DaftarTheme.spacing.minTouchTarget),
+            modifier = Modifier.fillMaxWidth(),
+            colors = DaftarButtonDefaults.solid(accentColor),
             enabled = state.canSave,
-            shape = DaftarTheme.shapes.medium,
-            colors = ButtonDefaults.buttonColors(
-                containerColor = accentColor,
-                contentColor = Color.White,
-            ),
-        ) {
-            Text(
-                text = stringResource(R.string.transaction_editor_save),
-                style = DaftarTheme.typography.labelLarge,
-            )
-        }
+        )
     }
 
     if (datePickerVisible) {
@@ -210,30 +195,21 @@ private fun DueDateRow(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(DaftarTheme.spacing.sm),
     ) {
-        OutlinedButton(
+        DaftarButton(
+            text = dueDate
+                ?.let { DateFormatter.formatDate(it) }
+                ?: stringResource(R.string.transaction_editor_due_date_pick),
             onClick = onPickClick,
             modifier = Modifier.weight(1f),
-            shape = DaftarTheme.shapes.medium,
-        ) {
-            Icon(
-                DaftarIcons.Calendar,
-                contentDescription = null,
-                modifier = Modifier.padding(end = DaftarTheme.spacing.sm),
-            )
-            Text(
-                text = dueDate
-                    ?.let { DateFormatter.formatDate(it) }
-                    ?: stringResource(R.string.transaction_editor_due_date_pick),
-                style = DaftarTheme.typography.labelLarge,
-            )
-        }
+            colors = DaftarButtonDefaults.neutral(),
+            icon = DaftarIcons.Calendar,
+        )
         if (dueDate != null) {
-            IconButton(onClick = onClear) {
-                Icon(
-                    DaftarIcons.Close,
-                    contentDescription = stringResource(R.string.transaction_editor_due_date_clear),
-                )
-            }
+            DaftarIconButton(
+                icon = DaftarIcons.Close,
+                contentDescription = stringResource(R.string.transaction_editor_due_date_clear),
+                onClick = onClear,
+            )
         }
     }
 }
@@ -257,18 +233,20 @@ private fun DueDatePickerDialog(
     DatePickerDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
-            TextButton(
+            DaftarButton(
+                text = stringResource(R.string.transaction_editor_dialog_ok),
                 onClick = {
                     onConfirm(datePickerState.selectedDateMillis?.let { DateFormatter.utcDateToLocalStartOfDay(it) })
                 },
-            ) {
-                Text(stringResource(R.string.transaction_editor_dialog_ok))
-            }
+                colors = DaftarButtonDefaults.plain(),
+            )
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.transaction_editor_dialog_cancel))
-            }
+            DaftarButton(
+                text = stringResource(R.string.transaction_editor_dialog_cancel),
+                onClick = onDismiss,
+                colors = DaftarButtonDefaults.plain(),
+            )
         },
     ) {
         DatePicker(state = datePickerState)

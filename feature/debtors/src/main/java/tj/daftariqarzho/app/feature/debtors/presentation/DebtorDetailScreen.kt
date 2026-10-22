@@ -15,11 +15,8 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -35,6 +32,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tj.daftariqarzho.app.core.common.datetime.DateFormatter
+import tj.daftariqarzho.app.core.designsystem.components.DaftarButton
+import tj.daftariqarzho.app.core.designsystem.components.DaftarButtonDefaults
+import tj.daftariqarzho.app.core.designsystem.components.DaftarIconButton
 import tj.daftariqarzho.app.core.designsystem.components.DebtGivenButton
 import tj.daftariqarzho.app.core.designsystem.components.MoneyText
 import tj.daftariqarzho.app.core.designsystem.components.PaymentReceivedButton
@@ -80,27 +80,25 @@ fun DebtorDetailScreen(
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            DaftarIcons.Back,
-                            contentDescription = stringResource(R.string.debtor_detail_back),
-                        )
-                    }
+                    DaftarIconButton(
+                        icon = DaftarIcons.Back,
+                        contentDescription = stringResource(R.string.debtor_detail_back),
+                        onClick = onBack,
+                    )
                 },
                 actions = {
                     if (state.debtor != null) {
-                        IconButton(onClick = onEditClick) {
-                            Icon(
-                                DaftarIcons.Edit,
-                                contentDescription = stringResource(R.string.debtor_detail_edit),
-                            )
-                        }
-                        IconButton(onClick = { deleteDialogVisible = true }) {
-                            Icon(
-                                DaftarIcons.Delete,
-                                contentDescription = stringResource(R.string.debtor_detail_delete),
-                            )
-                        }
+                        DaftarIconButton(
+                            icon = DaftarIcons.Edit,
+                            contentDescription = stringResource(R.string.debtor_detail_edit),
+                            onClick = onEditClick,
+                        )
+                        DaftarIconButton(
+                            icon = DaftarIcons.Delete,
+                            contentDescription = stringResource(R.string.debtor_detail_delete),
+                            onClick = { deleteDialogVisible = true },
+                            colors = DaftarButtonDefaults.neutral().copy(content = DaftarTheme.debtColors.given),
+                        )
                     }
                 },
             )
@@ -294,17 +292,18 @@ private fun DeleteConfirmDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
         title = { Text(stringResource(R.string.debtor_detail_delete_confirm_title)) },
         text = { Text(stringResource(R.string.debtor_detail_delete_confirm_text)) },
         confirmButton = {
-            TextButton(onClick = onConfirm) {
-                Text(
-                    text = stringResource(R.string.debtor_detail_delete_confirm_ok),
-                    color = DaftarTheme.debtColors.given,
-                )
-            }
+            DaftarButton(
+                text = stringResource(R.string.debtor_detail_delete_confirm_ok),
+                onClick = onConfirm,
+                colors = DaftarButtonDefaults.destructivePlain(),
+            )
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.debtor_detail_delete_confirm_cancel))
-            }
+            DaftarButton(
+                text = stringResource(R.string.debtor_detail_delete_confirm_cancel),
+                onClick = onDismiss,
+                colors = DaftarButtonDefaults.plain(),
+            )
         },
     )
 }

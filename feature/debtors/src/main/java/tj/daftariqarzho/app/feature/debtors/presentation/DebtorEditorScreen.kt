@@ -6,17 +6,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -36,6 +32,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
+import tj.daftariqarzho.app.core.designsystem.components.DaftarButton
+import tj.daftariqarzho.app.core.designsystem.components.DaftarIconButton
 import tj.daftariqarzho.app.core.designsystem.icons.DaftarIcons
 import tj.daftariqarzho.app.core.designsystem.theme.DaftarTheme
 import tj.daftariqarzho.app.feature.debtors.R
@@ -77,12 +75,11 @@ fun DebtorEditorScreen(
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            DaftarIcons.Back,
-                            contentDescription = stringResource(R.string.debtor_detail_back),
-                        )
-                    }
+                    DaftarIconButton(
+                        icon = DaftarIcons.Back,
+                        contentDescription = stringResource(R.string.debtor_detail_back),
+                        onClick = onBack,
+                    )
                 },
             )
         },
@@ -188,18 +185,11 @@ private fun DebtorEditorContent(
             ),
         )
 
-        Button(
+        DaftarButton(
+            text = stringResource(R.string.debtor_editor_save),
             onClick = { onEvent(DebtorEditorEvent.Save) },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(DaftarTheme.spacing.minTouchTarget),
+            modifier = Modifier.fillMaxWidth(),
             enabled = state.canSave,
-            shape = DaftarTheme.shapes.medium,
-        ) {
-            Text(
-                text = stringResource(R.string.debtor_editor_save),
-                style = DaftarTheme.typography.labelLarge,
-            )
-        }
+        )
     }
 }
