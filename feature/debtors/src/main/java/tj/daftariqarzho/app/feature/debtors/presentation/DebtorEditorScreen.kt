@@ -13,7 +13,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -24,7 +23,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -34,6 +32,7 @@ import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tj.daftariqarzho.app.core.designsystem.components.DaftarButton
 import tj.daftariqarzho.app.core.designsystem.components.DaftarIconButton
+import tj.daftariqarzho.app.core.designsystem.components.DaftarTextField
 import tj.daftariqarzho.app.core.designsystem.icons.DaftarIcons
 import tj.daftariqarzho.app.core.designsystem.theme.DaftarTheme
 import tj.daftariqarzho.app.feature.debtors.R
@@ -127,58 +126,42 @@ private fun DebtorEditorContent(
             ),
         verticalArrangement = Arrangement.spacedBy(DaftarTheme.spacing.md),
     ) {
-        OutlinedTextField(
+        DaftarTextField(
             value = state.name,
             onValueChange = { onEvent(DebtorEditorEvent.NameChanged(it)) },
-            modifier = Modifier
-                .fillMaxWidth()
-                .focusRequester(nameFocusRequester),
-            label = { Text(stringResource(R.string.debtor_editor_name)) },
-            isError = state.nameError != null,
-            supportingText = state.nameError?.let { error ->
-                {
-                    Text(
-                        text = when (error) {
-                            DebtorNameError.EMPTY ->
-                                stringResource(R.string.debtor_editor_error_name_empty)
-
-                            DebtorNameError.TOO_LONG -> stringResource(
-                                R.string.debtor_editor_error_name_too_long,
-                                SaveDebtorUseCase.MAX_NAME_LENGTH,
-                            )
-                        },
-                        style = DaftarTheme.typography.bodySmall,
-                    )
-                }
+            modifier = Modifier.fillMaxWidth(),
+            label = stringResource(R.string.debtor_editor_name),
+            error = when (state.nameError) {
+                DebtorNameError.EMPTY -> stringResource(R.string.debtor_editor_error_name_empty)
+                DebtorNameError.TOO_LONG -> stringResource(
+                    R.string.debtor_editor_error_name_too_long,
+                    SaveDebtorUseCase.MAX_NAME_LENGTH,
+                )
+                null -> null
             },
-            singleLine = true,
-            shape = DaftarTheme.shapes.medium,
+            focusRequester = nameFocusRequester,
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.Words,
                 imeAction = ImeAction.Next,
             ),
         )
 
-        OutlinedTextField(
+        DaftarTextField(
             value = state.phone,
             onValueChange = { onEvent(DebtorEditorEvent.PhoneChanged(it)) },
             modifier = Modifier.fillMaxWidth(),
-            label = { Text(stringResource(R.string.debtor_editor_phone)) },
-            singleLine = true,
-            shape = DaftarTheme.shapes.medium,
+            label = stringResource(R.string.debtor_editor_phone),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Phone,
                 imeAction = ImeAction.Next,
             ),
         )
 
-        OutlinedTextField(
+        DaftarTextField(
             value = state.note,
             onValueChange = { onEvent(DebtorEditorEvent.NoteChanged(it)) },
             modifier = Modifier.fillMaxWidth(),
-            label = { Text(stringResource(R.string.debtor_editor_note)) },
-            singleLine = true,
-            shape = DaftarTheme.shapes.medium,
+            label = stringResource(R.string.debtor_editor_note),
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.Sentences,
                 imeAction = ImeAction.Done,

@@ -12,7 +12,6 @@ import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDatePickerState
@@ -26,7 +25,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -38,6 +36,7 @@ import tj.daftariqarzho.app.core.common.datetime.DateFormatter
 import tj.daftariqarzho.app.core.designsystem.components.DaftarButton
 import tj.daftariqarzho.app.core.designsystem.components.DaftarButtonDefaults
 import tj.daftariqarzho.app.core.designsystem.components.DaftarIconButton
+import tj.daftariqarzho.app.core.designsystem.components.DaftarTextField
 import tj.daftariqarzho.app.core.designsystem.icons.DaftarIcons
 import tj.daftariqarzho.app.core.designsystem.theme.DaftarTheme
 import tj.daftariqarzho.app.feature.debtors.R
@@ -121,34 +120,28 @@ private fun TransactionEditorContent(
             color = accentColor,
         )
 
-        OutlinedTextField(
+        DaftarTextField(
             value = state.amountInput,
             onValueChange = { onEvent(TransactionEditorEvent.AmountChanged(it)) },
-            modifier = Modifier
-                .fillMaxWidth()
-                .focusRequester(amountFocusRequester),
-            label = { Text(stringResource(R.string.transaction_editor_amount)) },
-            isError = state.showAmountError,
-            supportingText = if (state.showAmountError) {
-                { Text(stringResource(R.string.transaction_editor_amount_error)) }
+            modifier = Modifier.fillMaxWidth(),
+            label = stringResource(R.string.transaction_editor_amount),
+            error = if (state.showAmountError) {
+                stringResource(R.string.transaction_editor_amount_error)
             } else {
                 null
             },
-            singleLine = true,
-            shape = DaftarTheme.shapes.medium,
+            focusRequester = amountFocusRequester,
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Decimal,
                 imeAction = ImeAction.Next,
             ),
         )
 
-        OutlinedTextField(
+        DaftarTextField(
             value = state.comment,
             onValueChange = { onEvent(TransactionEditorEvent.CommentChanged(it)) },
             modifier = Modifier.fillMaxWidth(),
-            label = { Text(stringResource(R.string.transaction_editor_comment)) },
-            singleLine = true,
-            shape = DaftarTheme.shapes.medium,
+            label = stringResource(R.string.transaction_editor_comment),
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.Sentences,
                 imeAction = ImeAction.Done,

@@ -1,6 +1,7 @@
 <resources>
     <string name="debtors_title">Мизоҷон</string>
     <string name="debtors_search_hint">Ҷустуҷӯ</string>
+    <string name="debtors_search_clear">Тоза кардан</string>
     <string name="debtors_total_balance">Ҳисоби умумӣ</string>
     <string name="debtors_empty">Ҳанӯз мизоҷон нест</string>
     <string name="debtors_empty_search">Ҳеҷ чиз ёфт нашуд</string>

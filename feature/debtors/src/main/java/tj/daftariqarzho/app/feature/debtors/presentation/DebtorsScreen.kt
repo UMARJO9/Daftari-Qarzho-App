@@ -11,8 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,6 +27,7 @@ import tj.daftariqarzho.app.core.designsystem.components.DebtorCard
 import tj.daftariqarzho.app.core.designsystem.components.GlassFloatingActionButton
 import tj.daftariqarzho.app.core.designsystem.components.LocalGlassBarInset
 import tj.daftariqarzho.app.core.designsystem.components.MoneyText
+import tj.daftariqarzho.app.core.designsystem.components.DaftarTextField
 import tj.daftariqarzho.app.core.designsystem.icons.DaftarIcons
 import tj.daftariqarzho.app.core.designsystem.theme.DaftarTheme
 import tj.daftariqarzho.app.feature.debtors.R
@@ -117,16 +116,16 @@ private fun TotalBalanceHeader(totalInDirams: Long) {
 
 @Composable
 private fun SearchField(query: String, onQueryChange: (String) -> Unit) {
-    OutlinedTextField(
+    DaftarTextField(
         value = query,
         onValueChange = onQueryChange,
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = DaftarTheme.spacing.screenPadding),
-        placeholder = { Text(stringResource(R.string.debtors_search_hint)) },
-        leadingIcon = { Icon(DaftarIcons.Search, contentDescription = null) },
-        singleLine = true,
-        shape = DaftarTheme.shapes.medium,
+        placeholder = stringResource(R.string.debtors_search_hint),
+        leadingIcon = DaftarIcons.Search,
+        onClear = { onQueryChange("") },
+        clearContentDescription = stringResource(R.string.debtors_search_clear),
     )
 }
 
