@@ -11,10 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -42,6 +38,7 @@ import tj.daftariqarzho.app.core.common.datetime.DateFormatter
 import tj.daftariqarzho.app.core.designsystem.components.DebtGivenButton
 import tj.daftariqarzho.app.core.designsystem.components.MoneyText
 import tj.daftariqarzho.app.core.designsystem.components.PaymentReceivedButton
+import tj.daftariqarzho.app.core.designsystem.icons.DaftarIcons
 import tj.daftariqarzho.app.core.designsystem.theme.DaftarTheme
 import tj.daftariqarzho.app.feature.debtors.R
 import tj.daftariqarzho.app.feature.debtors.domain.model.DebtTransaction
@@ -85,7 +82,7 @@ fun DebtorDetailScreen(
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
-                            Icons.AutoMirrored.Filled.ArrowBack,
+                            DaftarIcons.Back,
                             contentDescription = stringResource(R.string.debtor_detail_back),
                         )
                     }
@@ -94,13 +91,13 @@ fun DebtorDetailScreen(
                     if (state.debtor != null) {
                         IconButton(onClick = onEditClick) {
                             Icon(
-                                Icons.Filled.Edit,
+                                DaftarIcons.Edit,
                                 contentDescription = stringResource(R.string.debtor_detail_edit),
                             )
                         }
                         IconButton(onClick = { deleteDialogVisible = true }) {
                             Icon(
-                                Icons.Filled.Delete,
+                                DaftarIcons.Delete,
                                 contentDescription = stringResource(R.string.debtor_detail_delete),
                             )
                         }

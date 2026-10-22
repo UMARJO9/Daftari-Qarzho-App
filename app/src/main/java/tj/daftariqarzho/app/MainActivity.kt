@@ -11,11 +11,6 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.List
-import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -34,6 +29,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import tj.daftariqarzho.app.core.designsystem.icons.DaftarIcons
 import tj.daftariqarzho.app.core.designsystem.theme.DaftarTheme
 import tj.daftariqarzho.app.feature.debtors.DebtorCreateRoute
 import tj.daftariqarzho.app.feature.debtors.DebtorDetailRoute
@@ -66,10 +62,10 @@ private enum class TopLevelDestination(
     val labelRes: Int,
     val icon: ImageVector,
 ) {
-    DEBTORS(DebtorsRoute, R.string.tab_debtors, Icons.Filled.Person),
-    TRANSACTIONS(TransactionsRoute, R.string.tab_transactions, Icons.AutoMirrored.Filled.List),
-    REPORTS(ReportsRoute, R.string.tab_reports, Icons.Filled.DateRange),
-    SETTINGS(SettingsRoute, R.string.tab_settings, Icons.Filled.Settings),
+    DEBTORS(DebtorsRoute, R.string.tab_debtors, DaftarIcons.Debtors),
+    TRANSACTIONS(TransactionsRoute, R.string.tab_transactions, DaftarIcons.Transactions),
+    REPORTS(ReportsRoute, R.string.tab_reports, DaftarIcons.Reports),
+    SETTINGS(SettingsRoute, R.string.tab_settings, DaftarIcons.Settings),
 }
 
 @OptIn(ExperimentalLayoutApi::class)

@@ -9,9 +9,6 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DatePicker
@@ -46,6 +43,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tj.daftariqarzho.app.core.common.datetime.DateFormatter
+import tj.daftariqarzho.app.core.designsystem.icons.DaftarIcons
 import tj.daftariqarzho.app.core.designsystem.theme.DaftarTheme
 import tj.daftariqarzho.app.feature.debtors.R
 import tj.daftariqarzho.app.feature.debtors.domain.model.TransactionType
@@ -218,7 +216,7 @@ private fun DueDateRow(
             shape = DaftarTheme.shapes.medium,
         ) {
             Icon(
-                Icons.Filled.DateRange,
+                DaftarIcons.Calendar,
                 contentDescription = null,
                 modifier = Modifier.padding(end = DaftarTheme.spacing.sm),
             )
@@ -232,7 +230,7 @@ private fun DueDateRow(
         if (dueDate != null) {
             IconButton(onClick = onClear) {
                 Icon(
-                    Icons.Filled.Clear,
+                    DaftarIcons.Close,
                     contentDescription = stringResource(R.string.transaction_editor_due_date_clear),
                 )
             }

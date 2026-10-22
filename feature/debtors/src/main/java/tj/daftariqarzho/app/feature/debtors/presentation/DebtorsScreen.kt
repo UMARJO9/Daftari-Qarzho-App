@@ -10,9 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -29,6 +26,7 @@ import org.koin.androidx.compose.koinViewModel
 import tj.daftariqarzho.app.core.common.datetime.DateFormatter
 import tj.daftariqarzho.app.core.designsystem.components.DebtorCard
 import tj.daftariqarzho.app.core.designsystem.components.MoneyText
+import tj.daftariqarzho.app.core.designsystem.icons.DaftarIcons
 import tj.daftariqarzho.app.core.designsystem.theme.DaftarTheme
 import tj.daftariqarzho.app.feature.debtors.R
 import tj.daftariqarzho.app.feature.debtors.domain.model.DebtorSummary
@@ -66,7 +64,7 @@ private fun DebtorsContent(
                 containerColor = DaftarTheme.colors.primary,
                 contentColor = DaftarTheme.colors.onPrimary,
             ) {
-                Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.debtors_add))
+                Icon(DaftarIcons.Add, contentDescription = stringResource(R.string.debtors_add))
             }
         },
     ) { innerPadding ->
@@ -120,7 +118,7 @@ private fun SearchField(query: String, onQueryChange: (String) -> Unit) {
             .fillMaxWidth()
             .padding(horizontal = DaftarTheme.spacing.screenPadding),
         placeholder = { Text(stringResource(R.string.debtors_search_hint)) },
-        leadingIcon = { Icon(Icons.Filled.Search, contentDescription = null) },
+        leadingIcon = { Icon(DaftarIcons.Search, contentDescription = null) },
         singleLine = true,
         shape = DaftarTheme.shapes.medium,
     )
