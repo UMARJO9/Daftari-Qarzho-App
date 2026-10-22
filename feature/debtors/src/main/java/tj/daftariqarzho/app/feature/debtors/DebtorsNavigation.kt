@@ -14,9 +14,6 @@ import tj.daftariqarzho.app.feature.debtors.presentation.DebtorEditorScreen
 import tj.daftariqarzho.app.feature.debtors.presentation.DebtorsScreen
 
 @Serializable
-data object DebtorsRoute
-
-@Serializable
 data class DebtorDetailRoute(val debtorId: Long)
 
 @Serializable
@@ -25,16 +22,15 @@ data object DebtorCreateRoute
 @Serializable
 data class DebtorEditRoute(val debtorId: Long)
 
-fun NavGraphBuilder.debtorsScreen(
+@Composable
+fun DebtorsTab(
     onDebtorClick: (Long) -> Unit,
     onAddDebtorClick: () -> Unit,
 ) {
-    composable<DebtorsRoute> {
-        DebtorsScreen(
-            onDebtorClick = dropUnlessResumedWithArgument(onDebtorClick),
-            onAddClick = dropUnlessResumed(block = onAddDebtorClick),
-        )
-    }
+    DebtorsScreen(
+        onDebtorClick = dropUnlessResumedWithArgument(onDebtorClick),
+        onAddClick = dropUnlessResumed(block = onAddDebtorClick),
+    )
 }
 
 fun NavGraphBuilder.debtorDetailScreen(

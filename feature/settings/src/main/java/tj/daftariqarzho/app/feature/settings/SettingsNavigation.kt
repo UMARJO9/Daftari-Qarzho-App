@@ -1,14 +1,8 @@
 package tj.daftariqarzho.app.feature.settings
 
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
-import kotlinx.serialization.Serializable
+import androidx.compose.runtime.Composable
 
-@Serializable
-data object SettingsRoute
-
-fun NavGraphBuilder.settingsScreen() {
-    composable<SettingsRoute> {
-        SettingsScreen()
-    }
+@Composable
+fun SettingsTab() {
+    SettingsScreen()
 }

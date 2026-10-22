@@ -1,14 +1,8 @@
 package tj.daftariqarzho.app.feature.reports
 
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
-import kotlinx.serialization.Serializable
+import androidx.compose.runtime.Composable
 
-@Serializable
-data object ReportsRoute
-
-fun NavGraphBuilder.reportsScreen() {
-    composable<ReportsRoute> {
-        ReportsScreen()
-    }
+@Composable
+fun ReportsTab() {
+    ReportsScreen()
 }

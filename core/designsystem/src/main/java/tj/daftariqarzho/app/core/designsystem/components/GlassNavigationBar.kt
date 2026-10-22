@@ -1,10 +1,7 @@
 package tj.daftariqarzho.app.core.designsystem.components
 
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -45,9 +42,11 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import dev.chrisbanes.haze.HazeState
 import tj.daftariqarzho.app.core.designsystem.theme.DaftarTheme
+import kotlin.math.roundToInt
 
 @Immutable
 data class GlassNavigationItem(
@@ -67,6 +66,7 @@ fun glassNavigationBarInset(): Dp =
 fun GlassNavigationBar(
     items: List<GlassNavigationItem>,
     selectedIndex: Int,
+    selectionPosition: () -> Float,
     onItemClick: (Int) -> Unit,
     hazeState: HazeState,
     modifier: Modifier = Modifier,
@@ -84,17 +84,13 @@ fun GlassNavigationBar(
             .selectableGroup(),
     ) {
         val itemWidth = maxWidth / items.size
-        val indicatorOffset by animateDpAsState(
-            targetValue = itemWidth * selectedIndex.coerceAtLeast(0),
-            animationSpec = spring(
-                dampingRatio = Spring.DampingRatioLowBouncy,
-                stiffness = Spring.StiffnessMediumLow,
-            ),
-        )
         if (selectedIndex in items.indices) {
             Box(
                 modifier = Modifier
-                    .offset(x = indicatorOffset)
+                    .offset {
+                        val position = selectionPosition().coerceIn(0f, items.lastIndex.toFloat())
+                        IntOffset(x = (itemWidth.toPx() * position).roundToInt(), y = 0)
+                    }
                     .width(itemWidth)
                     .fillMaxHeight()
                     .padding(spacing.glassIndicatorInset)

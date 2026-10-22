@@ -1,14 +1,8 @@
 package tj.daftariqarzho.app.feature.transactions
 
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
-import kotlinx.serialization.Serializable
+import androidx.compose.runtime.Composable
 
-@Serializable
-data object TransactionsRoute
-
-fun NavGraphBuilder.transactionsScreen() {
-    composable<TransactionsRoute> {
-        TransactionsScreen()
-    }
+@Composable
+fun TransactionsTab() {
+    TransactionsScreen()
 }
