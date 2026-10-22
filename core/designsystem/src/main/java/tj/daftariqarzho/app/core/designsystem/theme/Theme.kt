@@ -17,10 +17,12 @@ fun DaftarTheme(
     val colorScheme = if (darkTheme) darkScheme else lightScheme
     val debtColors = if (darkTheme) DarkDebtColors else LightDebtColors
     val glassColors = if (darkTheme) DarkGlassColors else LightGlassColors
+    val controlColors = if (darkTheme) DarkControlColors else LightControlColors
 
     CompositionLocalProvider(
         LocalDebtColors provides debtColors,
         LocalGlassColors provides glassColors,
+        LocalControlColors provides controlColors,
         LocalMoneyTypography provides DefaultMoneyTypography,
         LocalDaftarSpacing provides DaftarSpacing(),
     ) {
@@ -48,6 +50,11 @@ object DaftarTheme {
         @Composable
         @ReadOnlyComposable
         get() = LocalGlassColors.current
+
+    val controlColors: ControlColors
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalControlColors.current
 
     val typography: Typography
         @Composable

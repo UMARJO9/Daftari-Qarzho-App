@@ -2,7 +2,6 @@ package tj.daftariqarzho.app.feature.transactions
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -12,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -23,6 +21,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
 import tj.daftariqarzho.app.core.common.datetime.DateFormatter
+import tj.daftariqarzho.app.core.designsystem.components.DaftarSegmentedControl
 import tj.daftariqarzho.app.core.designsystem.components.LocalGlassBarInset
 import tj.daftariqarzho.app.core.designsystem.components.MoneyText
 import tj.daftariqarzho.app.core.designsystem.theme.DaftarTheme
@@ -74,23 +73,16 @@ private fun PeriodFilter(
     selected: TransactionPeriod,
     onSelect: (TransactionPeriod) -> Unit,
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(
-                horizontal = DaftarTheme.spacing.screenPadding,
-                vertical = DaftarTheme.spacing.md,
-            ),
-        horizontalArrangement = Arrangement.spacedBy(DaftarTheme.spacing.sm),
-    ) {
-        TransactionPeriod.entries.forEach { period ->
-            FilterChip(
-                selected = period == selected,
-                onClick = { onSelect(period) },
-                label = { Text(stringResource(period.labelRes())) },
-            )
-        }
-    }
+    val periods = TransactionPeriod.entries
+    DaftarSegmentedControl(
+        items = periods.map { stringResource(it.labelRes()) },
+        selectedIndex = periods.indexOf(selected),
+        onSelect = { onSelect(periods[it]) },
+        modifier = Modifier.padding(
+            horizontal = DaftarTheme.spacing.screenPadding,
+            vertical = DaftarTheme.spacing.md,
+        ),
+    )
 }
 
 @Composable

@@ -55,7 +55,30 @@ object DaftarColors {
     val GlassEdgeDark = Color(0x14FFFFFF)
     val GlassIndicatorDark = Color(0x1FFFFFFF)
     val GlassShadowDark = Color(0x80000000)
+
+    val SegmentTrackLight = Color(0x141C1B17)
+    val SegmentThumbLight = Color(0xFFFFFFFF)
+    val SegmentTrackDark = Color(0x1FFFFFFF)
+    val SegmentThumbDark = Color(0xFF3A3D3A)
 }
+
+@Immutable
+data class ControlColors(
+    val segmentTrack: Color,
+    val segmentThumb: Color,
+)
+
+val LightControlColors = ControlColors(
+    segmentTrack = DaftarColors.SegmentTrackLight,
+    segmentThumb = DaftarColors.SegmentThumbLight,
+)
+
+val DarkControlColors = ControlColors(
+    segmentTrack = DaftarColors.SegmentTrackDark,
+    segmentThumb = DaftarColors.SegmentThumbDark,
+)
+
+val LocalControlColors = staticCompositionLocalOf { LightControlColors }
 
 @Immutable
 data class GlassColors(
