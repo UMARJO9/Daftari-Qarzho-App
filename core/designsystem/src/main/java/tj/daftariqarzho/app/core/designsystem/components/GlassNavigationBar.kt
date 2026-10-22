@@ -38,7 +38,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
@@ -48,16 +47,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import dev.chrisbanes.haze.HazeState
-import dev.chrisbanes.haze.HazeStyle
-import dev.chrisbanes.haze.HazeTint
-import dev.chrisbanes.haze.hazeEffect
 import tj.daftariqarzho.app.core.designsystem.theme.DaftarTheme
-
-private val GlassBlurRadius = 24.dp
-private const val GlassNoiseFactor = 0.05f
-private val GlassShadowElevation = 16.dp
-private val GlassBorderWidth = 1.dp
-private const val PressedScale = 0.88f
 
 @Immutable
 data class GlassNavigationItem(
@@ -83,14 +73,6 @@ fun GlassNavigationBar(
 ) {
     val glass = DaftarTheme.glassColors
     val spacing = DaftarTheme.spacing
-    val style = HazeStyle(
-        backgroundColor = DaftarTheme.colors.background,
-        tint = HazeTint(glass.tint),
-        blurRadius = GlassBlurRadius,
-        noiseFactor = GlassNoiseFactor,
-        fallbackTint = HazeTint(glass.fallback),
-    )
-    val borderBrush = Brush.verticalGradient(listOf(glass.highlight, glass.edge))
 
     BoxWithConstraints(
         modifier = modifier
@@ -98,15 +80,7 @@ fun GlassNavigationBar(
             .navigationBarsPadding()
             .padding(horizontal = spacing.xl, vertical = spacing.md)
             .height(spacing.glassBarHeight)
-            .shadow(
-                elevation = GlassShadowElevation,
-                shape = CircleShape,
-                ambientColor = glass.shadow,
-                spotColor = glass.shadow,
-            )
-            .clip(CircleShape)
-            .hazeEffect(state = hazeState, style = style)
-            .border(GlassBorderWidth, borderBrush, CircleShape)
+            .glassBackground(hazeState = hazeState, shape = CircleShape)
             .selectableGroup(),
     ) {
         val itemWidth = maxWidth / items.size
@@ -157,7 +131,7 @@ private fun GlassNavigationBarItem(
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val pressed by interactionSource.collectIsPressedAsState()
-    val scale by animateFloatAsState(targetValue = if (pressed) PressedScale else 1f)
+    val scale by animateFloatAsState(targetValue = if (pressed) GlassPressedScale else 1f)
     val contentColor by animateColorAsState(
         targetValue = if (selected) DaftarTheme.colors.primary else DaftarTheme.colors.onSurfaceVariant,
     )

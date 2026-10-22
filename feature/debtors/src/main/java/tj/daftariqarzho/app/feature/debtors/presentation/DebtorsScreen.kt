@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -22,9 +21,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import dev.chrisbanes.haze.hazeSource
+import dev.chrisbanes.haze.rememberHazeState
 import org.koin.androidx.compose.koinViewModel
 import tj.daftariqarzho.app.core.common.datetime.DateFormatter
 import tj.daftariqarzho.app.core.designsystem.components.DebtorCard
+import tj.daftariqarzho.app.core.designsystem.components.GlassFloatingActionButton
 import tj.daftariqarzho.app.core.designsystem.components.LocalGlassBarInset
 import tj.daftariqarzho.app.core.designsystem.components.MoneyText
 import tj.daftariqarzho.app.core.designsystem.icons.DaftarIcons
@@ -57,22 +59,24 @@ private fun DebtorsContent(
     onDebtorClick: (Long) -> Unit,
     onAddClick: () -> Unit,
 ) {
+    val hazeState = rememberHazeState()
+
     Scaffold(
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
         floatingActionButton = {
-            FloatingActionButton(
+            GlassFloatingActionButton(
+                icon = DaftarIcons.Add,
+                contentDescription = stringResource(R.string.debtors_add),
                 onClick = onAddClick,
+                hazeState = hazeState,
                 modifier = Modifier.padding(bottom = LocalGlassBarInset.current),
-                containerColor = DaftarTheme.colors.primary,
-                contentColor = DaftarTheme.colors.onPrimary,
-            ) {
-                Icon(DaftarIcons.Add, contentDescription = stringResource(R.string.debtors_add))
-            }
+            )
         },
     ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .hazeSource(hazeState)
                 .padding(innerPadding),
         ) {
             TotalBalanceHeader(totalInDirams = state.totalBalanceInDirams)
