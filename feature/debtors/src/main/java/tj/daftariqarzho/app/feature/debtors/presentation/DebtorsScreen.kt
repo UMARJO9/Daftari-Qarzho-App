@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,11 +22,12 @@ import dev.chrisbanes.haze.hazeSource
 import dev.chrisbanes.haze.rememberHazeState
 import org.koin.androidx.compose.koinViewModel
 import tj.daftariqarzho.app.core.common.datetime.DateFormatter
+import tj.daftariqarzho.app.core.designsystem.components.DaftarLoader
+import tj.daftariqarzho.app.core.designsystem.components.DaftarTextField
 import tj.daftariqarzho.app.core.designsystem.components.DebtorCard
 import tj.daftariqarzho.app.core.designsystem.components.GlassFloatingActionButton
 import tj.daftariqarzho.app.core.designsystem.components.LocalGlassBarInset
 import tj.daftariqarzho.app.core.designsystem.components.MoneyText
-import tj.daftariqarzho.app.core.designsystem.components.DaftarTextField
 import tj.daftariqarzho.app.core.designsystem.icons.DaftarIcons
 import tj.daftariqarzho.app.core.designsystem.theme.DaftarTheme
 import tj.daftariqarzho.app.feature.debtors.R
@@ -132,7 +132,7 @@ private fun SearchField(query: String, onQueryChange: (String) -> Unit) {
 @Composable
 private fun LoadingBox() {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        CircularProgressIndicator(color = DaftarTheme.colors.primary)
+        DaftarLoader()
     }
 }
 

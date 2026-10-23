@@ -11,8 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,13 +27,15 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tj.daftariqarzho.app.core.common.datetime.DateFormatter
-import tj.daftariqarzho.app.core.designsystem.components.DaftarDialog
 import tj.daftariqarzho.app.core.designsystem.components.DaftarButtonDefaults
+import tj.daftariqarzho.app.core.designsystem.components.DaftarDialog
+import tj.daftariqarzho.app.core.designsystem.components.DaftarDivider
 import tj.daftariqarzho.app.core.designsystem.components.DaftarIconButton
+import tj.daftariqarzho.app.core.designsystem.components.DaftarLoader
+import tj.daftariqarzho.app.core.designsystem.components.DaftarTopBar
 import tj.daftariqarzho.app.core.designsystem.components.DebtGivenButton
 import tj.daftariqarzho.app.core.designsystem.components.MoneyText
 import tj.daftariqarzho.app.core.designsystem.components.PaymentReceivedButton
-import tj.daftariqarzho.app.core.designsystem.components.DaftarTopBar
 import tj.daftariqarzho.app.core.designsystem.icons.DaftarIcons
 import tj.daftariqarzho.app.core.designsystem.theme.DaftarTheme
 import tj.daftariqarzho.app.feature.debtors.R
@@ -95,9 +95,8 @@ fun DebtorDetailScreen(
                 .padding(innerPadding),
         ) {
             when {
-                state.isLoading -> CircularProgressIndicator(
+                state.isLoading -> DaftarLoader(
                     modifier = Modifier.align(Alignment.Center),
-                    color = DaftarTheme.colors.primary,
                 )
 
                 state.debtor != null -> DebtorDetailContent(
@@ -137,10 +136,7 @@ private fun DebtorDetailContent(
     Column(modifier = Modifier.fillMaxSize()) {
         BalanceHeader(balanceInDirams = state.balanceInDirams)
         ActionButtons(onGiveDebt = onGiveDebt, onReceivePayment = onReceivePayment)
-        HorizontalDivider(
-            modifier = Modifier.padding(vertical = DaftarTheme.spacing.md),
-            color = DaftarTheme.colors.outline.copy(alpha = DividerAlpha),
-        )
+        DaftarDivider(modifier = Modifier.padding(vertical = DaftarTheme.spacing.md))
         Text(
             text = stringResource(R.string.debtor_detail_history),
             modifier = Modifier.padding(horizontal = DaftarTheme.spacing.screenPadding),
@@ -283,4 +279,3 @@ private fun DeleteConfirmDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
     )
 }
 
-private const val DividerAlpha = 0.3f

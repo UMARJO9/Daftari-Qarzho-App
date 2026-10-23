@@ -130,10 +130,14 @@ fun DaftarSelectableRow(
 
 @Composable
 fun DaftarListDivider(modifier: Modifier = Modifier) {
+    DaftarDivider(modifier = modifier.padding(start = DaftarTheme.spacing.lg))
+}
+
+@Composable
+fun DaftarDivider(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .padding(start = DaftarTheme.spacing.lg)
             .height(DividerThickness)
             .background(DaftarTheme.colors.outline.copy(alpha = DividerAlpha)),
     )

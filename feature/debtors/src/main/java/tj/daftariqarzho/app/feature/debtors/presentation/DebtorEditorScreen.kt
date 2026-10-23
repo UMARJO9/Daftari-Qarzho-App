@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -28,6 +27,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tj.daftariqarzho.app.core.designsystem.components.DaftarButton
+import tj.daftariqarzho.app.core.designsystem.components.DaftarLoader
 import tj.daftariqarzho.app.core.designsystem.components.DaftarTextField
 import tj.daftariqarzho.app.core.designsystem.components.DaftarTopBar
 import tj.daftariqarzho.app.core.designsystem.theme.DaftarTheme
@@ -74,10 +74,7 @@ fun DebtorEditorScreen(
                 .padding(innerPadding),
         ) {
             if (state.isLoading) {
-                CircularProgressIndicator(
-                    modifier = Modifier.align(Alignment.Center),
-                    color = DaftarTheme.colors.primary,
-                )
+                DaftarLoader(modifier = Modifier.align(Alignment.Center))
             } else {
                 DebtorEditorContent(state = state, onEvent = viewModel::onEvent)
             }
