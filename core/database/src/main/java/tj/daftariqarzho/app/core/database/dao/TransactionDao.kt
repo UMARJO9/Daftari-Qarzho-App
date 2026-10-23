@@ -31,9 +31,6 @@ interface TransactionDao {
     @Query("SELECT COALESCE(SUM(amountInDirams), 0) FROM transactions WHERE debtorId = :debtorId")
     fun observeBalance(debtorId: Long): Flow<Long>
 
-    @Query("SELECT COALESCE(SUM(amountInDirams), 0) FROM transactions")
-    fun observeTotalBalance(): Flow<Long>
-
     @Query(
         """
         SELECT t.*, d.name AS debtorName

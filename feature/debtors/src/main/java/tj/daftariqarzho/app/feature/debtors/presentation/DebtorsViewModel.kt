@@ -14,11 +14,11 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.stateIn
 import tj.daftariqarzho.app.feature.debtors.domain.usecase.ObserveDebtorSummariesUseCase
-import tj.daftariqarzho.app.feature.debtors.domain.usecase.ObserveTotalBalanceUseCase
+import tj.daftariqarzho.app.feature.debtors.domain.usecase.ObserveDebtOverviewUseCase
 
 class DebtorsViewModel(
     observeDebtorSummaries: ObserveDebtorSummariesUseCase,
-    observeTotalBalance: ObserveTotalBalanceUseCase,
+    observeDebtOverview: ObserveDebtOverviewUseCase,
     defaultDispatcher: CoroutineDispatcher = Dispatchers.Default,
 ) : ViewModel() {
 
@@ -30,8 +30,8 @@ class DebtorsViewModel(
     val uiState: StateFlow<DebtorsUiState> = combine(
         query,
         observeDebtorSummaries(),
-        observeTotalBalance(),
-    ) { currentQuery, summaries, total ->
+        observeDebtOverview(),
+    ) { currentQuery, summaries, overview ->
         val filtered = if (currentQuery.isBlank()) {
             summaries
         } else {
@@ -41,7 +41,7 @@ class DebtorsViewModel(
             isLoading = false,
             query = currentQuery,
             debtors = filtered,
-            totalBalanceInDirams = total,
+            overview = overview,
         )
     }.flowOn(defaultDispatcher).stateIn(
         scope = viewModelScope,

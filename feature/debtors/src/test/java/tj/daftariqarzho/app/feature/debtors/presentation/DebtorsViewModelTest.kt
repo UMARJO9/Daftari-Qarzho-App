@@ -10,8 +10,9 @@ import org.junit.Rule
 import org.junit.Test
 import tj.daftariqarzho.app.feature.debtors.FakeDebtorRepository
 import tj.daftariqarzho.app.feature.debtors.MainDispatcherRule
+import tj.daftariqarzho.app.feature.debtors.domain.model.DebtOverview
 import tj.daftariqarzho.app.feature.debtors.domain.usecase.ObserveDebtorSummariesUseCase
-import tj.daftariqarzho.app.feature.debtors.domain.usecase.ObserveTotalBalanceUseCase
+import tj.daftariqarzho.app.feature.debtors.domain.usecase.ObserveDebtOverviewUseCase
 import tj.daftariqarzho.app.feature.debtors.summary
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -22,12 +23,12 @@ class DebtorsViewModelTest {
 
     private val repository = FakeDebtorRepository().apply {
         summaries.value = listOf(summary(1, "Ali"), summary(2, "Umed"))
-        totalBalance.value = -3000
+        overview.value = DebtOverview(givenInDirams = 5000, receivedInDirams = 2000)
     }
 
     private fun viewModel() = DebtorsViewModel(
         observeDebtorSummaries = ObserveDebtorSummariesUseCase(repository),
-        observeTotalBalance = ObserveTotalBalanceUseCase(repository),
+        observeDebtOverview = ObserveDebtOverviewUseCase(repository),
         defaultDispatcher = mainDispatcherRule.testDispatcher,
     )
 
@@ -40,7 +41,7 @@ class DebtorsViewModelTest {
         val state = vm.uiState.value
         assertFalse(state.isLoading)
         assertEquals(2, state.debtors.size)
-        assertEquals(-3000L, state.totalBalanceInDirams)
+        assertEquals(-3000L, state.overview.balanceInDirams)
     }
 
     @Test

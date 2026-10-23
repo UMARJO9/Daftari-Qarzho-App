@@ -3,7 +3,9 @@ package tj.daftariqarzho.app.feature.debtors.data.mapper
 import tj.daftariqarzho.app.core.common.datetime.DateFormatter
 import tj.daftariqarzho.app.core.database.entity.DebtorEntity
 import tj.daftariqarzho.app.core.database.entity.DebtorWithBalance
+import tj.daftariqarzho.app.core.database.entity.PeriodTotals
 import tj.daftariqarzho.app.core.database.entity.TransactionEntity
+import tj.daftariqarzho.app.feature.debtors.domain.model.DebtOverview
 import tj.daftariqarzho.app.feature.debtors.domain.model.Debtor
 import tj.daftariqarzho.app.feature.debtors.domain.model.DebtTransaction
 import tj.daftariqarzho.app.feature.debtors.domain.model.DebtorSummary
@@ -59,4 +61,10 @@ fun DebtTransaction.toEntity(): TransactionEntity =
         dueDate = dueDate,
         photoUri = photoUri,
         createdAt = createdAt,
+    )
+
+fun PeriodTotals.toDebtOverview(): DebtOverview =
+    DebtOverview(
+        givenInDirams = givenInDirams,
+        receivedInDirams = receivedInDirams,
     )

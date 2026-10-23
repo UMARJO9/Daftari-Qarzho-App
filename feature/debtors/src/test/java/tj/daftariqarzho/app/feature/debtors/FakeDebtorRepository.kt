@@ -2,6 +2,7 @@ package tj.daftariqarzho.app.feature.debtors
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import tj.daftariqarzho.app.feature.debtors.domain.model.DebtOverview
 import tj.daftariqarzho.app.feature.debtors.domain.model.DebtTransaction
 import tj.daftariqarzho.app.feature.debtors.domain.model.Debtor
 import tj.daftariqarzho.app.feature.debtors.domain.model.DebtorDetail
@@ -13,7 +14,7 @@ class FakeDebtorRepository(
 ) : DebtorRepository {
 
     val summaries = MutableStateFlow<List<DebtorSummary>>(emptyList())
-    val totalBalance = MutableStateFlow(0L)
+    val overview = MutableStateFlow(DebtOverview())
     val details = MutableStateFlow<DebtorDetail?>(null)
     val storage = initialDebtors.associateBy { it.id }.toMutableMap()
 
@@ -26,7 +27,7 @@ class FakeDebtorRepository(
 
     override fun observeDebtorSummaries(): Flow<List<DebtorSummary>> = summaries
 
-    override fun observeTotalBalance(): Flow<Long> = totalBalance
+    override fun observeDebtOverview(): Flow<DebtOverview> = overview
 
     override fun observeDebtorDetail(id: Long): Flow<DebtorDetail?> = details
 

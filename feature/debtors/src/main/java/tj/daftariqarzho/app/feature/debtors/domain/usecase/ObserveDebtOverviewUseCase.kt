@@ -1,10 +1,11 @@
 package tj.daftariqarzho.app.feature.debtors.domain.usecase
 
 import kotlinx.coroutines.flow.Flow
+import tj.daftariqarzho.app.feature.debtors.domain.model.DebtOverview
 import tj.daftariqarzho.app.feature.debtors.domain.repository.DebtorRepository
 
-class ObserveTotalBalanceUseCase(
+class ObserveDebtOverviewUseCase(
     private val repository: DebtorRepository,
 ) {
-    operator fun invoke(): Flow<Long> = repository.observeTotalBalance()
+    operator fun invoke(): Flow<DebtOverview> = repository.observeDebtOverview()
 }

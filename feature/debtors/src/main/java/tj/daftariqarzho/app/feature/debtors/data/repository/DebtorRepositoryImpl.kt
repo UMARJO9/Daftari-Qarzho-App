@@ -2,11 +2,14 @@ package tj.daftariqarzho.app.feature.debtors.data.repository
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import tj.daftariqarzho.app.core.database.dao.DebtorDao
 import tj.daftariqarzho.app.core.database.dao.TransactionDao
+import tj.daftariqarzho.app.feature.debtors.data.mapper.toDebtOverview
 import tj.daftariqarzho.app.feature.debtors.data.mapper.toDomain
 import tj.daftariqarzho.app.feature.debtors.data.mapper.toEntity
 import tj.daftariqarzho.app.feature.debtors.data.mapper.toSummary
+import tj.daftariqarzho.app.feature.debtors.domain.model.DebtOverview
 import tj.daftariqarzho.app.feature.debtors.domain.model.DebtTransaction
 import tj.daftariqarzho.app.feature.debtors.domain.model.Debtor
 import tj.daftariqarzho.app.feature.debtors.domain.model.DebtorDetail
@@ -35,8 +38,8 @@ class DebtorRepositoryImpl(
             }
         }
 
-    override fun observeTotalBalance(): Flow<Long> =
-        transactionDao.observeTotalBalance()
+    override fun observeDebtOverview(): Flow<DebtOverview> =
+        transactionDao.observeTotalsBetween(from = 0L, to = Long.MAX_VALUE).map { it.toDebtOverview() }
 
     override fun observeDebtorDetail(id: Long): Flow<DebtorDetail?> =
         combine(

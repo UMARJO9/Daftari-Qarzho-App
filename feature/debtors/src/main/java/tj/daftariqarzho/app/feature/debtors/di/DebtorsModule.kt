@@ -10,7 +10,7 @@ import tj.daftariqarzho.app.feature.debtors.domain.usecase.DeleteDebtorUseCase
 import tj.daftariqarzho.app.feature.debtors.domain.usecase.GetDebtorUseCase
 import tj.daftariqarzho.app.feature.debtors.domain.usecase.ObserveDebtorDetailUseCase
 import tj.daftariqarzho.app.feature.debtors.domain.usecase.ObserveDebtorSummariesUseCase
-import tj.daftariqarzho.app.feature.debtors.domain.usecase.ObserveTotalBalanceUseCase
+import tj.daftariqarzho.app.feature.debtors.domain.usecase.ObserveDebtOverviewUseCase
 import tj.daftariqarzho.app.feature.debtors.domain.usecase.SaveDebtorUseCase
 import tj.daftariqarzho.app.feature.debtors.presentation.DebtorDetailViewModel
 import tj.daftariqarzho.app.feature.debtors.presentation.DebtorEditorViewModel
@@ -20,7 +20,7 @@ import tj.daftariqarzho.app.feature.debtors.presentation.TransactionEditorViewMo
 val debtorsModule = module {
     single<DebtorRepository> { DebtorRepositoryImpl(get(), get()) }
     factory { ObserveDebtorSummariesUseCase(get()) }
-    factory { ObserveTotalBalanceUseCase(get()) }
+    factory { ObserveDebtOverviewUseCase(get()) }
     factory { ObserveDebtorDetailUseCase(get()) }
     factory { GetDebtorUseCase(get()) }
     factory { SaveDebtorUseCase(get()) }

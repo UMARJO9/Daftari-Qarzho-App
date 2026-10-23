@@ -78,7 +78,7 @@ private fun DebtorsContent(
                 .hazeSource(hazeState)
                 .padding(innerPadding),
         ) {
-            TotalBalanceHeader(totalInDirams = state.totalBalanceInDirams)
+            TotalBalanceHeader(totalInDirams = state.overview.balanceInDirams)
             SearchField(
                 query = query,
                 onQueryChange = { onEvent(DebtorsEvent.QueryChanged(it)) },
