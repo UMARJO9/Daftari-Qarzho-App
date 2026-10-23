@@ -12,10 +12,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -31,14 +28,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tj.daftariqarzho.app.core.designsystem.components.DaftarButton
-import tj.daftariqarzho.app.core.designsystem.components.DaftarIconButton
 import tj.daftariqarzho.app.core.designsystem.components.DaftarTextField
-import tj.daftariqarzho.app.core.designsystem.icons.DaftarIcons
+import tj.daftariqarzho.app.core.designsystem.components.DaftarTopBar
 import tj.daftariqarzho.app.core.designsystem.theme.DaftarTheme
 import tj.daftariqarzho.app.feature.debtors.R
 import tj.daftariqarzho.app.feature.debtors.domain.usecase.SaveDebtorUseCase
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DebtorEditorScreen(
     debtorId: Long?,
@@ -60,26 +55,16 @@ fun DebtorEditorScreen(
         modifier = modifier,
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
         topBar = {
-            TopAppBar(
-                windowInsets = WindowInsets(0, 0, 0, 0),
-                title = {
-                    Text(
-                        stringResource(
-                            if (state.isEditMode) {
-                                R.string.debtor_editor_title_edit
-                            } else {
-                                R.string.debtor_editor_title_add
-                            },
-                        ),
-                    )
-                },
-                navigationIcon = {
-                    DaftarIconButton(
-                        icon = DaftarIcons.Back,
-                        contentDescription = stringResource(R.string.debtor_detail_back),
-                        onClick = onBack,
-                    )
-                },
+            DaftarTopBar(
+                title = stringResource(
+                    if (state.isEditMode) {
+                        R.string.debtor_editor_title_edit
+                    } else {
+                        R.string.debtor_editor_title_add
+                    },
+                ),
+                onBack = onBack,
+                backContentDescription = stringResource(R.string.debtor_detail_back),
             )
         },
     ) { innerPadding ->

@@ -13,11 +13,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -38,13 +36,13 @@ import tj.daftariqarzho.app.core.designsystem.components.DaftarIconButton
 import tj.daftariqarzho.app.core.designsystem.components.DebtGivenButton
 import tj.daftariqarzho.app.core.designsystem.components.MoneyText
 import tj.daftariqarzho.app.core.designsystem.components.PaymentReceivedButton
+import tj.daftariqarzho.app.core.designsystem.components.DaftarTopBar
 import tj.daftariqarzho.app.core.designsystem.icons.DaftarIcons
 import tj.daftariqarzho.app.core.designsystem.theme.DaftarTheme
 import tj.daftariqarzho.app.feature.debtors.R
 import tj.daftariqarzho.app.feature.debtors.domain.model.DebtTransaction
 import tj.daftariqarzho.app.feature.debtors.domain.model.TransactionType
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DebtorDetailScreen(
     debtorId: Long,
@@ -70,22 +68,10 @@ fun DebtorDetailScreen(
     Scaffold(
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
         topBar = {
-            TopAppBar(
-                windowInsets = WindowInsets(0, 0, 0, 0),
-                title = {
-                    Text(
-                        text = state.debtor?.name.orEmpty(),
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                },
-                navigationIcon = {
-                    DaftarIconButton(
-                        icon = DaftarIcons.Back,
-                        contentDescription = stringResource(R.string.debtor_detail_back),
-                        onClick = onBack,
-                    )
-                },
+            DaftarTopBar(
+                title = state.debtor?.name.orEmpty(),
+                onBack = onBack,
+                backContentDescription = stringResource(R.string.debtor_detail_back),
                 actions = {
                     if (state.debtor != null) {
                         DaftarIconButton(
