@@ -9,5 +9,5 @@
     <string name="settings_theme_dark">Торик</string>
     <string name="settings_about">Дар бораи барнома</string>
     <string name="settings_about_description">Дафтари қарзҳо — ҳисоби қарзҳо барои мағозаҳои хурд.</string>
-    <string name="settings_about_version">Версия %1$s</string>
+    <string name="settings_about_version">Версияи %1$s</string>
 </resources>
