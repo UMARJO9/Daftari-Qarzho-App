@@ -17,6 +17,9 @@ data class DaftarSpacing(
     val cardPadding: Dp = 16.dp,
     val listItemGap: Dp = 12.dp,
     val minTouchTarget: Dp = 48.dp,
+    val glassBarHeight: Dp = 64.dp,
+    val glassIndicatorInset: Dp = 4.dp,
+    val glassFabSize: Dp = 60.dp,
 )
 
 val LocalDaftarSpacing = staticCompositionLocalOf { DaftarSpacing() }

@@ -1,0 +1,85 @@
+package tj.daftariqarzho.app.core.common.datetime
+
+import java.time.DayOfWeek
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
+import java.time.temporal.TemporalAdjusters
+import java.util.Locale
+
+object DateFormatter {
+
+    private val shortDate = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+    private val dayMonth = DateTimeFormatter.ofPattern("d MMMM")
+    private val monthYear = DateTimeFormatter.ofPattern("LLLL yyyy")
+
+    fun formatDate(epochMillis: Long, zone: ZoneId = ZoneId.systemDefault()): String =
+        Instant.ofEpochMilli(epochMillis).atZone(zone).format(shortDate)
+
+    fun formatDayMonth(
+        epochMillis: Long,
+        locale: Locale = Locale.getDefault(),
+        zone: ZoneId = ZoneId.systemDefault(),
+    ): String =
+        Instant.ofEpochMilli(epochMillis).atZone(zone).format(dayMonth.withLocale(locale))
+
+    fun formatMonthYear(
+        epochMillis: Long,
+        locale: Locale = Locale.getDefault(),
+        zone: ZoneId = ZoneId.systemDefault(),
+    ): String =
+        Instant.ofEpochMilli(epochMillis).atZone(zone).format(monthYear.withLocale(locale))
+            .replaceFirstChar { if (it.isLowerCase()) it.titlecase(locale) else it.toString() }
+
+    fun daysOverdue(
+        dueDateMillis: Long,
+        nowMillis: Long,
+        zone: ZoneId = ZoneId.systemDefault(),
+    ): Long {
+        val due = Instant.ofEpochMilli(dueDateMillis).atZone(zone).toLocalDate()
+        val now = Instant.ofEpochMilli(nowMillis).atZone(zone).toLocalDate()
+        val days = ChronoUnit.DAYS.between(due, now)
+        return if (days > 0) days else 0
+    }
+
+    fun startOfDayMillis(epochMillis: Long, zone: ZoneId = ZoneId.systemDefault()): Long =
+        Instant.ofEpochMilli(epochMillis).atZone(zone).toLocalDate()
+            .atStartOfDay(zone).toInstant().toEpochMilli()
+
+    fun startOfWeekMillis(epochMillis: Long, zone: ZoneId = ZoneId.systemDefault()): Long =
+        Instant.ofEpochMilli(epochMillis).atZone(zone).toLocalDate()
+            .with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY))
+            .atStartOfDay(zone).toInstant().toEpochMilli()
+
+    fun startOfMonthMillis(epochMillis: Long, zone: ZoneId = ZoneId.systemDefault()): Long =
+        Instant.ofEpochMilli(epochMillis).atZone(zone).toLocalDate()
+            .withDayOfMonth(1)
+            .atStartOfDay(zone).toInstant().toEpochMilli()
+
+    fun startOfNextMonthMillis(epochMillis: Long, zone: ZoneId = ZoneId.systemDefault()): Long =
+        Instant.ofEpochMilli(epochMillis).atZone(zone).toLocalDate()
+            .withDayOfMonth(1).plusMonths(1)
+            .atStartOfDay(zone).toInstant().toEpochMilli()
+
+    fun startOfNextDayMillis(epochMillis: Long, zone: ZoneId = ZoneId.systemDefault()): Long =
+        Instant.ofEpochMilli(epochMillis).atZone(zone).toLocalDate()
+            .plusDays(1)
+            .atStartOfDay(zone).toInstant().toEpochMilli()
+
+    fun isOverdue(dueDateMillis: Long, nowMillis: Long, zone: ZoneId = ZoneId.systemDefault()): Boolean {
+        val due = Instant.ofEpochMilli(dueDateMillis).atZone(zone).toLocalDate()
+        val now: LocalDate = Instant.ofEpochMilli(nowMillis).atZone(zone).toLocalDate()
+        return due.isBefore(now)
+    }
+
+    fun utcDateToLocalStartOfDay(utcMillis: Long, zone: ZoneId = ZoneId.systemDefault()): Long =
+        Instant.ofEpochMilli(utcMillis).atZone(ZoneOffset.UTC).toLocalDate()
+            .atStartOfDay(zone).toInstant().toEpochMilli()
+
+    fun localDateToUtcStartOfDay(epochMillis: Long, zone: ZoneId = ZoneId.systemDefault()): Long =
+        Instant.ofEpochMilli(epochMillis).atZone(zone).toLocalDate()
+            .atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()
+}

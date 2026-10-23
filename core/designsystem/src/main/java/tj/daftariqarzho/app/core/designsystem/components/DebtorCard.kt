@@ -81,7 +81,7 @@ fun DebtorCard(
                 Text(
                     text = lastOperation,
                     style = DaftarTheme.typography.bodySmall,
-                    color = DaftarTheme.colors.secondary,
+                    color = DaftarTheme.colors.onSurfaceVariant,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )

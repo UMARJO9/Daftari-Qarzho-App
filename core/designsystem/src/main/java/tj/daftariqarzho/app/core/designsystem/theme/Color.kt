@@ -41,7 +41,119 @@ object DaftarColors {
     val OverdueBgDark = Color(0xFF332B14)
     val OverdueTextLight = Color(0xFF6B4500)
     val OverdueTextDark = Color(0xFFFFD54F)
+
+    val GlassTintLight = Color(0x8CFFFFFF)
+    val GlassFallbackLight = Color(0xEBFFFFFF)
+    val GlassHighlightLight = Color(0xCCFFFFFF)
+    val GlassEdgeLight = Color(0x1F1C1B17)
+    val GlassIndicatorLight = Color(0x141C1B17)
+    val GlassShadowLight = Color(0x33000000)
+
+    val GlassTintDark = Color(0x8C1C1F1C)
+    val GlassFallbackDark = Color(0xEB1C1F1C)
+    val GlassHighlightDark = Color(0x40FFFFFF)
+    val GlassEdgeDark = Color(0x14FFFFFF)
+    val GlassIndicatorDark = Color(0x1FFFFFFF)
+    val GlassShadowDark = Color(0x80000000)
+
+    val SegmentTrackLight = Color(0x141C1B17)
+    val SegmentThumbLight = Color(0xFFFFFFFF)
+    val SegmentTrackDark = Color(0x1FFFFFFF)
+    val SegmentThumbDark = Color(0xFF3A3D3A)
+
+    val DividerLight = Color(0x4D918F87)
+    val DividerDark = Color(0x29FFFFFF)
+
+    val HeroStartLight = Color(0xFF388E3C)
+    val HeroEndLight = Color(0xFF1B5E20)
+    val HeroStartDark = Color(0xFF2A5A2E)
+    val HeroEndDark = Color(0xFF15301A)
+    val HeroContent = Color(0xFFFFFFFF)
+    val HeroContentMuted = Color(0xBFFFFFFF)
+    val HeroTrack = Color(0x38FFFFFF)
+    val HeroChip = Color(0x2EFFFFFF)
 }
+
+@Immutable
+data class HeroColors(
+    val gradientStart: Color,
+    val gradientEnd: Color,
+    val content: Color,
+    val contentMuted: Color,
+    val track: Color,
+    val chip: Color,
+)
+
+val LightHeroColors = HeroColors(
+    gradientStart = DaftarColors.HeroStartLight,
+    gradientEnd = DaftarColors.HeroEndLight,
+    content = DaftarColors.HeroContent,
+    contentMuted = DaftarColors.HeroContentMuted,
+    track = DaftarColors.HeroTrack,
+    chip = DaftarColors.HeroChip,
+)
+
+val DarkHeroColors = HeroColors(
+    gradientStart = DaftarColors.HeroStartDark,
+    gradientEnd = DaftarColors.HeroEndDark,
+    content = DaftarColors.HeroContent,
+    contentMuted = DaftarColors.HeroContentMuted,
+    track = DaftarColors.HeroTrack,
+    chip = DaftarColors.HeroChip,
+)
+
+val LocalHeroColors = staticCompositionLocalOf { LightHeroColors }
+
+@Immutable
+data class ControlColors(
+    val segmentTrack: Color,
+    val segmentThumb: Color,
+    val divider: Color,
+)
+
+val LightControlColors = ControlColors(
+    segmentTrack = DaftarColors.SegmentTrackLight,
+    segmentThumb = DaftarColors.SegmentThumbLight,
+    divider = DaftarColors.DividerLight,
+)
+
+val DarkControlColors = ControlColors(
+    segmentTrack = DaftarColors.SegmentTrackDark,
+    segmentThumb = DaftarColors.SegmentThumbDark,
+    divider = DaftarColors.DividerDark,
+)
+
+val LocalControlColors = staticCompositionLocalOf { LightControlColors }
+
+@Immutable
+data class GlassColors(
+    val tint: Color,
+    val fallback: Color,
+    val highlight: Color,
+    val edge: Color,
+    val indicator: Color,
+    val shadow: Color,
+)
+
+val LightGlassColors = GlassColors(
+    tint = DaftarColors.GlassTintLight,
+    fallback = DaftarColors.GlassFallbackLight,
+    highlight = DaftarColors.GlassHighlightLight,
+    edge = DaftarColors.GlassEdgeLight,
+    indicator = DaftarColors.GlassIndicatorLight,
+    shadow = DaftarColors.GlassShadowLight,
+)
+
+val DarkGlassColors = GlassColors(
+    tint = DaftarColors.GlassTintDark,
+    fallback = DaftarColors.GlassFallbackDark,
+    highlight = DaftarColors.GlassHighlightDark,
+    edge = DaftarColors.GlassEdgeDark,
+    indicator = DaftarColors.GlassIndicatorDark,
+    shadow = DaftarColors.GlassShadowDark,
+)
+
+val LocalGlassColors = staticCompositionLocalOf { LightGlassColors }
 
 @Immutable
 data class DebtColors(

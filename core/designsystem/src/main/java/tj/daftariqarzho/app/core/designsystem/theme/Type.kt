@@ -36,6 +36,12 @@ val DaftarTypography = Typography(
         lineHeight = 24.sp,
         letterSpacing = 0.sp,
     ),
+    bodyLarge = TextStyle(
+        fontFamily = InterFontFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 17.sp,
+        lineHeight = 24.sp,
+    ),
     bodyMedium = TextStyle(
         fontFamily = InterFontFamily,
         fontWeight = FontWeight.Normal,

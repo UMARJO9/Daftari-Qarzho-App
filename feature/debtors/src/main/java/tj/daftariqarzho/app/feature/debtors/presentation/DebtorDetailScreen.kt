@@ -1,0 +1,281 @@
+package tj.daftariqarzho.app.feature.debtors.presentation
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
+import tj.daftariqarzho.app.core.common.datetime.DateFormatter
+import tj.daftariqarzho.app.core.designsystem.components.DaftarButtonDefaults
+import tj.daftariqarzho.app.core.designsystem.components.DaftarDialog
+import tj.daftariqarzho.app.core.designsystem.components.DaftarDivider
+import tj.daftariqarzho.app.core.designsystem.components.DaftarIconButton
+import tj.daftariqarzho.app.core.designsystem.components.DaftarLoader
+import tj.daftariqarzho.app.core.designsystem.components.DaftarTopBar
+import tj.daftariqarzho.app.core.designsystem.components.DebtGivenButton
+import tj.daftariqarzho.app.core.designsystem.components.MoneyText
+import tj.daftariqarzho.app.core.designsystem.components.PaymentReceivedButton
+import tj.daftariqarzho.app.core.designsystem.icons.DaftarIcons
+import tj.daftariqarzho.app.core.designsystem.theme.DaftarTheme
+import tj.daftariqarzho.app.feature.debtors.R
+import tj.daftariqarzho.app.feature.debtors.domain.model.DebtTransaction
+import tj.daftariqarzho.app.feature.debtors.domain.model.TransactionType
+
+@Composable
+fun DebtorDetailScreen(
+    debtorId: Long,
+    onBack: () -> Unit,
+    onEditClick: () -> Unit,
+    viewModel: DebtorDetailViewModel = koinViewModel(
+        key = "debtor_detail_$debtorId",
+        parameters = { parametersOf(debtorId) },
+    ),
+) {
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
+    val isDeleted by viewModel.isDeleted.collectAsStateWithLifecycle()
+
+    var deleteDialogVisible by rememberSaveable { mutableStateOf(false) }
+    var operationType by rememberSaveable { mutableStateOf<TransactionType?>(null) }
+
+    LaunchedEffect(isDeleted, state.notFound) {
+        if (isDeleted || state.notFound) {
+            onBack()
+        }
+    }
+
+    Scaffold(
+        contentWindowInsets = WindowInsets(0, 0, 0, 0),
+        topBar = {
+            DaftarTopBar(
+                title = state.debtor?.name.orEmpty(),
+                onBack = onBack,
+                backContentDescription = stringResource(R.string.debtor_detail_back),
+                actions = {
+                    if (state.debtor != null) {
+                        DaftarIconButton(
+                            icon = DaftarIcons.Edit,
+                            contentDescription = stringResource(R.string.debtor_detail_edit),
+                            onClick = onEditClick,
+                        )
+                        DaftarIconButton(
+                            icon = DaftarIcons.Delete,
+                            contentDescription = stringResource(R.string.debtor_detail_delete),
+                            onClick = { deleteDialogVisible = true },
+                            colors = DaftarButtonDefaults.neutral().copy(content = DaftarTheme.debtColors.given),
+                        )
+                    }
+                },
+            )
+        },
+    ) { innerPadding ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
+        ) {
+            when {
+                state.isLoading -> DaftarLoader(
+                    modifier = Modifier.align(Alignment.Center),
+                )
+
+                state.debtor != null -> DebtorDetailContent(
+                    state = state,
+                    onGiveDebt = { operationType = TransactionType.DEBT },
+                    onReceivePayment = { operationType = TransactionType.PAYMENT },
+                )
+            }
+        }
+    }
+
+    if (deleteDialogVisible) {
+        DeleteConfirmDialog(
+            onConfirm = {
+                deleteDialogVisible = false
+                viewModel.onEvent(DebtorDetailEvent.Delete)
+            },
+            onDismiss = { deleteDialogVisible = false },
+        )
+    }
+
+    operationType?.let { type ->
+        TransactionEditorSheet(
+            debtorId = debtorId,
+            type = type,
+            onDismiss = { operationType = null },
+        )
+    }
+}
+
+@Composable
+private fun DebtorDetailContent(
+    state: DebtorDetailUiState,
+    onGiveDebt: () -> Unit,
+    onReceivePayment: () -> Unit,
+) {
+    Column(modifier = Modifier.fillMaxSize()) {
+        BalanceHeader(balanceInDirams = state.balanceInDirams)
+        ActionButtons(onGiveDebt = onGiveDebt, onReceivePayment = onReceivePayment)
+        DaftarDivider(modifier = Modifier.padding(vertical = DaftarTheme.spacing.md))
+        Text(
+            text = stringResource(R.string.debtor_detail_history),
+            modifier = Modifier.padding(horizontal = DaftarTheme.spacing.screenPadding),
+            style = DaftarTheme.typography.titleMedium,
+            color = DaftarTheme.colors.onBackground,
+        )
+        if (state.isEmpty) {
+            EmptyHistory()
+        } else {
+            TransactionsList(transactions = state.transactions)
+        }
+    }
+}
+
+@Composable
+private fun BalanceHeader(balanceInDirams: Long) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(
+                horizontal = DaftarTheme.spacing.screenPadding,
+                vertical = DaftarTheme.spacing.lg,
+            ),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(DaftarTheme.spacing.xs),
+    ) {
+        Text(
+            text = stringResource(R.string.debtor_detail_balance),
+            style = DaftarTheme.typography.bodySmall,
+            color = DaftarTheme.colors.onSurfaceVariant,
+        )
+        MoneyText(
+            amountInDirams = balanceInDirams,
+            style = DaftarTheme.moneyTypography.large,
+        )
+    }
+}
+
+@Composable
+private fun ActionButtons(onGiveDebt: () -> Unit, onReceivePayment: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = DaftarTheme.spacing.screenPadding),
+        horizontalArrangement = Arrangement.spacedBy(DaftarTheme.spacing.md),
+    ) {
+        DebtGivenButton(
+            text = stringResource(R.string.debtor_detail_give_debt),
+            onClick = onGiveDebt,
+            modifier = Modifier.weight(1f),
+        )
+        PaymentReceivedButton(
+            text = stringResource(R.string.debtor_detail_receive_payment),
+            onClick = onReceivePayment,
+            modifier = Modifier.weight(1f),
+        )
+    }
+}
+
+@Composable
+private fun EmptyHistory() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(DaftarTheme.spacing.xl),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            text = stringResource(R.string.debtor_detail_empty),
+            style = DaftarTheme.typography.bodyMedium,
+            color = DaftarTheme.colors.onSurfaceVariant,
+        )
+    }
+}
+
+@Composable
+private fun TransactionsList(transactions: List<DebtTransaction>) {
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(
+            start = DaftarTheme.spacing.screenPadding,
+            end = DaftarTheme.spacing.screenPadding,
+            top = DaftarTheme.spacing.md,
+            bottom = DaftarTheme.spacing.screenPadding,
+        ),
+        verticalArrangement = Arrangement.spacedBy(DaftarTheme.spacing.listItemGap),
+    ) {
+        items(transactions, key = { it.id }) { transaction ->
+            TransactionRow(transaction = transaction)
+        }
+    }
+}
+
+@Composable
+private fun TransactionRow(transaction: DebtTransaction) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = transaction.comment
+                    ?.takeIf { it.isNotBlank() }
+                    ?: stringResource(R.string.debtor_detail_no_comment),
+                style = DaftarTheme.typography.bodyMedium,
+                color = DaftarTheme.colors.onBackground,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+            Text(
+                text = DateFormatter.formatDate(transaction.createdAt),
+                style = DaftarTheme.typography.bodySmall,
+                color = DaftarTheme.colors.onSurfaceVariant,
+            )
+            transaction.dueDate?.let { due ->
+                Text(
+                    text = stringResource(
+                        R.string.debtor_detail_due,
+                        DateFormatter.formatDate(due),
+                    ),
+                    style = DaftarTheme.typography.bodySmall,
+                    color = DaftarTheme.colors.onSurfaceVariant,
+                )
+            }
+        }
+        MoneyText(amountInDirams = transaction.amountInDirams)
+    }
+}
+
+@Composable
+private fun DeleteConfirmDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
+    DaftarDialog(
+        title = stringResource(R.string.debtor_detail_delete_confirm_title),
+        text = stringResource(R.string.debtor_detail_delete_confirm_text),
+        confirmText = stringResource(R.string.debtor_detail_delete_confirm_ok),
+        dismissText = stringResource(R.string.debtor_detail_delete_confirm_cancel),
+        onConfirm = onConfirm,
+        onDismiss = onDismiss,
+        destructive = true,
+    )
+}
+

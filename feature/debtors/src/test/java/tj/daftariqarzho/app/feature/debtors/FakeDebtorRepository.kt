@@ -1,0 +1,78 @@
+package tj.daftariqarzho.app.feature.debtors
+
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import tj.daftariqarzho.app.feature.debtors.domain.model.DebtOverview
+import tj.daftariqarzho.app.feature.debtors.domain.model.DebtTransaction
+import tj.daftariqarzho.app.feature.debtors.domain.model.Debtor
+import tj.daftariqarzho.app.feature.debtors.domain.model.DebtorDetail
+import tj.daftariqarzho.app.feature.debtors.domain.model.DebtorSummary
+import tj.daftariqarzho.app.feature.debtors.domain.repository.DebtorRepository
+
+class FakeDebtorRepository(
+    initialDebtors: List<Debtor> = emptyList(),
+) : DebtorRepository {
+
+    val summaries = MutableStateFlow<List<DebtorSummary>>(emptyList())
+    val overview = MutableStateFlow(DebtOverview())
+    val details = MutableStateFlow<DebtorDetail?>(null)
+    val storage = initialDebtors.associateBy { it.id }.toMutableMap()
+
+    var nextId: Long = 100
+    var addedCount: Int = 0
+    var updatedCount: Int = 0
+    var deletedIds: MutableList<Long> = mutableListOf()
+    var addedTransactions: MutableList<DebtTransaction> = mutableListOf()
+    var nextTransactionId: Long = 500
+
+    override fun observeDebtorSummaries(): Flow<List<DebtorSummary>> = summaries
+
+    override fun observeDebtOverview(): Flow<DebtOverview> = overview
+
+    override fun observeDebtorDetail(id: Long): Flow<DebtorDetail?> = details
+
+    override suspend fun getDebtor(id: Long): Debtor? = storage[id]
+
+    override suspend fun addDebtor(debtor: Debtor): Long {
+        val id = nextId++
+        storage[id] = debtor.copy(id = id)
+        addedCount++
+        return id
+    }
+
+    override suspend fun updateDebtor(debtor: Debtor) {
+        storage[debtor.id] = debtor
+        updatedCount++
+    }
+
+    override suspend fun deleteDebtor(id: Long) {
+        storage.remove(id)
+        deletedIds += id
+    }
+
+    override suspend fun addTransaction(transaction: DebtTransaction): Long {
+        val id = nextTransactionId++
+        addedTransactions += transaction.copy(id = id)
+        return id
+    }
+}
+
+fun debtor(
+    id: Long,
+    name: String,
+    phone: String? = null,
+    note: String? = null,
+    createdAt: Long = 0,
+) = Debtor(id = id, name = name, phone = phone, note = note, createdAt = createdAt)
+
+fun summary(
+    id: Long,
+    name: String,
+    balanceInDirams: Long = -1000,
+) = DebtorSummary(
+    debtor = debtor(id = id, name = name),
+    balanceInDirams = balanceInDirams,
+    isOverdue = false,
+    overdueDays = 0,
+    lastTransactionAt = null,
+)

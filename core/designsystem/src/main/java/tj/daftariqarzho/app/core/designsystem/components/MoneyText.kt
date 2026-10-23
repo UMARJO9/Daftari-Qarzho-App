@@ -7,38 +7,41 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import tj.daftariqarzho.app.core.common.money.MoneyFormatter
+import tj.daftariqarzho.app.core.designsystem.R
 import tj.daftariqarzho.app.core.designsystem.theme.DaftarTheme
-import java.text.DecimalFormat
-import java.text.DecimalFormatSymbols
-import java.util.Locale
-import kotlin.math.abs
 
 @Composable
 fun MoneyText(
     amountInDirams: Long,
     modifier: Modifier = Modifier,
     style: TextStyle = DaftarTheme.moneyTypography.medium,
+    signed: Boolean = true,
+    color: Color = moneyColor(amountInDirams),
 ) {
-    val positive = amountInDirams >= 0
-    val color = if (positive) DaftarTheme.debtColors.received else DaftarTheme.debtColors.given
-    val prefix = if (positive) "+" else "−"
-    val amount = formatDirams(abs(amountInDirams))
+    val amount = if (signed) {
+        MoneyFormatter.formatSigned(amountInDirams)
+    } else {
+        MoneyFormatter.formatAmount(amountInDirams)
+    }
 
     Text(
-        text = "$prefix$amount сом",
+        text = "$amount ${stringResource(R.string.currency_somoni)}",
         modifier = modifier,
         color = color,
         style = style,
     )
 }
 
-private fun formatDirams(dirams: Long): String {
-    val symbols = DecimalFormatSymbols(Locale.US).apply { groupingSeparator = ' ' }
-    val whole = DecimalFormat("#,##0", symbols).format(dirams / 100)
-    val fraction = (dirams % 100).toInt().toString().padStart(2, '0')
-    return "$whole,$fraction"
+@Composable
+private fun moneyColor(amountInDirams: Long): Color = when {
+    amountInDirams > 0 -> DaftarTheme.debtColors.received
+    amountInDirams < 0 -> DaftarTheme.debtColors.given
+    else -> DaftarTheme.colors.onSurfaceVariant
 }
 
 @PreviewLightDark
@@ -52,6 +55,7 @@ private fun MoneyTextPreview() {
             ) {
                 MoneyText(amountInDirams = 125050)
                 MoneyText(amountInDirams = -87500)
+                MoneyText(amountInDirams = 0)
                 MoneyText(amountInDirams = 1234567, style = DaftarTheme.moneyTypography.large)
             }
         }
