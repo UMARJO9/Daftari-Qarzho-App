@@ -106,6 +106,16 @@ object DaftarIcons {
         }
     }
 
+    val Check: ImageVector by lazy {
+        daftarIcon("Check") {
+            stroke {
+                moveTo(5f, 12.5f)
+                lineTo(10f, 17.5f)
+                lineTo(19f, 7f)
+            }
+        }
+    }
+
     val Search: ImageVector by lazy {
         daftarIcon("Search") {
             stroke {

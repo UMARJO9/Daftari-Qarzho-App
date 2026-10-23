@@ -2,24 +2,21 @@ package tj.daftariqarzho.app.feature.settings
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
+import tj.daftariqarzho.app.core.designsystem.components.DaftarListSection
+import tj.daftariqarzho.app.core.designsystem.components.DaftarSelectableRow
 import tj.daftariqarzho.app.core.designsystem.components.LocalGlassBarInset
 import tj.daftariqarzho.app.core.designsystem.theme.DaftarTheme
 import tj.daftariqarzho.app.feature.settings.domain.model.AppLanguage
@@ -55,66 +52,31 @@ private fun SettingsContent(
             color = DaftarTheme.colors.onBackground,
         )
 
-        SettingsSection(title = stringResource(R.string.settings_language)) {
-            AppLanguage.entries.forEach { language ->
-                OptionRow(
+        DaftarListSection(title = stringResource(R.string.settings_language)) {
+            val languages = AppLanguage.entries
+            languages.forEachIndexed { index, language ->
+                DaftarSelectableRow(
                     text = stringResource(language.labelRes()),
                     selected = language == state.language,
                     onClick = { onEvent(SettingsEvent.LanguageSelected(language)) },
+                    showDivider = index != languages.lastIndex,
                 )
             }
         }
 
-        SettingsSection(title = stringResource(R.string.settings_theme)) {
-            ThemeMode.entries.forEach { mode ->
-                OptionRow(
+        DaftarListSection(title = stringResource(R.string.settings_theme)) {
+            val modes = ThemeMode.entries
+            modes.forEachIndexed { index, mode ->
+                DaftarSelectableRow(
                     text = stringResource(mode.labelRes()),
                     selected = mode == state.themeMode,
                     onClick = { onEvent(SettingsEvent.ThemeSelected(mode)) },
+                    showDivider = index != modes.lastIndex,
                 )
             }
         }
 
         AboutSection()
-    }
-}
-
-@Composable
-private fun SettingsSection(
-    title: String,
-    content: @Composable () -> Unit,
-) {
-    Column(verticalArrangement = Arrangement.spacedBy(DaftarTheme.spacing.xs)) {
-        Text(
-            text = title,
-            style = DaftarTheme.typography.titleMedium,
-            color = DaftarTheme.colors.onBackground,
-            modifier = Modifier.padding(bottom = DaftarTheme.spacing.xs),
-        )
-        content()
-    }
-}
-
-@Composable
-private fun OptionRow(
-    text: String,
-    selected: Boolean,
-    onClick: () -> Unit,
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .selectable(selected = selected, onClick = onClick)
-            .padding(vertical = DaftarTheme.spacing.sm),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(DaftarTheme.spacing.sm),
-    ) {
-        RadioButton(selected = selected, onClick = onClick)
-        Text(
-            text = text,
-            style = DaftarTheme.typography.bodyMedium,
-            color = DaftarTheme.colors.onBackground,
-        )
     }
 }
 
@@ -127,18 +89,22 @@ private fun AboutSection() {
         }.getOrNull().orEmpty()
     }
 
-    SettingsSection(title = stringResource(R.string.settings_about)) {
-        Text(
-            text = stringResource(R.string.settings_about_description),
-            style = DaftarTheme.typography.bodyMedium,
-            color = DaftarTheme.colors.onSurfaceVariant,
-        )
-        Text(
-            text = stringResource(R.string.settings_about_version, versionName),
-            style = DaftarTheme.typography.bodySmall,
-            color = DaftarTheme.colors.onSurfaceVariant,
-            modifier = Modifier.padding(top = DaftarTheme.spacing.xs),
-        )
+    DaftarListSection(title = stringResource(R.string.settings_about)) {
+        Column(
+            modifier = Modifier.padding(DaftarTheme.spacing.cardPadding),
+            verticalArrangement = Arrangement.spacedBy(DaftarTheme.spacing.xs),
+        ) {
+            Text(
+                text = stringResource(R.string.settings_about_description),
+                style = DaftarTheme.typography.bodyMedium,
+                color = DaftarTheme.colors.onSurface,
+            )
+            Text(
+                text = stringResource(R.string.settings_about_version, versionName),
+                style = DaftarTheme.typography.bodySmall,
+                color = DaftarTheme.colors.onSurfaceVariant,
+            )
+        }
     }
 }
 
