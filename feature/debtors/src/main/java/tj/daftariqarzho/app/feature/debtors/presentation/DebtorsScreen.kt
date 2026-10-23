@@ -22,12 +22,12 @@ import dev.chrisbanes.haze.hazeSource
 import dev.chrisbanes.haze.rememberHazeState
 import org.koin.androidx.compose.koinViewModel
 import tj.daftariqarzho.app.core.common.datetime.DateFormatter
+import tj.daftariqarzho.app.core.designsystem.components.BalanceCard
 import tj.daftariqarzho.app.core.designsystem.components.DaftarLoader
 import tj.daftariqarzho.app.core.designsystem.components.DaftarTextField
 import tj.daftariqarzho.app.core.designsystem.components.DebtorCard
 import tj.daftariqarzho.app.core.designsystem.components.GlassFloatingActionButton
 import tj.daftariqarzho.app.core.designsystem.components.LocalGlassBarInset
-import tj.daftariqarzho.app.core.designsystem.components.MoneyText
 import tj.daftariqarzho.app.core.designsystem.icons.DaftarIcons
 import tj.daftariqarzho.app.core.designsystem.theme.DaftarTheme
 import tj.daftariqarzho.app.feature.debtors.R
@@ -78,7 +78,7 @@ private fun DebtorsContent(
                 .hazeSource(hazeState)
                 .padding(innerPadding),
         ) {
-            TotalBalanceHeader(totalInDirams = state.overview.balanceInDirams)
+            OverviewHeader(state = state)
             SearchField(
                 query = query,
                 onQueryChange = { onEvent(DebtorsEvent.QueryChanged(it)) },
@@ -93,25 +93,21 @@ private fun DebtorsContent(
 }
 
 @Composable
-private fun TotalBalanceHeader(totalInDirams: Long) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(
-                horizontal = DaftarTheme.spacing.screenPadding,
-                vertical = DaftarTheme.spacing.md,
-            ),
-    ) {
-        Text(
-            text = stringResource(R.string.debtors_total_balance),
-            style = DaftarTheme.typography.bodySmall,
-            color = DaftarTheme.colors.onSurfaceVariant,
-        )
-        MoneyText(
-            amountInDirams = totalInDirams,
-            style = DaftarTheme.moneyTypography.large,
-        )
-    }
+private fun OverviewHeader(state: DebtorsUiState) {
+    BalanceCard(
+        title = stringResource(R.string.debtors_total_balance),
+        balanceInDirams = state.overview.balanceInDirams,
+        returnedLabel = stringResource(R.string.debtors_overview_returned, state.returnedPercent),
+        returnedFraction = state.overview.returnedFraction,
+        givenLabel = stringResource(R.string.debtors_overview_given),
+        givenInDirams = state.overview.givenInDirams,
+        receivedLabel = stringResource(R.string.debtors_overview_received),
+        receivedInDirams = state.overview.receivedInDirams,
+        modifier = Modifier.padding(
+            horizontal = DaftarTheme.spacing.screenPadding,
+            vertical = DaftarTheme.spacing.md,
+        ),
+    )
 }
 
 @Composable

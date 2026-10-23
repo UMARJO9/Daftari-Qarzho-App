@@ -3,6 +3,9 @@
     <string name="debtors_search_hint">Поиск</string>
     <string name="debtors_search_clear">Очистить</string>
     <string name="debtors_total_balance">Общий баланс</string>
+    <string name="debtors_overview_given">Выдано</string>
+    <string name="debtors_overview_received">Получено</string>
+    <string name="debtors_overview_returned">Вернули: %1$d%%</string>
     <string name="debtors_empty">Пока нет клиентов</string>
     <string name="debtors_empty_search">Ничего не найдено</string>
     <string name="debtors_no_operations">Нет операций</string>

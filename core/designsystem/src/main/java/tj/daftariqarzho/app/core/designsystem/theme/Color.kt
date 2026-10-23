@@ -63,7 +63,46 @@ object DaftarColors {
 
     val DividerLight = Color(0x4D918F87)
     val DividerDark = Color(0x29FFFFFF)
+
+    val HeroStartLight = Color(0xFF388E3C)
+    val HeroEndLight = Color(0xFF1B5E20)
+    val HeroStartDark = Color(0xFF2A5A2E)
+    val HeroEndDark = Color(0xFF15301A)
+    val HeroContent = Color(0xFFFFFFFF)
+    val HeroContentMuted = Color(0xBFFFFFFF)
+    val HeroTrack = Color(0x38FFFFFF)
+    val HeroChip = Color(0x2EFFFFFF)
 }
+
+@Immutable
+data class HeroColors(
+    val gradientStart: Color,
+    val gradientEnd: Color,
+    val content: Color,
+    val contentMuted: Color,
+    val track: Color,
+    val chip: Color,
+)
+
+val LightHeroColors = HeroColors(
+    gradientStart = DaftarColors.HeroStartLight,
+    gradientEnd = DaftarColors.HeroEndLight,
+    content = DaftarColors.HeroContent,
+    contentMuted = DaftarColors.HeroContentMuted,
+    track = DaftarColors.HeroTrack,
+    chip = DaftarColors.HeroChip,
+)
+
+val DarkHeroColors = HeroColors(
+    gradientStart = DaftarColors.HeroStartDark,
+    gradientEnd = DaftarColors.HeroEndDark,
+    content = DaftarColors.HeroContent,
+    contentMuted = DaftarColors.HeroContentMuted,
+    track = DaftarColors.HeroTrack,
+    chip = DaftarColors.HeroChip,
+)
+
+val LocalHeroColors = staticCompositionLocalOf { LightHeroColors }
 
 @Immutable
 data class ControlColors(

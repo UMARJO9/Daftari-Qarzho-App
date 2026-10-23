@@ -3,6 +3,9 @@
     <string name="debtors_search_hint">Ҷустуҷӯ</string>
     <string name="debtors_search_clear">Тоза кардан</string>
     <string name="debtors_total_balance">Ҳисоби умумӣ</string>
+    <string name="debtors_overview_given">Дода шуд</string>
+    <string name="debtors_overview_received">Гирифта шуд</string>
+    <string name="debtors_overview_returned">Баргашт: %1$d%%</string>
     <string name="debtors_empty">Ҳанӯз мизоҷон нест</string>
     <string name="debtors_empty_search">Ҳеҷ чиз ёфт нашуд</string>
     <string name="debtors_no_operations">Амалиёт нест</string>

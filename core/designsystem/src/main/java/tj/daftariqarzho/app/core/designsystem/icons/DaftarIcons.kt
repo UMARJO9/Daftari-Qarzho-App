@@ -106,6 +106,30 @@ object DaftarIcons {
         }
     }
 
+    val ArrowUp: ImageVector by lazy {
+        daftarIcon("ArrowUp") {
+            stroke {
+                moveTo(12f, 19f)
+                lineTo(12f, 5f)
+                moveTo(6f, 11f)
+                lineTo(12f, 5f)
+                lineTo(18f, 11f)
+            }
+        }
+    }
+
+    val ArrowDown: ImageVector by lazy {
+        daftarIcon("ArrowDown") {
+            stroke {
+                moveTo(12f, 5f)
+                lineTo(12f, 19f)
+                moveTo(6f, 13f)
+                lineTo(12f, 19f)
+                lineTo(18f, 13f)
+            }
+        }
+    }
+
     val Check: ImageVector by lazy {
         daftarIcon("Check") {
             stroke {
