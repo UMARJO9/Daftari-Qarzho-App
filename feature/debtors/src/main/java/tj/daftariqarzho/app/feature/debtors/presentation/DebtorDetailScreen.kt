@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
@@ -30,7 +29,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tj.daftariqarzho.app.core.common.datetime.DateFormatter
-import tj.daftariqarzho.app.core.designsystem.components.DaftarButton
+import tj.daftariqarzho.app.core.designsystem.components.DaftarDialog
 import tj.daftariqarzho.app.core.designsystem.components.DaftarButtonDefaults
 import tj.daftariqarzho.app.core.designsystem.components.DaftarIconButton
 import tj.daftariqarzho.app.core.designsystem.components.DebtGivenButton
@@ -273,24 +272,14 @@ private fun TransactionRow(transaction: DebtTransaction) {
 
 @Composable
 private fun DeleteConfirmDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.debtor_detail_delete_confirm_title)) },
-        text = { Text(stringResource(R.string.debtor_detail_delete_confirm_text)) },
-        confirmButton = {
-            DaftarButton(
-                text = stringResource(R.string.debtor_detail_delete_confirm_ok),
-                onClick = onConfirm,
-                colors = DaftarButtonDefaults.destructivePlain(),
-            )
-        },
-        dismissButton = {
-            DaftarButton(
-                text = stringResource(R.string.debtor_detail_delete_confirm_cancel),
-                onClick = onDismiss,
-                colors = DaftarButtonDefaults.plain(),
-            )
-        },
+    DaftarDialog(
+        title = stringResource(R.string.debtor_detail_delete_confirm_title),
+        text = stringResource(R.string.debtor_detail_delete_confirm_text),
+        confirmText = stringResource(R.string.debtor_detail_delete_confirm_ok),
+        dismissText = stringResource(R.string.debtor_detail_delete_confirm_cancel),
+        onConfirm = onConfirm,
+        onDismiss = onDismiss,
+        destructive = true,
     )
 }
 

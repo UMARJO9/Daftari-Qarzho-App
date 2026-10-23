@@ -10,12 +10,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDatePickerState
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -25,6 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -33,6 +33,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 import tj.daftariqarzho.app.core.common.datetime.DateFormatter
+import tj.daftariqarzho.app.core.designsystem.components.DaftarBottomSheet
 import tj.daftariqarzho.app.core.designsystem.components.DaftarButton
 import tj.daftariqarzho.app.core.designsystem.components.DaftarButtonDefaults
 import tj.daftariqarzho.app.core.designsystem.components.DaftarIconButton
@@ -42,7 +43,6 @@ import tj.daftariqarzho.app.core.designsystem.theme.DaftarTheme
 import tj.daftariqarzho.app.feature.debtors.R
 import tj.daftariqarzho.app.feature.debtors.domain.model.TransactionType
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TransactionEditorSheet(
     debtorId: Long,
@@ -55,7 +55,6 @@ fun TransactionEditorSheet(
     ),
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
-    val sheetState = rememberModalBottomSheetState()
     val dismiss = {
         viewModel.onEvent(TransactionEditorEvent.Reset)
         onDismiss()
@@ -67,11 +66,9 @@ fun TransactionEditorSheet(
         }
     }
 
-    ModalBottomSheet(
+    DaftarBottomSheet(
         onDismissRequest = dismiss,
         modifier = modifier,
-        sheetState = sheetState,
-        containerColor = DaftarTheme.colors.surface,
     ) {
         TransactionEditorContent(
             state = state,
@@ -223,8 +220,14 @@ private fun DueDatePickerDialog(
             }
         },
     )
+    val datePickerColors = DatePickerDefaults.colors(
+        containerColor = DaftarTheme.colors.surface,
+        dividerColor = Color.Transparent,
+    )
     DatePickerDialog(
         onDismissRequest = onDismiss,
+        shape = DaftarTheme.shapes.large,
+        colors = datePickerColors,
         confirmButton = {
             DaftarButton(
                 text = stringResource(R.string.transaction_editor_dialog_ok),
@@ -242,6 +245,12 @@ private fun DueDatePickerDialog(
             )
         },
     ) {
-        DatePicker(state = datePickerState)
+        DatePicker(
+            state = datePickerState,
+            colors = datePickerColors,
+            title = null,
+            headline = null,
+            showModeToggle = false,
+        )
     }
 }
