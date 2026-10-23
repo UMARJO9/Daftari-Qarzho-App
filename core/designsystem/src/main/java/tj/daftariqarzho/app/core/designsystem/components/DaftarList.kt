@@ -37,7 +37,6 @@ import tj.daftariqarzho.app.core.designsystem.theme.DaftarTheme
 private val RowMinHeight = 52.dp
 private val CheckIconSize = 22.dp
 private val DividerThickness = 0.5.dp
-private const val DividerAlpha = 0.3f
 private const val RowPressedAlpha = 0.06f
 
 @Composable
@@ -139,7 +138,7 @@ fun DaftarDivider(modifier: Modifier = Modifier) {
         modifier = modifier
             .fillMaxWidth()
             .height(DividerThickness)
-            .background(DaftarTheme.colors.outline.copy(alpha = DividerAlpha)),
+            .background(DaftarTheme.controlColors.divider),
     )
 }
 

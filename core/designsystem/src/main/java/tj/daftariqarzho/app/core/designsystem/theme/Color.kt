@@ -60,22 +60,28 @@ object DaftarColors {
     val SegmentThumbLight = Color(0xFFFFFFFF)
     val SegmentTrackDark = Color(0x1FFFFFFF)
     val SegmentThumbDark = Color(0xFF3A3D3A)
+
+    val DividerLight = Color(0x4D918F87)
+    val DividerDark = Color(0x29FFFFFF)
 }
 
 @Immutable
 data class ControlColors(
     val segmentTrack: Color,
     val segmentThumb: Color,
+    val divider: Color,
 )
 
 val LightControlColors = ControlColors(
     segmentTrack = DaftarColors.SegmentTrackLight,
     segmentThumb = DaftarColors.SegmentThumbLight,
+    divider = DaftarColors.DividerLight,
 )
 
 val DarkControlColors = ControlColors(
     segmentTrack = DaftarColors.SegmentTrackDark,
     segmentThumb = DaftarColors.SegmentThumbDark,
+    divider = DaftarColors.DividerDark,
 )
 
 val LocalControlColors = staticCompositionLocalOf { LightControlColors }
