@@ -98,13 +98,13 @@ fun BalanceCard(
 
         Row(horizontalArrangement = Arrangement.spacedBy(spacing.lg)) {
             BalanceFigure(
-                icon = DaftarIcons.ArrowDown,
+                icon = DaftarIcons.ArrowUp,
                 label = givenLabel,
                 amountInDirams = -givenInDirams,
                 modifier = Modifier.weight(1f),
             )
             BalanceFigure(
-                icon = DaftarIcons.ArrowUp,
+                icon = DaftarIcons.ArrowDown,
                 label = receivedLabel,
                 amountInDirams = receivedInDirams,
                 modifier = Modifier.weight(1f),
