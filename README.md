@@ -14,6 +14,8 @@
 ![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-Material%203-4285F4?logo=jetpackcompose&logoColor=white)
 ![Offline](https://img.shields.io/badge/offline-100%25-1B5E20)
 
+**Русский** · [English](README.en.md)
+
 [Возможности](#возможности) · [Скриншоты](#скриншоты) · [Сборка](#сборка-и-запуск) · [Архитектура](#архитектура) · [Как помочь](#как-помочь-проекту) · [Лицензия](#лицензия)
 
 </div>
