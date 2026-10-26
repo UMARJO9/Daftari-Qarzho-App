@@ -14,9 +14,11 @@
 ![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-Material%203-4285F4?logo=jetpackcompose&logoColor=white)
 ![Offline](https://img.shields.io/badge/offline-100%25-1B5E20)
 
+[![Зеркашии APK](https://img.shields.io/github/v/release/UMARJO9/Daftari-Qarzho-App?style=for-the-badge&logo=android&logoColor=white&color=2E7D32&label=Зеркашии%20APK)](https://github.com/UMARJO9/Daftari-Qarzho-App/releases/latest)
+
 [English](README.md) · **Тоҷикӣ** · [Русский](README.ru.md)
 
-[Имкониятҳо](#имкониятҳо) · [Скриншотҳо](#скриншотҳо) · [Сохтан](#сохтан-ва-оғоз) · [Меъморӣ](#меъморӣ) · [Кӯмак ба лоиҳа](#кӯмак-ба-лоиҳа) · [Иҷозатнома](#иҷозатнома)
+[Имкониятҳо](#имкониятҳо) · [Скриншотҳо](#скриншотҳо) · [Зеркашӣ](#зеркашӣ) · [Сохтан](#сохтан-ва-оғоз) · [Меъморӣ](#меъморӣ) · [Кӯмак ба лоиҳа](#кӯмак-ба-лоиҳа) · [Иҷозатнома](#иҷозатнома)
 
 </div>
 
@@ -57,6 +59,10 @@
 | <img src="docs/screenshots/clients-dark.png" width="200" alt="Мавзӯи торик" /> | <img src="docs/screenshots/debtor-dark.png" width="200" alt="Саҳифаи мизоҷ" /> | <img src="docs/screenshots/due-date.png" width="200" alt="Мӯҳлати бозгашт" /> |
 
 </div>
+
+## Зеркашӣ
+
+APK-и охиринро аз саҳифаи [Releases](https://github.com/UMARJO9/Daftari-Qarzho-App/releases/latest) зеркашӣ кунед ва дар телефон (Android 7.0+) кушоед. Шояд лозим ояд, ки насби барномаҳоро аз манбаъҳои номаълум иҷозат диҳед.
 
 ## Сохтан ва оғоз
 

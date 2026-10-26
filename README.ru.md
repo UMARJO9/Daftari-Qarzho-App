@@ -14,9 +14,11 @@
 ![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-Material%203-4285F4?logo=jetpackcompose&logoColor=white)
 ![Offline](https://img.shields.io/badge/offline-100%25-1B5E20)
 
+[![Скачать APK](https://img.shields.io/github/v/release/UMARJO9/Daftari-Qarzho-App?style=for-the-badge&logo=android&logoColor=white&color=2E7D32&label=Скачать%20APK)](https://github.com/UMARJO9/Daftari-Qarzho-App/releases/latest)
+
 [English](README.md) · [Тоҷикӣ](README.tg.md) · **Русский**
 
-[Возможности](#возможности) · [Скриншоты](#скриншоты) · [Сборка](#сборка-и-запуск) · [Архитектура](#архитектура) · [Как помочь](#как-помочь-проекту) · [Лицензия](#лицензия)
+[Возможности](#возможности) · [Скриншоты](#скриншоты) · [Скачать](#скачать) · [Сборка](#сборка-и-запуск) · [Архитектура](#архитектура) · [Как помочь](#как-помочь-проекту) · [Лицензия](#лицензия)
 
 </div>
 
@@ -57,6 +59,10 @@
 | <img src="docs/screenshots/clients-dark.png" width="200" alt="Тёмная тема" /> | <img src="docs/screenshots/debtor-dark.png" width="200" alt="Карточка клиента" /> | <img src="docs/screenshots/due-date.png" width="200" alt="Срок возврата" /> |
 
 </div>
+
+## Скачать
+
+Скачайте последний APK на странице [Releases](https://github.com/UMARJO9/Daftari-Qarzho-App/releases/latest) и откройте его на телефоне (Android 7.0+). Возможно, понадобится разрешить установку приложений из неизвестных источников.
 
 ## Сборка и запуск
 
