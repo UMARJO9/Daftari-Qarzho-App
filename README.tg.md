@@ -14,7 +14,7 @@
 ![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-Material%203-4285F4?logo=jetpackcompose&logoColor=white)
 ![Offline](https://img.shields.io/badge/offline-100%25-1B5E20)
 
-**Тоҷикӣ** · [Русский](README.md) · [English](README.en.md)
+[English](README.md) · **Тоҷикӣ** · [Русский](README.ru.md)
 
 [Имкониятҳо](#имкониятҳо) · [Скриншотҳо](#скриншотҳо) · [Сохтан](#сохтан-ва-оғоз) · [Меъморӣ](#меъморӣ) · [Кӯмак ба лоиҳа](#кӯмак-ба-лоиҳа) · [Иҷозатнома](#иҷозатнома)
 
