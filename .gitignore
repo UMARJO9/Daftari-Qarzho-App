@@ -12,3 +12,6 @@ local.properties
 CLAUDE.md
 CLAUDE.local.md
 .mcp.json
+keystore.properties
+*.jks
+*.keystore
