@@ -31,8 +31,6 @@ In small shops, debts are often written down in a paper notebook — a "daftar".
 - **Two languages.** Tajik (default) and Russian.
 - **Open source.** The project is licensed under Apache 2.0 — you are free to study it, modify it and use it in your own projects.
 
-> **Тоҷикӣ.** «Дафтари қарзҳо» — барномаи офлайн барои ҳисоби қарзҳо дар мағозаҳои хурд. Бе интернет, бе қайд кардан, бо забонҳои тоҷикӣ ва русӣ. Коди барнома кушода аст.
-
 ## Features
 
 | | |
