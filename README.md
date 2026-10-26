@@ -14,9 +14,11 @@ Who borrowed how much, who paid back and whose due date has passed — all in on
 ![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-Material%203-4285F4?logo=jetpackcompose&logoColor=white)
 ![Offline](https://img.shields.io/badge/offline-100%25-1B5E20)
 
+[![Download APK](https://img.shields.io/github/v/release/UMARJO9/Daftari-Qarzho-App?style=for-the-badge&logo=android&logoColor=white&color=2E7D32&label=Download%20APK)](https://github.com/UMARJO9/Daftari-Qarzho-App/releases/latest)
+
 **English** · [Тоҷикӣ](README.tg.md) · [Русский](README.ru.md)
 
-[Features](#features) · [Screenshots](#screenshots) · [Build](#build-and-run) · [Architecture](#architecture) · [Contributing](#contributing) · [License](#license)
+[Features](#features) · [Screenshots](#screenshots) · [Download](#download) · [Build](#build-and-run) · [Architecture](#architecture) · [Contributing](#contributing) · [License](#license)
 
 </div>
 
@@ -57,6 +59,10 @@ In small shops, debts are often written down in a paper notebook — a "daftar".
 | <img src="docs/screenshots/clients-dark.png" width="200" alt="Dark theme" /> | <img src="docs/screenshots/debtor-dark.png" width="200" alt="Customer card" /> | <img src="docs/screenshots/due-date.png" width="200" alt="Due date" /> |
 
 </div>
+
+## Download
+
+Download the latest APK from the [Releases](https://github.com/UMARJO9/Daftari-Qarzho-App/releases/latest) page and open it on your phone (Android 7.0+). You may need to allow installing apps from unknown sources.
 
 ## Build and run
 
